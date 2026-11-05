@@ -134,12 +134,12 @@
     <!-- BOTON FLOTANTE DE REGLAS -->
     <button id="floatingHelpBtn" class="floating-btn visible" onclick="openRulesModal()" title="Ayuda">❓</button>
 
-    <!-- MODAL DE INSTRUCCIONES / DETALLES DE MODO -->
-    <div id="rulesModal" class="modal active">
+    <!-- MODAL DE INSTRUCCIONES (SIN CLASE 'ACTIVE' POR DEFECTO PARA EVITAR BLOQUEOS) -->
+    <div id="rulesModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <span class="modal-icon">💡</span>
-                <h2 id="rulesModalTitle" data-i18n="rules_title">¿Cómo jugar?</h2>
+                <h2 id="rulesModalTitle" data-i18n="rules_title">Instrucciones del Modo</h2>
             </div>
             <div class="rules-body" id="rulesBody"></div>
             <button class="btn primary" onclick="closeRulesModal()" data-i18n="rules_close">¡Entendido, a jugar!</button>
