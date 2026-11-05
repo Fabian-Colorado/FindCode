@@ -234,20 +234,23 @@ function setGameMode(mode) {
         openRulesModal();
         p1Code = ''; p2Code = ''; p1Attempts = 0; p2Attempts = 0;
         pendingActionAfterPass = 'p1_setup';
-        // Tras cerrar el modal de reglas, iniciará el flujo de pasar el teléfono
     } else {
         updateRulesContent('two_phones');
         openRulesModal();
         document.getElementById('setupTitle').innerText = "Configura tu código secreto";
-        // Al cerrar el modal irá a setup
     }
 }
 
-// Sobrescribimos el cierre del modal de reglas para que ejecute la acción pendiente según el modo
-const originalCloseRulesModal = closeRulesModal;
-window.closeRulesModal = function() {
+// Control seguro del cierre de reglas según el modo activo
+function closeRulesModal() {
     document.getElementById('rulesModal').classList.remove('active');
     document.getElementById('floatingHelpBtn').classList.add('visible');
+
+    // Si viene de un enlace compartido, al cerrar el modal mostramos la pantalla de bienvenida del invitado
+    if (window.location.hash.includes('#room=')) {
+        showScreen('guestWelcomeScreen');
+        return;
+    }
 
     if (gameMode === 'same_phone' && pendingActionAfterPass === 'p1_setup') {
         showPassPhoneScreen("Jugador 1", "Configura tu código secreto ocultando el teléfono del Jugador 2.");
@@ -324,7 +327,6 @@ function showPassPhoneScreen(playerLabel, descriptionText) {
     showScreen('passPhoneScreen');
 }
 
-// CORRECCIÓN SOLICITADA: Botón "Listo, soy el jugador" funcionando correctamente
 function confirmPassPhone() {
     if (pendingActionAfterPass === 'p1_setup' || pendingActionAfterPass === 'p2_setup') {
         document.getElementById('setupTitle').innerText = `${pendingActionAfterPass === 'p1_setup' ? 'Jugador 1' : 'Jugador 2'}: Configura tu código`;
@@ -346,10 +348,10 @@ function checkUrlForSharedGame() {
             
             setDifficulty(currentDifficulty);
             document.getElementById('challengerTitle').innerText = `¡${challengerName} te ha retado!`;
+            
+            // Muestra primero las instrucciones del modo, y al cerrarlas pasa al guestWelcomeScreen
             updateRulesContent('two_phones');
             openRulesModal();
-            // Al cerrar el modal irá a guestWelcomeScreen
-            setTimeout(() => showScreen('guestWelcomeScreen'), 100);
         } catch (e) {
             console.error("Reto inválido");
         }
@@ -532,5 +534,6 @@ function openRulesModal() {
     document.getElementById('floatingHelpBtn').classList.remove('visible');
 }
 
-function closeRulesModal() {
-    document.ge
+function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementBy
