@@ -8,6 +8,7 @@ const translations = {
         mode_share: "🌐 Crear Reto por Enlace",
         confirm: "Confirmar y Jugar",
         back: "Volver al menú",
+        menu_home: "🏠 Regresar al menú principal",
         exit: "Salir",
         guess_btn: "Probar Código",
         discard_title: "Descarte:",
@@ -15,7 +16,7 @@ const translations = {
         back_menu: "Menú Principal",
         share_result: "📤 Compartir resultado",
         challenge_back: "⚔️ ¡Retar de vuelta!",
-        rules_title: "¿Cómo jugar?",
+        rules_title: "Instrucciones del Modo",
         rules_close: "¡Entendido, a jugar!",
         win_title: "¡CÓDIGO DESCIFRADO!",
         difficulty_label: "Dificultad:",
@@ -23,12 +24,27 @@ const translations = {
         play_only: "Solo adivinar este reto",
         challenge_back_option: "Aceptar y Retar de vuelta",
         ready_btn: "Listo, soy el jugador",
-        rules_text: `
+        rules_general: `
             <p>🎯 <b>Objetivo:</b> Adivina el código secreto de 4 dígitos únicos (0 al 9).</p>
             <p>📝 <b>Panel de descarte:</b> Toca los números arriba del teclado para cruzarlos en diagonal y ayudarte a deducir.</p>
-            <p>🟢 <b>Fácil (con pistas):</b> Muestra fichas de colores por cada casilla indicando si el dígito y su posición son exactos.</p>
+            <p>🟢 <b>Fácil (con pistas):</b> Muestra fichas de colores indicando si el dígito y su posición son exactos.</p>
             <p>🟠 <b>Difícil (sin pistas):</b> Muestra únicamente la cantidad total de aciertos mediante números con fondo de color.</p>
-            <p>📱 <b>Mismo Teléfono:</b> Dos jugadores configuran sus códigos y se pasan el dispositivo por turnos estrictos.</p>
+        `,
+        rules_solo: `
+            <p>🤖 <b>Modo Solitario:</b></p>
+            <p>• La computadora genera un número secreto aleatorio de 4 dígitos únicos.</p>
+            <p>• Intenta adivinarlo utilizando las pistas de las casillas y tu panel de descarte superior.</p>
+        `,
+        rules_same: `
+            <p>📱 <b>Mismo Teléfono (2 Jugadores):</b></p>
+            <p>• <b>Paso 1:</b> El Jugador 1 configura su código secreto en secreto.</p>
+            <p>• <b>Paso 2:</b> El teléfono se pasa al Jugador 2 para que configure el suyo.</p>
+            <p>• <b>Paso 3:</b> Comienzan los turnos cruzados. Cada jugador hace un intento y pasa el dispositivo al rival hasta que alguien descifre el código contrario.</p>
+        `,
+        rules_two: `
+            <p>📱📱 <b>Dos Teléfonos / Enlaces:</b></p>
+            <p>• Crea un reto con tu código y compártelo mediante el enlace generado.</p>
+            <p>• Tu rival abrirá el enlace en su propio dispositivo para intentar adivinar tu código, o podrá retarte de vuelta.</p>
         `
     },
     en: {
@@ -40,6 +56,7 @@ const translations = {
         mode_share: "🌐 Create Link Challenge",
         confirm: "Confirm & Play",
         back: "Back to Menu",
+        menu_home: "🏠 Main Menu",
         exit: "Exit",
         guess_btn: "Test Code",
         discard_title: "Discard:",
@@ -47,7 +64,7 @@ const translations = {
         back_menu: "Main Menu",
         share_result: "📤 Share result",
         challenge_back: "⚔️ Challenge back!",
-        rules_title: "How to Play",
+        rules_title: "Mode Instructions",
         rules_close: "Got it, let's play!",
         win_title: "CODE CRACKED!",
         difficulty_label: "Difficulty:",
@@ -55,22 +72,21 @@ const translations = {
         play_only: "Just guess this challenge",
         challenge_back_option: "Accept & Challenge Back",
         ready_btn: "Ready, I'm the player",
-        rules_text: `
-            <p>🎯 <b>Goal:</b> Guess the secret 4-unique-digit code.</p>
-            <p>📝 <b>Discard Panel:</b> Tap numbers above the keyboard to cross them out.</p>
-            <p>🟢 <b>Easy (with clues):</b> Colored tiles indicate correct digits and positions.</p>
-            <p>🟠 <b>Hard (no clues):</b> Numeric color totals only.</p>
-        `
+        rules_general: `<p>🎯 <b>Goal:</b> Guess the secret 4-unique-digit code.</p>`,
+        rules_solo: `<p>🤖 <b>Solo Mode:</b> Practice against a randomly generated code.</p>`,
+        rules_same: `<p>📱 <b>Same Phone:</b> Take turns passing the phone between 2 players.</p>`,
+        rules_two: `<p>📱📱 <b>Two Phones:</b> Share challenge links to duel asynchronously.</p>`
     },
     ja: {
         appName: "Find Code",
         subtitle: "暗号を解読する論理と推論のパズルゲーム。",
         mode_solo: "🤖 ソロプレイ",
         mode_same: "📱 同じスマホ (2人プレイ)",
-        mode_two: "📱📱 2台のスマホ (ローカル)",
+        mode_two: "📱📱 2台のスマホ",
         mode_share: "🌐 挑戦状を作成",
         confirm: "確認してスタート",
         back: "メニューに戻る",
+        menu_home: "🏠 メインメニュー",
         exit: "終了",
         guess_btn: "コードを試す",
         discard_title: "除外:",
@@ -78,18 +94,18 @@ const translations = {
         back_menu: "メインメニュー",
         share_result: "📤 結果をシェア",
         challenge_back: "⚔️ 逆挑戦する！",
-        rules_title: "遊び方",
-        rules_close: "了解、ゲーム開始！",
+        rules_title: "ゲーム説明",
+        rules_close: "了解！",
         win_title: "暗号解読成功！",
         difficulty_label: "難易度:",
         challenged_desc: "どう挑戦しますか？",
         play_only: "推測のみ行う",
         challenge_back_option: "挑戦を受けて逆挑戦",
         ready_btn: "準備完了",
-        rules_text: `
-            <p>🎯 <b>目的:</b> 4桁の重複しない暗号コードを解読せよ。</p>
-            <p>📝 <b>除外パネル:</b> 数字をタップして斜線で消去しよう。</p>
-        `
+        rules_general: `<p>🎯 <b>目的:</b> 4桁の重複しない暗号コードを解読せよ。</p>`,
+        rules_solo: `<p>🤖 <b>ソロ:</b> ランダムコードを推測します。</p>`,
+        rules_same: `<p>📱 <b>同じスマホ:</b> スマホをパスしながら2人で対戦します。</p>`,
+        rules_two: `<p>📱📱 <b>2台のスマホ:</b> リンク共有で対戦。</p>`
     },
     zh: {
         appName: "Find Code",
@@ -100,6 +116,7 @@ const translations = {
         mode_share: "🌐 创建挑战链接",
         confirm: "确认并开始",
         back: "返回菜单",
+        menu_home: "🏠 主菜单",
         exit: "退出",
         guess_btn: "提交猜测",
         discard_title: "排除:",
@@ -108,17 +125,17 @@ const translations = {
         share_result: "📤 分享结果",
         challenge_back: "⚔️ 反向挑战！",
         rules_title: "游戏规则",
-        rules_close: "明白，开始游戏！",
+        rules_close: "明白！",
         win_title: "密码破译成功！",
         difficulty_label: "难度:",
         challenged_desc: "你想怎么处理这个挑战？",
         play_only: "仅猜测此挑战",
         challenge_back_option: "接受并反向挑战",
         ready_btn: "准备好了",
-        rules_text: `
-            <p>🎯 <b>目标:</b> 猜出由4个不重复数字组成的秘密密码。</p>
-            <p>📝 <b>排除面板:</b> 点击数字斜线划掉。</p>
-        `
+        rules_general: `<p>🎯 <b>目标:</b> 猜出由4个不重复数字组成的秘密密码。</p>`,
+        rules_solo: `<p>🤖 <b>单人:</b> 练习猜数字。</p>`,
+        rules_same: `<p>📱 <b>同机双人:</b> 轮流传递手机进行双人对战。</p>`,
+        rules_two: `<p>📱📱 <b>双机:</b> 链接挑战。</p>`
     }
 };
 
@@ -126,18 +143,17 @@ let currentLang = 'es';
 let currentDifficulty = 'easy';
 let gameMode = 'solo';
 
-// Variables de estado para Partida Solitario / Enlace
 let secretCode = '';
 let attemptCount = 0;
 let challengerName = '';
 
-// Variables de estado para Modo "Mismo Teléfono" (2 Jugadores cruzados)
+// Variables para "Mismo Teléfono"
 let p1Code = '';
 let p2Code = '';
 let p1Attempts = 0;
 let p2Attempts = 0;
-let currentTurnPlayer = 1; // 1 o 2
-let pendingActionAfterPass = ''; // 'p1_setup', 'p2_setup', 'p1_guess', 'p2_guess'
+let currentTurnPlayer = 1; 
+let pendingActionAfterPass = ''; 
 
 document.addEventListener('DOMContentLoaded', () => {
     setupNumericInputs();
@@ -188,7 +204,16 @@ function changeLanguage(lang) {
         const key = el.getAttribute('data-i18n');
         if (translations[lang][key]) el.innerText = translations[lang][key];
     });
-    document.getElementById('rulesBody').innerHTML = translations[lang].rules_text;
+    updateRulesContent();
+}
+
+function updateRulesContent(mode = 'general') {
+    let t = translations[currentLang];
+    let modeText = t.rules_general;
+    if (mode === 'solo') modeText += t.rules_solo;
+    if (mode === 'same_phone') modeText += t.rules_same;
+    if (mode === 'two_phones' || mode === 'link') modeText += t.rules_two;
+    document.getElementById('rulesBody').innerHTML = modeText;
 }
 
 function setDifficulty(diff) {
@@ -200,16 +225,33 @@ function setDifficulty(diff) {
 function setGameMode(mode) {
     gameMode = mode;
     if (mode === 'solo') {
+        updateRulesContent('solo');
+        openRulesModal();
         secretCode = generateRandomCode();
         startGameSession();
     } else if (mode === 'same_phone') {
-        // Inicia el flujo estricto de Mismo Teléfono
+        updateRulesContent('same_phone');
+        openRulesModal();
         p1Code = ''; p2Code = ''; p1Attempts = 0; p2Attempts = 0;
         pendingActionAfterPass = 'p1_setup';
-        showPassPhoneScreen("Jugador 1", "Configura tu código secreto ocultando el teléfono del Jugador 2.");
+        // Tras cerrar el modal de reglas, iniciará el flujo de pasar el teléfono
     } else {
-        // Dos teléfonos / Presencial
+        updateRulesContent('two_phones');
+        openRulesModal();
         document.getElementById('setupTitle').innerText = "Configura tu código secreto";
+        // Al cerrar el modal irá a setup
+    }
+}
+
+// Sobrescribimos el cierre del modal de reglas para que ejecute la acción pendiente según el modo
+const originalCloseRulesModal = closeRulesModal;
+window.closeRulesModal = function() {
+    document.getElementById('rulesModal').classList.remove('active');
+    document.getElementById('floatingHelpBtn').classList.add('visible');
+
+    if (gameMode === 'same_phone' && pendingActionAfterPass === 'p1_setup') {
+        showPassPhoneScreen("Jugador 1", "Configura tu código secreto ocultando el teléfono del Jugador 2.");
+    } else if (gameMode === 'two_phones' || gameMode === 'link_host' || gameMode === 'link_revenge') {
         showScreen('setupScreen');
     }
 }
@@ -222,8 +264,8 @@ function generateRandomCode() {
 
 function startHostLobby() {
     gameMode = 'link_host';
-    document.getElementById('setupTitle').innerText = "Paso 1: Tu código secreto para el reto";
-    showScreen('setupScreen');
+    updateRulesContent('link');
+    openRulesModal();
 }
 
 function confirmSecretCode() {
@@ -282,15 +324,12 @@ function showPassPhoneScreen(playerLabel, descriptionText) {
     showScreen('passPhoneScreen');
 }
 
+// CORRECCIÓN SOLICITADA: Botón "Listo, soy el jugador" funcionando correctamente
 function confirmPassPhone() {
-    if (pendingActionAfterPass === 'p2_setup') {
-        document.getElementById('setupTitle').innerText = "Jugador 2: Configura tu código secreto";
+    if (pendingActionAfterPass === 'p1_setup' || pendingActionAfterPass === 'p2_setup') {
+        document.getElementById('setupTitle').innerText = `${pendingActionAfterPass === 'p1_setup' ? 'Jugador 1' : 'Jugador 2'}: Configura tu código`;
         showScreen('setupScreen');
-    } else if (pendingActionAfterPass === 'p1_guess') {
-        currentTurnPlayer = 1;
-        startGameSession();
-    } else if (pendingActionAfterPass === 'p2_guess') {
-        currentTurnPlayer = 2;
+    } else if (pendingActionAfterPass === 'p1_guess' || pendingActionAfterPass === 'p2_guess') {
         startGameSession();
     }
 }
@@ -307,7 +346,10 @@ function checkUrlForSharedGame() {
             
             setDifficulty(currentDifficulty);
             document.getElementById('challengerTitle').innerText = `¡${challengerName} te ha retado!`;
-            showScreen('guestWelcomeScreen');
+            updateRulesContent('two_phones');
+            openRulesModal();
+            // Al cerrar el modal irá a guestWelcomeScreen
+            setTimeout(() => showScreen('guestWelcomeScreen'), 100);
         } catch (e) {
             console.error("Reto inválido");
         }
@@ -368,7 +410,6 @@ function submitGuess() {
     if (guess === activeTargetCode) {
         playSound('success');
         let winningAttempts = (gameMode === 'same_phone') ? (currentTurnPlayer === 1 ? p1Attempts : p2Attempts) : attemptCount;
-        let winnerLabel = (gameMode === 'same_phone') ? `¡Jugador ${currentTurnPlayer} Gana!` : "¡Código Descifrado!";
         
         document.getElementById('victoryCodeDisplay').innerText = activeTargetCode.split('').join(' ');
         document.getElementById('victoryAttempts').innerText = `${winningAttempts} intentos`;
@@ -376,7 +417,6 @@ function submitGuess() {
         saveStat(winningAttempts);
     } else {
         if (gameMode === 'same_phone') {
-            // Alternar turno y pedir pasar el teléfono
             currentTurnPlayer = (currentTurnPlayer === 1) ? 2 : 1;
             pendingActionAfterPass = (currentTurnPlayer === 1) ? 'p1_guess' : 'p2_guess';
             showPassPhoneScreen(`Jugador ${currentTurnPlayer}`, `Intento fallido. Pasa el teléfono al Jugador ${currentTurnPlayer} para su turno.`);
@@ -493,18 +533,4 @@ function openRulesModal() {
 }
 
 function closeRulesModal() {
-    document.getElementById('rulesModal').classList.remove('active');
-    document.getElementById('floatingHelpBtn').classList.add('visible');
-}
-
-function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-}
-
-function goHome() {
-    document.getElementById('winModal').classList.remove('active');
-    document.getElementById('floatingHelpBtn').classList.remove('visible');
-    window.location.hash = '';
-    showScreen('mainMenu');
-}
+    document.ge
