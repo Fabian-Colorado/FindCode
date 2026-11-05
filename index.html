@@ -109,12 +109,6 @@
                 <button class="btn small text-btn" onclick="goHome()" data-i18n="exit">Salir</button>
             </div>
 
-            <!-- PANEL DE DESCARTE ARRIBA -->
-            <div class="discard-board-top">
-                <p data-i18n="discard_title">Descarte:</p>
-                <div class="number-pills" id="numberPills"></div>
-            </div>
-
             <!-- HISTORIAL DE INTENTOS -->
             <div class="history-container" id="historyContainer"></div>
 
@@ -131,10 +125,22 @@
         </section>
     </div>
 
-    <!-- BOTON FLOTANTE DE REGLAS -->
+    <!-- BOTONES FLOTANTES (AYUDA Y PANEL DE DESCARTE RÁPIDO) -->
     <button id="floatingHelpBtn" class="floating-btn visible" onclick="openRulesModal()" title="Ayuda">❓</button>
+    <button id="floatingDiscardBtn" class="floating-discard-btn" onclick="toggleDiscardModal()" title="Panel de Descarte">📝</button>
 
-    <!-- MODAL DE INSTRUCCIONES (SIN CLASE 'ACTIVE' POR DEFECTO PARA EVITAR BLOQUEOS) -->
+    <!-- MODAL FLOTANTE DE DESCARTE (SIEMPRE ACCESIBLE SOBRE EL TECLADO) -->
+    <div id="discardModal" class="modal-discard">
+        <div class="modal-discard-content">
+            <div class="discard-header">
+                <span data-i18n="discard_title">Panel de descarte:</span>
+                <button class="btn small text-btn" onclick="toggleDiscardModal()">✕</button>
+            </div>
+            <div class="number-pills" id="numberPills"></div>
+        </div>
+    </div>
+
+    <!-- MODAL DE INSTRUCCIONES -->
     <div id="rulesModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
