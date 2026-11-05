@@ -3,29 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Numerix - Adivina el Código</title>
+    <title>Find Code - Adivina el Código</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="app">
-        <!-- HEADER -->
+        <!-- BARRA SUPERIOR ESTRUCTURADA -->
         <header>
-            <div class="logo">🔢 Numerix</div>
-            <div class="header-controls">
-                <select id="langSelect" onchange="changeLanguage(this.value)">
-                    <option value="es">🇪🇸 ES</option>
-                    <option value="en">🇺🇸 EN</option>
-                    <option value="ja">🇯🇵 JA</option>
-                    <option value="zh">🇨🇳 中文</option>
-                </select>
-                <button id="themeToggle" onclick="toggleTheme()">🌙</button>
+            <div class="top-bar">
+                <div class="controls-left">
+                    <button id="soundToggle" onclick="toggleAudio()" title="Audio">🔊</button>
+                    <button id="themeToggle" onclick="toggleTheme()" title="Tema">🌙</button>
+                </div>
+                <div class="controls-right">
+                    <select id="langSelect" onchange="changeLanguage(this.value)">
+                        <option value="es">🇪🇸 ES</option>
+                        <option value="en">🇺🇸 EN</option>
+                        <option value="ja">🇯🇵 日本語</option>
+                        <option value="zh">🇨🇳 中文</option>
+                    </select>
+                </div>
+            </div>
+            <div class="brand-bar">
+                <h1 class="logo" id="brandTitle">Find Code</h1>
             </div>
         </header>
 
         <!-- MENU PRINCIPAL -->
         <section id="mainMenu" class="screen active">
-            <h1 data-i18n="title">Adivina el Código Secreto</h1>
-            <p data-i18n="subtitle">Un juego de lógica, deducción y estrategia.</p>
+            <p id="mainSubtitle" data-i18n="subtitle">Un juego de lógica, deducción y estrategia.</p>
             
             <div class="menu-buttons">
                 <button class="btn primary" onclick="setGameMode('solo')" data-i18n="mode_solo">🤖 Jugar contra la IA</button>
@@ -35,16 +41,16 @@
             </div>
         </section>
 
-        <!-- PANTALLA DE CONFIGURACION DE CODIGO -->
+        <!-- PANTALLA CONFIGURAR CODIGO -->
         <section id="setupScreen" class="screen">
             <h2 id="setupTitle">Configura tu código secreto</h2>
-            <p id="setupDesc">Introduce un código de 4 dígitos únicos.</p>
+            <p id="setupDesc">Introduce un código de 4 dígitos únicos (0-9).</p>
             
             <div class="code-inputs" id="setupInputs">
-                <input type="password" maxlength="1" class="digit-box" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
-                <input type="password" maxlength="1" class="digit-box" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
-                <input type="password" maxlength="1" class="digit-box" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
-                <input type="password" maxlength="1" class="digit-box" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+                <input type="password" maxlength="1" class="digit-box numeric-only" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+                <input type="password" maxlength="1" class="digit-box numeric-only" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+                <input type="password" maxlength="1" class="digit-box numeric-only" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+                <input type="password" maxlength="1" class="digit-box numeric-only" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
             </div>
             
             <button class="btn primary" onclick="confirmSecretCode()" data-i18n="confirm">Confirmar y Jugar</button>
@@ -54,33 +60,43 @@
         <!-- PANTALLA DE JUEGO -->
         <section id="gameScreen" class="screen">
             <div class="game-header">
-                <span id="turnIndicator">Turno del Jugador</span>
+                <span id="turnIndicator">Tu turno</span>
                 <button class="btn small" onclick="goHome()" data-i18n="exit">Salir</button>
             </div>
 
             <!-- HISTORIAL DE INTENTOS -->
-            <div class="history-container" id="historyContainer">
-                <!-- Se llena por JavaScript -->
-            </div>
+            <div class="history-container" id="historyContainer"></div>
 
             <!-- ENTRADA DE INTENTO ACTUAL -->
             <div class="current-attempt" id="currentAttemptInputs">
-                <input type="text" maxlength="1" class="digit-box guess-box" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
-                <input type="text" maxlength="1" class="digit-box guess-box" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
-                <input type="text" maxlength="1" class="digit-box guess-box" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
-                <input type="text" maxlength="1" class="digit-box guess-box" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+                <input type="text" maxlength="1" class="digit-box guess-box numeric-only" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+                <input type="text" maxlength="1" class="digit-box guess-box numeric-only" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+                <input type="text" maxlength="1" class="digit-box guess-box numeric-only" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+                <input type="text" maxlength="1" class="digit-box guess-box numeric-only" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
             </div>
 
             <button class="btn primary" onclick="submitGuess()" data-i18n="guess_btn">Probar Código</button>
 
-            <!-- TABLERO TIPO SUDOKU / DESCARTE DE NUMEROS -->
+            <!-- PANEL DE DESCARTE -->
             <div class="discard-board">
                 <p data-i18n="discard_title">Panel de descarte (toca para tachar):</p>
-                <div class="number-pills" id="numberPills">
-                    <!-- 0 al 9 generados por JS -->
-                </div>
+                <div class="number-pills" id="numberPills"></div>
             </div>
         </section>
+    </div>
+
+    <!-- BOTON FLOTANTE DE REGLAS -->
+    <button id="floatingHelpBtn" class="floating-btn" onclick="openRulesModal()">❓</button>
+
+    <!-- MODAL DE INSTRUCCIONES FLOTANTE -->
+    <div id="rulesModal" class="modal">
+        <div class="modal-content">
+            <h2 data-i18n="rules_title">¿Cómo jugar?</h2>
+            <div class="rules-body" id="rulesBody">
+                <!-- Se inyecta dinámicamente según idioma -->
+            </div>
+            <button class="btn primary" onclick="closeRulesModal()" data-i18n="rules_close">¡Entendido!</button>
+        </div>
     </div>
 
     <!-- MODAL DE VICTORIA -->
