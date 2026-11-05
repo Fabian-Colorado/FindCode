@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numerix - Adivina el Código</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- HEADER -->
+        <header>
+            <div class="logo">🔢 Numerix</div>
+            <div class="header-controls">
+                <select id="langSelect" onchange="changeLanguage(this.value)">
+                    <option value="es">🇪🇸 ES</option>
+                    <option value="en">🇺🇸 EN</option>
+                    <option value="ja">🇯🇵 JA</option>
+                    <option value="zh">🇨🇳 中文</option>
+                </select>
+                <button id="themeToggle" onclick="toggleTheme()">🌙</button>
+            </div>
+        </header>
+
+        <!-- MENU PRINCIPAL -->
+        <section id="mainMenu" class="screen active">
+            <h1 data-i18n="title">Adivina el Código Secreto</h1>
+            <p data-i18n="subtitle">Un juego de lógica, deducción y estrategia.</p>
+            
+            <div class="menu-buttons">
+                <button class="btn primary" onclick="setGameMode('solo')" data-i18n="mode_solo">🤖 Jugar contra la IA</button>
+                <button class="btn secondary" onclick="setGameMode('same_phone')" data-i18n="mode_same">📱 Mismo Teléfono (Turnos)</button>
+                <button class="btn secondary" onclick="setGameMode('two_phones')" data-i18n="mode_two">📱📱 Dos Teléfonos (Presencial)</button>
+                <button class="btn accent" onclick="openShareModal()" data-i18n="mode_share">🌐 Crear Desafío por Enlace</button>
+            </div>
+        </section>
+
+        <!-- PANTALLA DE CONFIGURACION DE CODIGO -->
+        <section id="setupScreen" class="screen">
+            <h2 id="setupTitle">Configura tu código secreto</h2>
+            <p id="setupDesc">Introduce un código de 4 dígitos únicos.</p>
+            
+            <div class="code-inputs" id="setupInputs">
+                <input type="password" maxlength="1" class="digit-box" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+                <input type="password" maxlength="1" class="digit-box" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+                <input type="password" maxlength="1" class="digit-box" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+                <input type="password" maxlength="1" class="digit-box" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+            </div>
+            
+            <button class="btn primary" onclick="confirmSecretCode()" data-i18n="confirm">Confirmar y Jugar</button>
+            <button class="btn text" onclick="goHome()" data-i18n="back">Volver al menú</button>
+        </section>
+
+        <!-- PANTALLA DE JUEGO -->
+        <section id="gameScreen" class="screen">
+            <div class="game-header">
+                <span id="turnIndicator">Turno del Jugador</span>
+                <button class="btn small" onclick="goHome()" data-i18n="exit">Salir</button>
+            </div>
+
+            <!-- HISTORIAL DE INTENTOS -->
+            <div class="history-container" id="historyContainer">
+                <!-- Se llena por JavaScript -->
+            </div>
+
+            <!-- ENTRADA DE INTENTO ACTUAL -->
+            <div class="current-attempt" id="currentAttemptInputs">
+                <input type="text" maxlength="1" class="digit-box guess-box" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+                <input type="text" maxlength="1" class="digit-box guess-box" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+                <input type="text" maxlength="1" class="digit-box guess-box" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+                <input type="text" maxlength="1" class="digit-box guess-box" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+            </div>
+
+            <button class="btn primary" onclick="submitGuess()" data-i18n="guess_btn">Probar Código</button>
+
+            <!-- TABLERO TIPO SUDOKU / DESCARTE DE NUMEROS -->
+            <div class="discard-board">
+                <p data-i18n="discard_title">Panel de descarte (toca para tachar):</p>
+                <div class="number-pills" id="numberPills">
+                    <!-- 0 al 9 generados por JS -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- MODAL DE VICTORIA -->
+    <div id="winModal" class="modal">
+        <div class="modal-content">
+            <h2>🎉 ¡Felicidades!</h2>
+            <p id="winMessage">Has adivinado el código secreto.</p>
+            <button class="btn primary" onclick="goHome()" data-i18n="play_again">Jugar de nuevo</button>
+        </div>
+    </div>
+
+    <script src="audio.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
