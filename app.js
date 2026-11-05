@@ -11,20 +11,22 @@ const translations = {
         exit: "Salir",
         guess_btn: "Probar Código",
         discard_title: "Panel de descarte (toca para descartar números):",
-        play_again: "Volver a jugar",
+        play_again: "🔄 Volver a jugar",
         back_menu: "Menú Principal",
-        share_result: "Compartir resultado",
-        challenge_back: "¡Retar de vuelta!",
+        share_result: "📤 Compartir resultado",
+        challenge_back: "⚔️ ¡Retar de vuelta!",
         rules_title: "¿Cómo jugar?",
         rules_close: "¡Entendido, a jugar!",
-        win_title: "¡Lo descifraste!",
+        win_title: "¡CÓDIGO DESCIFRADO!",
         difficulty_label: "Dificultad:",
-        accept_challenge: "Aceptar el reto",
+        challenged_desc: "¿Qué deseas hacer con este reto?",
+        play_only: "Solo adivinar este reto",
+        challenge_back_option: "Aceptar y Retar de vuelta",
         rules_text: `
             <p>🎯 <b>Objetivo:</b> Adivina el código secreto de 4 dígitos únicos.</p>
             <p>📝 <b>Panel de descarte:</b> Toca los números abajo para tachar y ayudarte con la deducción.</p>
-            <p>🟢 <b>Fácil (con pistas):</b> Casillas coloreadas por dígito estilo Wordle.</p>
-            <p>🟠 <b>Difícil (sin pistas):</b> Pistas numéricas clásicas (totales).</p>
+            <p>🟢 <b>Fácil (con pistas):</b> Te muestra fichas coloreadas indicando si el dígito y su posición son correctos.</p>
+            <p>🟠 <b>Difícil (sin pistas):</b> Te indica mediante números de colores cuántos aciertos totales tienes, sin decirte en qué posición exacta van.</p>
         `
     },
     en: {
@@ -39,20 +41,22 @@ const translations = {
         exit: "Exit",
         guess_btn: "Test Code",
         discard_title: "Discard panel (tap to cross out numbers):",
-        play_again: "Play Again",
+        play_again: "🔄 Play Again",
         back_menu: "Main Menu",
-        share_result: "Share result",
-        challenge_back: "Challenge back!",
+        share_result: "📤 Share result",
+        challenge_back: "⚔️ Challenge back!",
         rules_title: "How to Play",
         rules_close: "Got it, let's play!",
-        win_title: "Code Cracked!",
+        win_title: "CODE CRACKED!",
         difficulty_label: "Difficulty:",
-        accept_challenge: "Accept challenge",
+        challenged_desc: "What would you like to do with this challenge?",
+        play_only: "Just guess this challenge",
+        challenge_back_option: "Accept & Challenge Back",
         rules_text: `
             <p>🎯 <b>Goal:</b> Guess the secret 4-unique-digit code.</p>
             <p>📝 <b>Discard Panel:</b> Tap numbers below to cross them out and aid logic.</p>
-            <p>🟢 <b>Easy (with clues):</b> Wordle-style colored tiles per digit.</p>
-            <p>🟠 <b>Hard (no clues):</b> Classic numeric clues (totals only).</p>
+            <p>🟢 <b>Easy (with clues):</b> Colored tiles indicate correct digits and positions.</p>
+            <p>🟠 <b>Hard (no clues):</b> Numeric color totals without exact positions.</p>
         `
     },
     ja: {
@@ -67,20 +71,22 @@ const translations = {
         exit: "終了",
         guess_btn: "コードを試す",
         discard_title: "除外パネル（タップして消去）：",
-        play_again: "もう一度プレイ",
+        play_again: "🔄 もう一度プレイ",
         back_menu: "メインメニュー",
-        share_result: "結果をシェア",
-        challenge_back: "逆挑戦する！",
+        share_result: "📤 結果をシェア",
+        challenge_back: "⚔️ 逆挑戦する！",
         rules_title: "遊び方",
         rules_close: "了解、ゲーム開始！",
         win_title: "暗号解読成功！",
         difficulty_label: "難易度:",
-        accept_challenge: "挑戦を受ける",
+        challenged_desc: "どう挑戦しますか？",
+        play_only: "推測のみ行う",
+        challenge_back_option: "挑戦を受けて逆挑戦",
         rules_text: `
             <p>🎯 <b>目的:</b> 4桁の重複しない暗号コードを解読せよ。</p>
             <p>📝 <b>除外パネル:</b> 数字をタップして推理の助けにしよう。</p>
-            <p>🟢 <b>簡単 (ヒント付き):</b> ワードル風の色付きタイル。</p>
-            <p>🟠 <b>難しい (ヒントなし):</b> クラシックな総数ヒント。</p>
+            <p>🟢 <b>簡単 (ヒント付き):</b> 数字と位置が合っているか色で表示。</p>
+            <p>🟠 <b>難しい (ヒントなし):</b> 位置を教えず総数のみ表示。</p>
         `
     },
     zh: {
@@ -95,20 +101,22 @@ const translations = {
         exit: "退出",
         guess_btn: "提交猜测",
         discard_title: "排除面板（点击划掉数字）：",
-        play_again: "再玩一次",
+        play_again: "🔄 再玩一次",
         back_menu: "主菜单",
-        share_result: "分享结果",
-        challenge_back: "反向挑战！",
+        share_result: "📤 分享结果",
+        challenge_back: "⚔️ 反向挑战！",
         rules_title: "游戏规则",
         rules_close: "明白，开始游戏！",
         win_title: "密码破译成功！",
         difficulty_label: "难度:",
-        accept_challenge: "接受挑战",
+        challenged_desc: "你想怎么处理这个挑战？",
+        play_only: "仅猜测此挑战",
+        challenge_back_option: "接受并反向挑战",
         rules_text: `
             <p>🎯 <b>目标:</b> 猜出由4个不重复数字组成的秘密密码。</p>
             <p>📝 <b>排除面板:</b> 点击下方数字辅助排除逻辑。</p>
-            <p>🟢 <b>简单 (有提示):</b> 逐字颜色提示。</p>
-            <p>🟠 <b>困难 (无提示):</b> 经典总数提示。</p>
+            <p>🟢 <b>简单 (有提示):</b> 颜色方块提示数字与位置。</p>
+            <p>🟠 <b>困难 (无提示):</b> 仅提供总数提示，不指明位置。</p>
         `
     }
 };
@@ -126,6 +134,15 @@ document.addEventListener('DOMContentLoaded', () => {
     changeLanguage('es');
     checkUrlForSharedGame();
 });
+
+function showToast(message) {
+    const toast = document.getElementById('toastNotification');
+    toast.innerText = message;
+    toast.classList.add('show');
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3500);
+}
 
 function setupNumericInputs() {
     document.querySelectorAll('.numeric-only').forEach(input => {
@@ -205,20 +222,27 @@ function confirmSecretCode() {
 
     let nickname = document.getElementById('playerNickname').value.trim() || "Alguien";
 
-    if (gameMode === 'link_host' || gameMode === 'link_revenge') {
+    if (gameMode === 'link_host' || gameMode === 'link_revenge' || gameMode === 'link_guest_reply') {
         let payload = btoa(JSON.stringify({ c: code, d: currentDifficulty, n: nickname }));
         let shareUrl = `${window.location.origin}${window.location.pathname}#room=${payload}`;
 
         navigator.clipboard.writeText(shareUrl).then(() => {
-            alert(`¡Reto creado con éxito!\n\nEnlace copiado al portapapeles. Envíaselo a tu rival por WhatsApp o TikTok.`);
-            goHome();
+            showToast("📋 ¡Enlace copiado! Envíaselo a tu rival para jugar.");
+            inputs.forEach(i => i.value = '');
+            if (gameMode === 'link_guest_reply') {
+                startGameSession();
+            } else {
+                goHome();
+            }
         }).catch(() => {
             prompt("Copia tu enlace de reto:", shareUrl);
-            goHome();
+            inputs.forEach(i => i.value = '');
+            if (gameMode === 'link_guest_reply') {
+                startGameSession();
+            } else {
+                goHome();
+            }
         });
-    } else if (gameMode === 'link_guest') {
-        inputs.forEach(i => i.value = '');
-        startGameSession();
     } else {
         secretCode = code;
         inputs.forEach(i => i.value = '');
@@ -237,8 +261,6 @@ function checkUrlForSharedGame() {
             challengerName = roomData.n || "Alguien";
             
             setDifficulty(currentDifficulty);
-            gameMode = 'link_guest';
-
             document.getElementById('challengerTitle').innerText = `¡${challengerName} te ha retado!`;
             showScreen('guestWelcomeScreen');
         } catch (e) {
@@ -247,8 +269,14 @@ function checkUrlForSharedGame() {
     }
 }
 
-function acceptChallenge() {
-    document.getElementById('setupTitle').innerText = `Configura tu código contra el reto de ${challengerName}`;
+function startGuestPlayOnly() {
+    gameMode = 'link_guest';
+    startGameSession();
+}
+
+function acceptAndChallengeBack() {
+    gameMode = 'link_guest_reply';
+    document.getElementById('setupTitle').innerText = `Configura tu código para retar a ${challengerName}`;
     showScreen('setupScreen');
 }
 
@@ -280,7 +308,8 @@ function submitGuess() {
 
     if (guess === secretCode) {
         playSound('success');
-        document.getElementById('winMessage').innerText = `El código era ${secretCode}. Lo conseguiste en ${attemptCount} intentos.`;
+        document.getElementById('victoryCodeDisplay').innerText = secretCode.split('').join(' ');
+        document.getElementById('victoryAttempts').innerText = attemptCount;
         document.getElementById('winModal').classList.add('active');
     }
 }
@@ -305,6 +334,7 @@ function appendHistoryEasyRow(guess) {
     container.prepend(row);
 }
 
+// MODO DIFÍCIL: ÚNICAMENTE EL NÚMERO DENTRO DE LA PASTILLA DE COLOR CORRESPONDIENTE
 function appendHistoryHardRow(guess) {
     let green = 0;
     let orange = 0;
@@ -323,8 +353,8 @@ function appendHistoryHardRow(guess) {
     row.innerHTML = `
         <span class="history-code">${guess}</span>
         <div class="feedback-badges">
-            <span class="badge green">🟩 ${green}</span>
-            <span class="badge orange">🟧 ${orange}</span>
+            <span class="badge-only-number green">${green}</span>
+            <span class="badge-only-number orange">${orange}</span>
         </div>
     `;
     container.prepend(row);
@@ -358,7 +388,7 @@ function shareResult() {
     if (navigator.share) {
         navigator.share({ title: 'Find Code', text: text, url: window.location.href }).catch(() => {});
     } else {
-        navigator.clipboard.writeText(text).then(() => alert("¡Resultado copiado al portapapeles!"));
+        navigator.clipboard.writeText(text).then(() => showToast("📋 ¡Resultado copiado al portapapeles!"));
     }
 }
 
