@@ -62,9 +62,7 @@ header {
     gap: 0.5rem;
 }
 
-.brand-logo {
-    font-size: 1.25rem;
-}
+.brand-logo { font-size: 1.25rem; }
 
 .logo {
     font-weight: 800;
@@ -93,9 +91,7 @@ header {
     transition: all 0.2s;
 }
 
-.icon-btn:hover, .lang-select:hover {
-    border-color: var(--primary);
-}
+.icon-btn:hover, .lang-select:hover { border-color: var(--primary); }
 
 /* PANTALLAS */
 .screen {
@@ -131,6 +127,40 @@ p {
     gap: 0.75rem;
 }
 
+/* SELECTOR DE DIFICULTAD */
+.difficulty-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: rgba(0,0,0,0.2);
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-color);
+}
+
+.diff-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.diff-btn {
+    flex: 1;
+    background: var(--bg-card-hover);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.diff-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
 /* BOTONES */
 .btn {
     padding: 0.9rem 1.2rem;
@@ -144,14 +174,9 @@ p {
 }
 .btn:active { transform: scale(0.98); }
 
-.btn.primary {
-    background-color: var(--primary);
-    color: white;
-}
+.btn.primary { background-color: var(--primary); color: white; }
 .btn.primary:hover { background-color: var(--primary-hover); }
-.btn.glow {
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
-}
+.btn.glow { box-shadow: 0 0 20px rgba(99, 102, 241, 0.4); }
 
 .btn.secondary {
     background-color: var(--bg-card-hover);
@@ -190,7 +215,7 @@ p {
 }
 .digit-box:focus { border-color: var(--primary); outline: none; }
 
-/* HISTORIAL WORDLE */
+/* HISTORIAL */
 .game-top-bar {
     display: flex;
     justify-content: space-between;
@@ -211,24 +236,53 @@ p {
 
 .history-row {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-card-hover);
+    padding: 0.5rem 1rem;
+    border-radius: 0.6rem;
+    border: 1px solid var(--border-color);
+}
+
+.history-code {
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+}
+
+/* MODO FACIL (WORDLE TILES) */
+.wordle-row {
+    display: flex;
     justify-content: center;
     gap: 0.5rem;
 }
 
 .history-tile {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 0.6rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    font-weight: 800;
+    width: 2.8rem; height: 2.8rem;
+    border-radius: 0.5rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; font-weight: 800;
     color: white;
     background-color: #26354a;
 }
 .history-tile.green { background-color: var(--success); }
 .history-tile.orange { background-color: var(--warning); }
+
+/* MODO DIFICIL (PISTAS NUMERICAS) */
+.feedback-badges {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.badge {
+    padding: 0.25rem 0.6rem;
+    border-radius: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: white;
+}
+.badge.green { background-color: var(--success); }
+.badge.orange { background-color: var(--warning); }
 
 .game-card-action {
     background: rgba(255,255,255,0.01);
@@ -240,7 +294,7 @@ p {
     gap: 1rem;
 }
 
-/* PANEL DE DESCARTE (SUDOKU) */
+/* PANEL DE DESCARTE (SUDOKU) - BOTON VERDE ACTIVO AL DESCARTAR */
 .discard-board {
     border-top: 1px solid var(--border-color);
     padding-top: 0.75rem;
@@ -264,18 +318,20 @@ p {
     cursor: pointer;
     transition: all 0.2s;
 }
+
+/* Al tocarse se pone verde brillante y luego se hace gris con tachado */
 .pill.discarded {
-    background: #334155;
-    color: var(--text-muted);
+    background: var(--success);
+    color: white;
     text-decoration: line-through;
-    opacity: 0.3;
-    border-color: transparent;
+    opacity: 0.4;
+    border-color: var(--success);
 }
 
-/* BOTON FLOTANTE */
+/* BOTON FLOTANTE (SUBIDO A 4.5rem PARA NO TAPA EL BOTON 0) */
 .floating-btn {
     position: fixed;
-    bottom: 1.5rem;
+    bottom: 4.5rem;
     left: 1.5rem;
     width: 3.2rem;
     height: 3.2rem;
