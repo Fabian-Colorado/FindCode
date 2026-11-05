@@ -11,7 +11,7 @@ const translations = {
         menu_home: "🏠 Regresar al menú principal",
         exit: "Salir",
         guess_btn: "Probar Código",
-        discard_title: "Descarte:",
+        discard_title: "Panel de descarte:",
         play_again: "🔄 Volver a jugar",
         back_menu: "Menú Principal",
         share_result: "📤 Compartir resultado",
@@ -26,25 +26,20 @@ const translations = {
         ready_btn: "Listo, soy el jugador",
         rules_general: `
             <p>🎯 <b>Objetivo:</b> Adivina el código secreto de 4 dígitos únicos (0 al 9).</p>
-            <p>📝 <b>Panel de descarte:</b> Toca los números arriba del teclado para cruzarlos en diagonal y ayudarte a deducir.</p>
+            <p>📝 <b>Panel de descarte:</b> Toca el botón flotante 📝 para abrir la libreta de descarte y tachar números.</p>
             <p>🟢 <b>Fácil (con pistas):</b> Muestra fichas de colores indicando si el dígito y su posición son exactos.</p>
             <p>🟠 <b>Difícil (sin pistas):</b> Muestra únicamente la cantidad total de aciertos mediante números con fondo de color.</p>
         `,
         rules_solo: `
-            <p>🤖 <b>Modo Solitario:</b></p>
-            <p>• La computadora genera un número secreto aleatorio de 4 dígitos únicos.</p>
-            <p>• Intenta adivinarlo utilizando las pistas de las casillas y tu panel de descarte superior.</p>
+            <p>🤖 <b>Modo Solitario:</b> Adivina el código generado aleatoriamente por la app.</p>
         `,
         rules_same: `
             <p>📱 <b>Mismo Teléfono (2 Jugadores):</b></p>
-            <p>• <b>Paso 1:</b> El Jugador 1 configura su código secreto en secreto.</p>
-            <p>• <b>Paso 2:</b> El teléfono se pasa al Jugador 2 para que configure el suyo.</p>
-            <p>• <b>Paso 3:</b> Comienzan los turnos cruzados. Cada jugador hace un intento y pasa el dispositivo al rival hasta que alguien descifre el código contrario.</p>
+            <p>• Configuren sus códigos secretos por turnos.</p>
+            <p>• Cada jugador tendrá su propio historial y pistas guardadas de forma independiente en cada turno.</p>
         `,
         rules_two: `
-            <p>📱📱 <b>Dos Teléfonos / Enlaces:</b></p>
-            <p>• Crea un reto con tu código y compártelo mediante el enlace generado.</p>
-            <p>• Tu rival abrirá el enlace en su propio dispositivo para intentar adivinar tu código, o podrá retarte de vuelta.</p>
+            <p>📱📱 <b>Dos Teléfonos / Enlaces:</b> Comparte el reto mediante enlace.</p>
         `
     },
     en: {
@@ -59,7 +54,7 @@ const translations = {
         menu_home: "🏠 Main Menu",
         exit: "Exit",
         guess_btn: "Test Code",
-        discard_title: "Discard:",
+        discard_title: "Discard panel:",
         play_again: "🔄 Play Again",
         back_menu: "Main Menu",
         share_result: "📤 Share result",
@@ -74,8 +69,8 @@ const translations = {
         ready_btn: "Ready, I'm the player",
         rules_general: `<p>🎯 <b>Goal:</b> Guess the secret 4-unique-digit code.</p>`,
         rules_solo: `<p>🤖 <b>Solo Mode:</b> Practice against a randomly generated code.</p>`,
-        rules_same: `<p>📱 <b>Same Phone:</b> Take turns passing the phone between 2 players.</p>`,
-        rules_two: `<p>📱📱 <b>Two Phones:</b> Share challenge links to duel asynchronously.</p>`
+        rules_same: `<p>📱 <b>Same Phone:</b> Take turns passing the phone with independent histories.</p>`,
+        rules_two: `<p>📱📱 <b>Two Phones:</b> Share challenge links.</p>`
     },
     ja: {
         appName: "Find Code",
@@ -89,7 +84,7 @@ const translations = {
         menu_home: "🏠 メインメニュー",
         exit: "終了",
         guess_btn: "コードを試す",
-        discard_title: "除外:",
+        discard_title: "除外パネル:",
         play_again: "🔄 もう一度プレイ",
         back_menu: "メインメニュー",
         share_result: "📤 結果をシェア",
@@ -104,8 +99,8 @@ const translations = {
         ready_btn: "準備完了",
         rules_general: `<p>🎯 <b>目的:</b> 4桁の重複しない暗号コードを解読せよ。</p>`,
         rules_solo: `<p>🤖 <b>ソロ:</b> ランダムコードを推測します。</p>`,
-        rules_same: `<p>📱 <b>同じスマホ:</b> スマホをパスしながら2人で対戦します。</p>`,
-        rules_two: `<p>📱📱 <b>2台のスマホ:</b> リンク共有で対戦。</p>`
+        rules_same: `<p>📱 <b>同じスマホ:</b> 履歴を分けて対戦。</p>`,
+        rules_two: `<p>📱📱 <b>2台のスマホ:</b> リンク共有。</p>`
     },
     zh: {
         appName: "Find Code",
@@ -119,7 +114,7 @@ const translations = {
         menu_home: "🏠 主菜单",
         exit: "退出",
         guess_btn: "提交猜测",
-        discard_title: "排除:",
+        discard_title: "排除面板:",
         play_again: "🔄 再玩一次",
         back_menu: "主菜单",
         share_result: "📤 分享结果",
@@ -134,7 +129,7 @@ const translations = {
         ready_btn: "准备好了",
         rules_general: `<p>🎯 <b>目标:</b> 猜出由4个不重复数字组成的秘密密码。</p>`,
         rules_solo: `<p>🤖 <b>单人:</b> 练习猜数字。</p>`,
-        rules_same: `<p>📱 <b>同机双人:</b> 轮流传递手机进行双人对战。</p>`,
+        rules_same: `<p>📱 <b>同机双人:</b> 独立历史记录轮流猜。</p>`,
         rules_two: `<p>📱📱 <b>双机:</b> 链接挑战。</p>`
     }
 };
@@ -147,11 +142,13 @@ let secretCode = '';
 let attemptCount = 0;
 let challengerName = '';
 
-// Variables para "Mismo Teléfono"
+// Variables para "Mismo Teléfono" con historiales independientes
 let p1Code = '';
 let p2Code = '';
 let p1Attempts = 0;
 let p2Attempts = 0;
+let p1HistoryHTML = '';
+let p2HistoryHTML = '';
 let currentTurnPlayer = 1; 
 let pendingActionAfterPass = ''; 
 
@@ -224,6 +221,7 @@ function setDifficulty(diff) {
 
 function setGameMode(mode) {
     gameMode = mode;
+    resetDiscardBoard(); // Limpia el descarte al cambiar de modo
     if (mode === 'solo') {
         updateRulesContent('solo');
         openRulesModal();
@@ -233,6 +231,7 @@ function setGameMode(mode) {
         updateRulesContent('same_phone');
         openRulesModal();
         p1Code = ''; p2Code = ''; p1Attempts = 0; p2Attempts = 0;
+        p1HistoryHTML = ''; p2HistoryHTML = '';
         pendingActionAfterPass = 'p1_setup';
     } else {
         updateRulesContent('two_phones');
@@ -255,6 +254,10 @@ function closeRulesModal() {
     } else if (gameMode === 'two_phones' || gameMode === 'link_host' || gameMode === 'link_revenge') {
         showScreen('setupScreen');
     }
+}
+
+function toggleDiscardModal() {
+    document.getElementById('discardModal').classList.toggle('active');
 }
 
 function generateRandomCode() {
@@ -366,11 +369,14 @@ function acceptAndChallengeBack() {
 
 function startGameSession() {
     attemptCount = 0;
-    document.getElementById('historyContainer').innerHTML = '';
+    resetDiscardBoard(); // Limpia la libreta de descarte al iniciar cada partida
     
     if (gameMode === 'same_phone') {
+        // Carga el historial específico del jugador actual
+        document.getElementById('historyContainer').innerHTML = (currentTurnPlayer === 1) ? p1HistoryHTML : p2HistoryHTML;
         document.getElementById('turnIndicator').innerText = `Turno de: Jugador ${currentTurnPlayer}`;
     } else {
+        document.getElementById('historyContainer').innerHTML = '';
         document.getElementById('turnIndicator').innerText = challengerName ? `Reto de ${challengerName}` : "Partida en curso";
     }
 
@@ -401,13 +407,21 @@ function submitGuess() {
         appendHistoryHardRow(guess, activeTargetCode);
     }
 
+    // Guardar el HTML actual del historial para el jugador correspondiente
+    if (gameMode === 'same_phone') {
+        if (currentTurnPlayer === 1) p1HistoryHTML = document.getElementById('historyContainer').innerHTML;
+        else p2HistoryHTML = document.getElementById('historyContainer').innerHTML;
+    }
+
     inputs.forEach(i => i.value = '');
     inputs[0].focus();
 
     if (guess === activeTargetCode) {
         playSound('success');
         let winningAttempts = (gameMode === 'same_phone') ? (currentTurnPlayer === 1 ? p1Attempts : p2Attempts) : attemptCount;
+        let winMsg = (gameMode === 'same_phone') ? `¡Jugador ${currentTurnPlayer} Gana!` : "¡Código Descifrado!";
         
+        document.getElementById('win_title').innerText = winMsg;
         document.getElementById('victoryCodeDisplay').innerText = activeTargetCode.split('').join(' ');
         document.getElementById('victoryAttempts').innerText = `${winningAttempts} intentos`;
         document.getElementById('winModal').classList.add('active');
@@ -481,6 +495,12 @@ function buildDiscardBoard() {
     }
 }
 
+function resetDiscardBoard() {
+    document.querySelectorAll('.pill').forEach(pill => {
+        pill.classList.remove('discarded');
+    });
+}
+
 function restartGame() {
     document.getElementById('winModal').classList.remove('active');
     if (gameMode === 'solo') {
@@ -520,23 +540,4 @@ function saveStat(attempts) {
 function loadStats() {
     try {
         let stats = JSON.parse(localStorage.getItem('findcode_stats') || '[]');
-        console.log("Partidas guardadas:", stats.length);
-    } catch(e) {}
-}
-
-function openRulesModal() {
-    document.getElementById('rulesModal').classList.add('active');
-    document.getElementById('floatingHelpBtn').classList.remove('visible');
-}
-
-function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-}
-
-function goHome() {
-    document.getElementById('winModal').classList.remove('active');
-    document.getElementById('floatingHelpBtn').classList.remove('visible');
-    window.location.hash = '';
-    showScreen('mainMenu');
-}
+        console.log("Partidas gu
