@@ -28,45 +28,39 @@
         <!-- MENU PRINCIPAL -->
         <section id="mainMenu" class="screen active">
             <div class="hero-card">
+                <!-- APODO OPCIONAL -->
+                <div class="nickname-box">
+                    <input type="text" id="playerNickname" placeholder="Tu apodo (opcional)" maxlength="15" autocomplete="off" />
+                </div>
+
                 <p id="mainSubtitle" data-i18n="subtitle">Un juego de lógica, deducción y estrategia para descifrar el código.</p>
                 
                 <div class="menu-buttons">
                     <button class="btn primary glow" onclick="setGameMode('solo')" data-i18n="mode_solo">🤖 Jugar contra la IA</button>
                     <button class="btn secondary" onclick="setGameMode('same_phone')" data-i18n="mode_same">📱 Mismo Teléfono (Turnos)</button>
                     <button class="btn secondary" onclick="setGameMode('two_phones')" data-i18n="mode_two">📱📱 Dos Teléfonos (Presencial)</button>
-                    <button class="btn accent" onclick="startHostLobby()" data-i18n="mode_share">🌐 Crear Sala de Desafío (Enlace)</button>
+                    <button class="btn accent" onclick="startHostLobby()" data-i18n="mode_share">🌐 Crear Reto por Enlace</button>
                 </div>
 
                 <!-- SELECTOR DE DIFICULTAD -->
                 <div class="difficulty-selector">
                     <label data-i18n="difficulty_label">Dificultad:</label>
                     <div class="diff-buttons">
-                        <button id="diffEasy" class="diff-btn active" onclick="setDifficulty('easy')">Fácil (Wordle)</button>
-                        <button id="diffHard" class="diff-btn" onclick="setDifficulty('hard')">Difícil (Clásico)</button>
+                        <button id="diffEasy" class="diff-btn active" onclick="setDifficulty('easy')">Fácil (con pistas)</button>
+                        <button id="diffHard" class="diff-btn" onclick="setDifficulty('hard')">Difícil (sin pistas)</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- PANTALLA DE INVITADO: ALGUIEN TE HA RETADO -->
+        <!-- PANTALLA DE INVITADO: RETO RECIBIDO -->
         <section id="guestWelcomeScreen" class="screen">
             <div class="game-card text-center">
                 <span class="win-icon">⚔️</span>
-                <h2 data-i18n="challenged_title">¡Alguien te ha retado!</h2>
+                <h2 id="challengerTitle">¡Te han retado!</h2>
                 <p id="challengedDesc" data-i18n="challenged_desc">Prepárate para un duelo de lógica y descubre si puedes descifrar el código secreto.</p>
-                <button class="btn primary glow full-width" onclick="acceptChallenge()" data-i18n="accept_challenge">Aceptar el reto y jugar</button>
+                <button class="btn primary glow full-width" onclick="acceptChallenge()" data-i18n="accept_challenge">Aceptar el reto</button>
                 <button class="btn text" onclick="goHome()" data-i18n="back">Volver al menú</button>
-            </div>
-        </section>
-
-        <!-- PANTALLA DE ESPERA (HOST) -->
-        <section id="waitingScreen" class="screen">
-            <div class="game-card text-center">
-                <div class="spinner"></div>
-                <h2 data-i18n="waiting_title">Sala creada con éxito</h2>
-                <p data-i18n="waiting_desc">El enlace ha sido copiado al portapapeles. Envíaselo a tu rival y espera a que abra la sala para comenzar.</p>
-                <button class="btn secondary full-width" onclick="copyShareLinkAgain()" data-i18n="copy_link_again">Copiar enlace de nuevo</button>
-                <button class="btn text" onclick="goHome()" data-i18n="cancel">Cancelar y salir</button>
             </div>
         </section>
 
@@ -109,7 +103,7 @@
                 <button class="btn primary full-width" onclick="submitGuess()" data-i18n="guess_btn">Probar Código</button>
             </div>
 
-            <!-- PANEL DE DESCARTE (SUDOKU STYLE) -->
+            <!-- PANEL DE DESCARTE -->
             <div class="discard-board">
                 <p data-i18n="discard_title">Panel de descarte (toca para descartar números):</p>
                 <div class="number-pills" id="numberPills"></div>
@@ -132,15 +126,17 @@
         </div>
     </div>
 
-    <!-- MODAL DE VICTORIA CON REVANCHA -->
+    <!-- MODAL DE VICTORIA CON OPCIONES COMPLETAS -->
     <div id="winModal" class="modal">
         <div class="modal-content text-center">
             <span class="win-icon">🎉</span>
-            <h2 id="winTitle" data-i18n="win_title">¡Código Descifrado!</h2>
-            <p id="winMessage" data-i18n="win_desc">Has encontrado la combinación secreta con éxito.</p>
+            <h2 data-i18n="win_title">¡Lo descifraste!</h2>
+            <p id="winMessage">El código era XXXX. Lo conseguiste en X intentos.</p>
             <div class="modal-actions">
                 <button class="btn primary glow" onclick="restartGame()" data-i18n="play_again">Volver a jugar</button>
-                <button class="btn secondary" onclick="goHome()" data-i18n="back_menu">Menú Principal</button>
+                <button class="btn secondary" onclick="shareResult()" data-i18n="share_result">Compartir resultado</button>
+                <button class="btn accent" onclick="openRevengeSetup()" data-i18n="challenge_back">¡Retar de vuelta!</button>
+                <button class="btn text" onclick="goHome()" data-i18n="back_menu">Menú Principal</button>
             </div>
         </div>
     </div>
