@@ -157,6 +157,13 @@ document.addEventListener('DOMContentLoaded', () => {
     changeLanguage('es');
     checkUrlForSharedGame();
     loadStats();
+
+    // INTERCEPTAR EL BOTÓN FÍSICO "ATRÁS" DEL CELULAR
+    window.history.pushState({ page: 'menu' }, '', '');
+    window.addEventListener('popstate', (e) => {
+        goHome();
+        window.history.pushState({ page: 'menu' }, '', '');
+    });
 });
 
 function showToast(message) {
@@ -241,7 +248,7 @@ function setGameMode(mode) {
 }
 function closeRulesModal() {
     document.getElementById('rulesModal').classList.remove('active');
-    document.getElementById('floatingHelpBtn').classList.add('visible');
+    document.getElementById('floatingHelpBtn').classList.remove('visible');
 
     if (window.location.hash.includes('#room=')) {
         showScreen('guestWelcomeScreen');
@@ -315,7 +322,6 @@ function confirmSecretCode() {
     }
 }
 
-// PANTALLA DE TRANSICIÓN DRAMÁTICA Y TENSANTE
 function showPassPhoneScreen(playerLabel, descriptionText) {
     let card = document.getElementById('passCardContainer');
     let emoji = document.getElementById('passIconEmoji');
@@ -534,9 +540,13 @@ function appendHistoryHardRow(guess, targetCode) {
 }
 
 function buildDiscardBoard() {
-    const board = document.getElementById('numberPills');
-    board.innerHTML = '';
-    for (let i = 0; i <= 9; i++) {
+    const row1 = document.getElementById('numberPillsRow1');
+    const row2 = document.getElementById('numberPillsRow2');
+    row1.innerHTML = '';
+    row2.innerHTML = '';
+    
+    // Fila 1: 0 al 4
+    for (let i = 0; i <= 4; i++) {
         const pill = document.createElement('div');
         pill.className = 'pill';
         pill.innerText = i;
@@ -544,7 +554,19 @@ function buildDiscardBoard() {
             playSound('click');
             pill.classList.toggle('discarded');
         };
-        board.appendChild(pill);
+        row1.appendChild(pill);
+    }
+    
+    // Fila 2: 5 al 9
+    for (let i = 5; i <= 9; i++) {
+        const pill = document.createElement('div');
+        pill.className = 'pill';
+        pill.innerText = i;
+        pill.onclick = () => {
+            playSound('click');
+            pill.classList.toggle('discarded');
+        };
+        row2.appendChild(pill);
     }
 }
 
