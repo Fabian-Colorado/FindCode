@@ -35,7 +35,7 @@ const translations = {
         `,
         rules_same: `
             <p>📱 <b>Mismo Teléfono (2 Jugadores):</b></p>
-            <p>• Configuren sus códigos secretos por turnos.</p>
+            <p>• Configuren seus códigos secretos por turnos.</p>
             <p>• Cada jugador tendrá su propio historial y pistas guardadas de forma independiente en cada turno.</p>
         `,
         rules_two: `
@@ -142,7 +142,6 @@ let secretCode = '';
 let attemptCount = 0;
 let challengerName = '';
 
-// Variables para "Mismo Teléfono" con historiales independientes
 let p1Code = '';
 let p2Code = '';
 let p1Attempts = 0;
@@ -221,7 +220,7 @@ function setDifficulty(diff) {
 
 function setGameMode(mode) {
     gameMode = mode;
-    resetDiscardBoard(); // Limpia el descarte al cambiar de modo
+    resetDiscardBoard();
     if (mode === 'solo') {
         updateRulesContent('solo');
         openRulesModal();
@@ -239,7 +238,6 @@ function setGameMode(mode) {
         document.getElementById('setupTitle').innerText = "Configura tu código secreto";
     }
 }
-
 function closeRulesModal() {
     document.getElementById('rulesModal').classList.remove('active');
     document.getElementById('floatingHelpBtn').classList.add('visible');
@@ -369,10 +367,9 @@ function acceptAndChallengeBack() {
 
 function startGameSession() {
     attemptCount = 0;
-    resetDiscardBoard(); // Limpia la libreta de descarte al iniciar cada partida
+    resetDiscardBoard();
     
     if (gameMode === 'same_phone') {
-        // Carga el historial específico del jugador actual
         document.getElementById('historyContainer').innerHTML = (currentTurnPlayer === 1) ? p1HistoryHTML : p2HistoryHTML;
         document.getElementById('turnIndicator').innerText = `Turno de: Jugador ${currentTurnPlayer}`;
     } else {
@@ -407,7 +404,6 @@ function submitGuess() {
         appendHistoryHardRow(guess, activeTargetCode);
     }
 
-    // Guardar el HTML actual del historial para el jugador correspondiente
     if (gameMode === 'same_phone') {
         if (currentTurnPlayer === 1) p1HistoryHTML = document.getElementById('historyContainer').innerHTML;
         else p2HistoryHTML = document.getElementById('historyContainer').innerHTML;
@@ -540,4 +536,23 @@ function saveStat(attempts) {
 function loadStats() {
     try {
         let stats = JSON.parse(localStorage.getItem('findcode_stats') || '[]');
-        console.log("Partidas gu
+        console.log("Partidas guardadas:", stats.length);
+    } catch(e) {}
+}
+
+function openRulesModal() {
+    document.getElementById('rulesModal').classList.add('active');
+    document.getElementById('floatingHelpBtn').classList.remove('visible');
+}
+
+function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+
+function goHome() {
+    document.getElementById('winModal').classList.remove('active');
+    document.getElementById('floatingHelpBtn').classList.remove('visible');
+    window.location.hash = '';
+    showScreen('mainMenu');
+}
