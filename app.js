@@ -158,7 +158,6 @@ document.addEventListener('DOMContentLoaded', () => {
     checkUrlForSharedGame();
     loadStats();
 
-    // INTERCEPTAR EL BOTÓN FÍSICO "ATRÁS" DEL CELULAR
     window.history.pushState({ page: 'menu' }, '', '');
     window.addEventListener('popstate', (e) => {
         goHome();
@@ -173,13 +172,16 @@ function showToast(message) {
     setTimeout(() => { toast.classList.remove('show'); }, 3500);
 }
 
+// CONFIGURACIÓN DE INPUTS CON SUSTITUCIÓN INTELIGENTE Y TECLA ENTER
 function setupNumericInputs() {
     document.querySelectorAll('.numeric-only').forEach(input => {
-        input.addEventListener('beforeinput', (e) => {
-            if (e.data && !/^[0-9]$/.test(e.data)) e.preventDefault();
-        });
+        input.addEventListener('focus', () => input.select()); // Selecciona todo al tocar para sobrescribir directo
+        
         input.addEventListener('input', (e) => {
-            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+            let val = e.target.value;
+            if (val.length > 1) {
+                e.target.value = val.slice(-1); // Mantiene solo el último dígito ingresado (sustitución automática)
+            }
             if (e.target.value) playSound('click');
         });
     });
@@ -192,10 +194,23 @@ function initInputNavigation(selector) {
     const inputs = document.querySelectorAll(`${selector} input`);
     inputs.forEach((input, idx) => {
         input.addEventListener('input', () => {
-            if (input.value && idx < inputs.length - 1) inputs[idx + 1].focus();
+            if (input.value && idx < inputs.length - 1) {
+                inputs[idx + 1].focus();
+            }
         });
+        
         input.addEventListener('keydown', (e) => {
-            if (e.key === 'Backspace' && !input.value && idx > 0) inputs[idx - 1].focus();
+            if (e.key === 'Backspace' && !input.value && idx > 0) {
+                inputs[idx - 1].focus();
+            }
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (selector === '#currentAttemptInputs') {
+                    submitGuess();
+                } else {
+                    confirmSecretCode();
+                }
+            }
         });
     });
 }
@@ -248,7 +263,7 @@ function setGameMode(mode) {
 }
 function closeRulesModal() {
     document.getElementById('rulesModal').classList.remove('active');
-    document.getElementById('floatingHelpBtn').classList.remove('visible');
+    document.getElementById('floatingHelpBtn').classList.add('visible');
 
     if (window.location.hash.includes('#room=')) {
         showScreen('guestWelcomeScreen');
@@ -401,6 +416,9 @@ function startGameSession() {
 }
 
 function submitGuess() {
+    // OCULTAR EL TECLADO MÓVIL AL ENVIAR EL INTENTO
+    document.querySelectorAll('#currentAttemptInputs input').forEach(input => input.blur());
+
     const inputs = document.querySelectorAll('#currentAttemptInputs input');
     let guess = Array.from(inputs).map(i => i.value).join('');
 
@@ -545,7 +563,6 @@ function buildDiscardBoard() {
     row1.innerHTML = '';
     row2.innerHTML = '';
     
-    // Fila 1: 0 al 4
     for (let i = 0; i <= 4; i++) {
         const pill = document.createElement('div');
         pill.className = 'pill';
@@ -557,7 +574,6 @@ function buildDiscardBoard() {
         row1.appendChild(pill);
     }
     
-    // Fila 2: 5 al 9
     for (let i = 5; i <= 9; i++) {
         const pill = document.createElement('div');
         pill.className = 'pill';
