@@ -8,6 +8,11 @@
 </head>
 <body data-theme="dark">
     <div id="app">
+        <!-- NOTIFICACIÓN FLOTANTE (TOAST) -->
+        <div id="toastNotification" class="toast">
+            📋 ¡Enlace de reto copiado al portapapeles!
+        </div>
+
         <!-- BARRA SUPERIOR -->
         <header>
             <div class="brand-container">
@@ -28,7 +33,6 @@
         <!-- MENU PRINCIPAL -->
         <section id="mainMenu" class="screen active">
             <div class="hero-card">
-                <!-- APODO OPCIONAL -->
                 <div class="nickname-box">
                     <input type="text" id="playerNickname" placeholder="Tu apodo (opcional)" maxlength="15" autocomplete="off" />
                 </div>
@@ -53,13 +57,18 @@
             </div>
         </section>
 
-        <!-- PANTALLA DE INVITADO: RETO RECIBIDO -->
+        <!-- PANTALLA DE INVITADO: OPCIONES CLARAS (SIN BUCLE OBLIGATORIO) -->
         <section id="guestWelcomeScreen" class="screen">
             <div class="game-card text-center">
                 <span class="win-icon">⚔️</span>
                 <h2 id="challengerTitle">¡Te han retado!</h2>
-                <p id="challengedDesc" data-i18n="challenged_desc">Prepárate para un duelo de lógica y descubre si puedes descifrar el código secreto.</p>
-                <button class="btn primary glow full-width" onclick="acceptChallenge()" data-i18n="accept_challenge">Aceptar el reto</button>
+                <p id="challengedDesc" data-i18n="challenged_desc">¿Qué deseas hacer?</p>
+                
+                <div class="menu-buttons full-width">
+                    <button class="btn primary glow full-width" onclick="startGuestPlayOnly()" data-i18n="play_only">Solo adivinar este reto</button>
+                    <button class="btn accent full-width" onclick="acceptAndChallengeBack()" data-i18n="challenge_back_option">Aceptar y Retar de vuelta</button>
+                </div>
+                
                 <button class="btn text" onclick="goHome()" data-i18n="back">Volver al menú</button>
             </div>
         </section>
@@ -126,16 +135,28 @@
         </div>
     </div>
 
-    <!-- MODAL DE VICTORIA CON OPCIONES COMPLETAS -->
+    <!-- MODAL DE VICTORIA REDISEÑADO -->
     <div id="winModal" class="modal">
-        <div class="modal-content text-center">
-            <span class="win-icon">🎉</span>
-            <h2 data-i18n="win_title">¡Lo descifraste!</h2>
-            <p id="winMessage">El código era XXXX. Lo conseguiste en X intentos.</p>
+        <div class="modal-content text-center win-card">
+            <div class="victory-header">
+                <span class="victory-badge">VICTORIA</span>
+                <h2 data-i18n="win_title">¡CÓDIGO DESCIFRADO!</h2>
+            </div>
+            
+            <div class="victory-code-display">
+                <span class="code-label">EL CÓDIGO ERA:</span>
+                <div class="big-code-digits" id="victoryCodeDisplay">0 0 0 0</div>
+            </div>
+
+            <div class="victory-stats">
+                <span class="stat-number" id="victoryAttempts">0</span>
+                <span class="stat-label">INTENTOS REALIZADOS</span>
+            </div>
+
             <div class="modal-actions">
-                <button class="btn primary glow" onclick="restartGame()" data-i18n="play_again">Volver a jugar</button>
-                <button class="btn secondary" onclick="shareResult()" data-i18n="share_result">Compartir resultado</button>
-                <button class="btn accent" onclick="openRevengeSetup()" data-i18n="challenge_back">¡Retar de vuelta!</button>
+                <button class="btn accent glow full-width" onclick="openRevengeSetup()" data-i18n="challenge_back">⚔️ ¡Retar de vuelta!</button>
+                <button class="btn secondary full-width" onclick="shareResult()" data-i18n="share_result">📤 Compartir resultado</button>
+                <button class="btn primary full-width" onclick="restartGame()" data-i18n="play_again">🔄 Volver a jugar</button>
                 <button class="btn text" onclick="goHome()" data-i18n="back_menu">Menú Principal</button>
             </div>
         </div>
