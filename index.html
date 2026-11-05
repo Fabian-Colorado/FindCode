@@ -17,10 +17,10 @@
             <div class="header-actions">
                 <button id="soundToggle" class="icon-btn" onclick="toggleAudio()" title="Audio">🔊</button>
                 <select id="langSelect" class="lang-select" onchange="changeLanguage(this.value)">
-                    <option value="es">🇪🇸 ES</option>
-                    <option value="en">🇺🇸 EN</option>
-                    <option value="ja">🇯🇵 日本語</option>
-                    <option value="zh">🇨🇳 中文</option>
+                    <option value="es">Español</option>
+                    <option value="en">English</option>
+                    <option value="ja">日本語</option>
+                    <option value="zh">中文</option>
                 </select>
             </div>
         </header>
@@ -34,7 +34,16 @@
                     <button class="btn primary glow" onclick="setGameMode('solo')" data-i18n="mode_solo">🤖 Jugar contra la IA</button>
                     <button class="btn secondary" onclick="setGameMode('same_phone')" data-i18n="mode_same">📱 Mismo Teléfono (Turnos)</button>
                     <button class="btn secondary" onclick="setGameMode('two_phones')" data-i18n="mode_two">📱📱 Dos Teléfonos (Presencial)</button>
-                    <button class="btn accent" onclick="openShareModal()" data-i18n="mode_share">🌐 Crear Desafío por Enlace</button>
+                    <button class="btn accent" onclick="generateShareLink()" data-i18n="mode_share">🌐 Crear Desafío por Enlace</button>
+                </div>
+
+                <!-- SELECTOR DE DIFICULTAD -->
+                <div class="difficulty-selector">
+                    <label data-i18n="difficulty_label">Dificultad:</label>
+                    <div class="diff-buttons">
+                        <button id="diffEasy" class="diff-btn active" onclick="setDifficulty('easy')">Fácil (Wordle)</button>
+                        <button id="diffHard" class="diff-btn" onclick="setDifficulty('hard')">Difícil (Clásico)</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -64,7 +73,7 @@
                 <button class="btn small text-btn" onclick="goHome()" data-i18n="exit">Salir</button>
             </div>
 
-            <!-- HISTORIAL DE INTENTOS TIPO WORDLE -->
+            <!-- HISTORIAL DE INTENTOS -->
             <div class="history-container" id="historyContainer"></div>
 
             <!-- ENTRADA DE INTENTO ACTUAL -->
@@ -80,13 +89,13 @@
 
             <!-- PANEL DE DESCARTE (SUDOKU STYLE) -->
             <div class="discard-board">
-                <p data-i18n="discard_title">Panel de descarte (toca para tachar):</p>
+                <p data-i18n="discard_title">Panel de descarte (toca para descartar números):</p>
                 <div class="number-pills" id="numberPills"></div>
             </div>
         </section>
     </div>
 
-    <!-- BOTON FLOTANTE DE REGLAS -->
+    <!-- BOTON FLOTANTE DE REGLAS (SUBIDO PARA NO TAPA EL 0) -->
     <button id="floatingHelpBtn" class="floating-btn visible" onclick="openRulesModal()" title="Ayuda">❓</button>
 
     <!-- MODAL DE INSTRUCCIONES FLOTANTE -->
@@ -94,7 +103,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span class="modal-icon">💡</span>
-                <h2 data-i18n="rules_title">¿Cómo jugar a Find Code?</h2>
+                <h2 data-i18n="rules_title">¿Cómo jugar?</h2>
             </div>
             <div class="rules-body" id="rulesBody">
                 <!-- Inyectado por JS -->
