@@ -77,17 +77,17 @@
             </div>
         </section>
 
-        <!-- PANTALLA CONFIGURAR CODIGO (INPUTS ANTI-AUTOCOMPLETADO) -->
+        <!-- PANTALLA CONFIGURAR CODIGO (USANDO TYPE="NUMBER" PARA EVITAR BARRA DE TARJETAS) -->
         <section id="setupScreen" class="screen">
             <div class="game-card">
                 <h2 id="setupTitle">Configura tu código secreto</h2>
                 <p id="setupDesc">Introduce un código de 4 dígitos únicos (0-9).</p>
                 
                 <div class="code-inputs" id="setupInputs">
-                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box numeric-only" autocomplete="new-password" data-lpignore="true" />
-                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box numeric-only" autocomplete="new-password" data-lpignore="true" />
-                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box numeric-only" autocomplete="new-password" data-lpignore="true" />
-                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box numeric-only" autocomplete="new-password" data-lpignore="true" />
+                    <input type="number" inputmode="numeric" min="0" max="9" maxlength="1" class="digit-box numeric-only" autocomplete="off" />
+                    <input type="number" inputmode="numeric" min="0" max="9" maxlength="1" class="digit-box numeric-only" autocomplete="off" />
+                    <input type="number" inputmode="numeric" min="0" max="9" maxlength="1" class="digit-box numeric-only" autocomplete="off" />
+                    <input type="number" inputmode="numeric" min="0" max="9" maxlength="1" class="digit-box numeric-only" autocomplete="off" />
                 </div>
                 
                 <button class="btn primary" onclick="confirmSecretCode()" data-i18n="confirm">Confirmar y Jugar</button>
@@ -102,7 +102,7 @@
                 <button class="btn small text-btn" onclick="goHome()" data-i18n="exit">Salir</button>
             </div>
 
-            <!-- PANEL DE DESCARTE EN 2 FILAS (COMPACTO) -->
+            <!-- PANEL DE DESCARTE COMPACTO -->
             <div class="touch-discard-panel">
                 <span class="discard-title-mini">Descarte:</span>
                 <div class="number-pills-grid" id="numberPillsRow1"></div>
@@ -113,10 +113,10 @@
 
             <div class="game-card-action">
                 <div class="current-attempt" id="currentAttemptInputs">
-                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="new-password" data-lpignore="true" />
-                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="new-password" data-lpignore="true" />
-                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="new-password" data-lpignore="true" />
-                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="new-password" data-lpignore="true" />
+                    <input type="number" inputmode="numeric" min="0" max="9" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" />
+                    <input type="number" inputmode="numeric" min="0" max="9" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" />
+                    <input type="number" inputmode="numeric" min="0" max="9" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" />
+                    <input type="number" inputmode="numeric" min="0" max="9" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" />
                 </div>
                 <button class="btn primary full-width" onclick="submitGuess()" data-i18n="guess_btn">Probar Código</button>
             </div>
