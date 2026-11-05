@@ -1,43 +1,41 @@
-let isAudioEnabled = true;
-let audioCtx = null;
-
-function initAudioContext() {
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-}
+// Estado global del audio
+let soundEnabled = true;
 
 function toggleAudio() {
-    isAudioEnabled = !isAudioEnabled;
-    document.getElementById('soundToggle').innerText = isAudioEnabled ? '🔊' : '🔇';
+    soundEnabled = !soundEnabled;
+    const btn = document.getElementById('soundToggle');
+    if (btn) {
+        btn.innerText = soundEnabled ? '🔊' : '🔇';
+    }
 }
 
+// Reproductor de efectos sintéticos seguros (sin archivos externos por ahora)
 function playSound(type) {
-    if (!isAudioEnabled) return;
-    initAudioContext();
-
-    // Detección automática: silenciar si la app pasa a segundo plano o hay interferencias de audio
-    if (document.hidden || audioCtx.state === 'suspended') {
-        audioCtx.resume();
-    }
-
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-
-    if (type === 'click') {
-        osc.frequency.setValueAtTime(450, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.04);
-    } else if (type === 'success') {
-        osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
-        osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
-        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.35);
+    if (!soundEnabled) return;
+    
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        if (type === 'click') {
+            osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.08);
+        } else if (type === 'success') {
+            osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+            osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); // A5
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.3);
+        }
+    } catch (e) {
+        // Los navegadores bloquean audio si no ha habido interacción previa, lo ignoramos de forma segura
     }
 }
