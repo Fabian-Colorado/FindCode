@@ -23,12 +23,10 @@ const translations = {
         challenged_desc: "¿Qué deseas hacer con este reto?",
         play_only: "Solo adivinar este reto",
         challenge_back_option: "Aceptar y Retar de vuelta",
-        ready_btn: "Listo, soy el jugador",
+        ready_btn: "¡Estoy listo, empezar!",
         rules_general: `
             <p>🎯 <b>Objetivo:</b> Adivina el código secreto de 4 dígitos únicos (0 al 9).</p>
-            <p>📝 <b>Panel touch superior:</b> Toca cualquier número para tacharlo en diagonal y llevar tu cuenta.</p>
-            <p>🟢 <b>Fácil (con pistas):</b> Muestra fichas de colores indicando si el dígito y su posición son exactos.</p>
-            <p>🟠 <b>Difícil (sin pistas):</b> Muestra únicamente la cantidad total de aciertos mediante números de colores.</p>
+            <p>📝 <b>Panel superior:</b> Toca cualquier número para tacharlo en diagonal.</p>
         `,
         rules_solo: `
             <p>🤖 <b>Modo Solitario:</b> Adivina el código generado aleatoriamente.</p>
@@ -36,8 +34,8 @@ const translations = {
         rules_same: `
             <p>📱 <b>Mismo Teléfono (2 Jugadores):</b></p>
             <p>• Configuran sus códigos secretos por turnos.</p>
-            <p>• Historiales y pistas independientes por jugador.</p>
-            <p>• Si J1 acierta, J2 tiene una última oportunidad para empatar la ronda.</p>
+            <p>• Historiales y pistas independientes.</p>
+            <p>• Si J1 adivina, J2 tiene una última oportunidad para empatar.</p>
         `,
         rules_two: `
             <p>📱📱 <b>Dos Teléfonos / Enlaces:</b> Comparte tu reto mediante enlace.</p>
@@ -67,7 +65,7 @@ const translations = {
         challenged_desc: "What would you like to do with this challenge?",
         play_only: "Just guess this challenge",
         challenge_back_option: "Accept & Challenge Back",
-        ready_btn: "Ready, I'm the player",
+        ready_btn: "Ready, let's start!",
         rules_general: `<p>🎯 <b>Goal:</b> Guess the secret 4-unique-digit code.</p>`,
         rules_solo: `<p>🤖 <b>Solo Mode:</b> Practice against a random code.</p>`,
         rules_same: `<p>📱 <b>Same Phone:</b> Alternating turns with independent histories.</p>`,
@@ -143,7 +141,6 @@ let secretCode = '';
 let attemptCount = 0;
 let challengerName = '';
 
-// Variables para "Mismo Teléfono" con turnos justos y empate
 let p1Code = '';
 let p2Code = '';
 let p1Attempts = 0;
@@ -152,7 +149,7 @@ let p1HistoryHTML = '';
 let p2HistoryHTML = '';
 let currentTurnPlayer = 1; 
 let pendingActionAfterPass = ''; 
-let samePhoneState = 'playing'; // 'playing', 'p1_guessed_waiting_p2', 'ended'
+let samePhoneState = 'playing';
 
 document.addEventListener('DOMContentLoaded', () => {
     setupNumericInputs();
@@ -278,8 +275,6 @@ function confirmSecretCode() {
         return;
     }
 
-    let nickname = document.getElementById('playerNickname').value.trim() || "Alguien";
-
     if (gameMode === 'same_phone') {
         inputs.forEach(i => i.value = '');
         if (pendingActionAfterPass === 'p1_setup') {
@@ -293,7 +288,7 @@ function confirmSecretCode() {
             showPassPhoneScreen("Jugador 1", "Comienza el duelo. Jugador 1 intenta adivinar el código del Jugador 2.");
         }
     } else if (gameMode === 'link_host' || gameMode === 'link_revenge' || gameMode === 'link_guest_reply') {
-        let payload = btoa(JSON.stringify({ c: code, d: currentDifficulty, n: nickname }));
+        let payload = btoa(JSON.stringify({ c: code, d: currentDifficulty, n: "Jugador" }));
         let shareUrl = `${window.location.origin}${window.location.pathname}#room=${payload}`;
 
         navigator.clipboard.writeText(shareUrl).then(() => {
@@ -320,8 +315,24 @@ function confirmSecretCode() {
     }
 }
 
+// PANTALLA DE TRANSICIÓN DRAMÁTICA Y TENSANTE
 function showPassPhoneScreen(playerLabel, descriptionText) {
-    document.getElementById('passPhoneTitle').innerText = `Pasa el teléfono a: ${playerLabel}`;
+    let card = document.getElementById('passCardContainer');
+    let emoji = document.getElementById('passIconEmoji');
+    let title = document.getElementById('passPhoneTitle');
+    
+    if (samePhoneState === 'p1_guessed_waiting_p2') {
+        card.className = "game-card text-center alert-card";
+        emoji.innerText = "🚨";
+        title.innerText = "¡ALERTA MÁXIMA!";
+        title.style.color = "#f59e0b";
+    } else {
+        card.className = "game-card text-center";
+        emoji.innerText = "🔄";
+        title.innerText = `Pasa el teléfono a: ${playerLabel}`;
+        title.style.color = "var(--text-main)";
+    }
+
     document.getElementById('passPhoneDesc').innerText = descriptionText;
     showScreen('passPhoneScreen');
 }
@@ -343,10 +354,10 @@ function checkUrlForSharedGame() {
             let roomData = JSON.parse(atob(encoded));
             secretCode = roomData.c; 
             currentDifficulty = roomData.d || 'easy'; 
-            challengerName = roomData.n || "Alguien";
+            challengerName = "Tu amigo";
             
             setDifficulty(currentDifficulty);
-            document.getElementById('challengerTitle').innerText = `¡${challengerName} te ha retado!`;
+            document.getElementById('challengerTitle').innerText = `¡Te han retado!`;
             showScreen('guestWelcomeScreen');
         } catch (e) {
             console.error("Reto inválido");
@@ -361,7 +372,7 @@ function startGuestPlayOnly() {
 
 function acceptAndChallengeBack() {
     gameMode = 'link_guest_reply';
-    document.getElementById('setupTitle').innerText = `Configura tu código para retar a ${challengerName}`;
+    document.getElementById('setupTitle').innerText = `Configura tu código para la revancha`;
     showScreen('setupScreen');
 }
 
@@ -372,7 +383,7 @@ function startGameSession() {
     if (gameMode === 'same_phone') {
         document.getElementById('historyContainer').innerHTML = (currentTurnPlayer === 1) ? p1HistoryHTML : p2HistoryHTML;
         let turnText = (samePhoneState === 'p1_guessed_waiting_p2') ? 
-            `¡Última oportunidad de Jugador 2 para empatar!` : 
+            `⚠️ ¡TURNO CRUCIAL: Intenta empatar! ⚠️` : 
             `Turno de: Jugador ${currentTurnPlayer}`;
         document.getElementById('turnIndicator').innerText = turnText;
     } else {
@@ -421,7 +432,6 @@ function submitGuess() {
     } else {
         if (gameMode === 'same_phone') {
             if (samePhoneState === 'p1_guessed_waiting_p2') {
-                // J2 falló su oportunidad de empate -> Gana J1
                 showSamePhoneWinner(1);
             } else {
                 currentTurnPlayer = (currentTurnPlayer === 1) ? 2 : 1;
@@ -435,24 +445,20 @@ function submitGuess() {
 function handleVictory(activeTargetCode) {
     if (gameMode === 'same_phone') {
         if (currentTurnPlayer === 1 && samePhoneState === 'playing') {
-            // J1 adivina, pero damos oportunidad a J2 de empatar
             samePhoneState = 'p1_guessed_waiting_p2';
             currentTurnPlayer = 2;
             pendingActionAfterPass = 'p2_final_chance';
-            showPassPhoneScreen("Jugador 2", `¡Jugador 1 ha descifrado el código en ${p1Attempts} intentos! Jugador 2, esta es tu última oportunidad para adivinar y empatar la ronda.`);
+            showPassPhoneScreen("Jugador 2", `¡EL JUGADOR 1 HA DESCIFRADO EL CÓDIGO! Jugador 2, tienes una última oportunidad para adivinar y empatar la partida.`);
             return;
         } else if (currentTurnPlayer === 2 && samePhoneState === 'p1_guessed_waiting_p2') {
-            // J2 también adivina en su turno extra -> ¡EMPATE!
             showSamePhoneDraw();
             return;
         } else {
-            // J2 adivina en su turno normal
             showSamePhoneWinner(2);
             return;
         }
     }
 
-    // Modo Solitario o Enlace
     document.getElementById('victoryBadgeLabel').innerText = "VICTORIA";
     document.getElementById('winTitleText').innerText = "¡CÓDIGO DESCIFRADO!";
     document.getElementById('codeLabelText').innerText = "EL CÓDIGO ERA:";
