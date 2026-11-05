@@ -5,18 +5,26 @@ const translations = {
         mode_solo: "🤖 Jugar contra la IA",
         mode_same: "📱 Mismo Teléfono (Turnos)",
         mode_two: "📱📱 Dos Teléfonos (Presencial)",
-        mode_share: "🌐 Crear Desafío por Enlace",
+        mode_share: "🌐 Crear Sala de Desafío (Enlace)",
         confirm: "Confirmar y Jugar",
         back: "Volver al menú",
         exit: "Salir",
         guess_btn: "Probar Código",
         discard_title: "Panel de descarte (toca para descartar números):",
-        play_again: "Jugar de nuevo",
+        play_again: "Volver a jugar",
+        back_menu: "Menú Principal",
         rules_title: "¿Cómo jugar?",
         rules_close: "¡Entendido, a jugar!",
         win_title: "¡Código Descifrado!",
         win_desc: "Has encontrado la combinación secreta con éxito.",
         difficulty_label: "Selecciona el modo de dificultad:",
+        challenged_title: "¡Alguien te ha retado!",
+        challenged_desc: "Prepárate para un duelo de lógica y descubre si puedes descifrar el código secreto.",
+        accept_challenge: "Aceptar el reto y jugar",
+        waiting_title: "Sala creada con éxito",
+        waiting_desc: "El enlace ha sido copiado al portapapeles. Envíaselo a tu rival y espera a que abra la sala para comenzar.",
+        copy_link_again: "Copiar enlace de nuevo",
+        cancel: "Cancelar y salir",
         rules_text: `
             <p>🎯 <b>Objetivo:</b> Adivina el código secreto de 4 dígitos únicos.</p>
             <p>📝 <b>Panel de descarte:</b> Toca los números abajo para tachar y ayudarte con la deducción.</p>
@@ -30,18 +38,26 @@ const translations = {
         mode_solo: "🤖 Play vs AI",
         mode_same: "📱 Same Phone (Turns)",
         mode_two: "📱📱 Two Phones (Local)",
-        mode_share: "🌐 Create Link Challenge",
+        mode_share: "🌐 Create Challenge Room (Link)",
         confirm: "Confirm & Play",
         back: "Back to Menu",
         exit: "Exit",
         guess_btn: "Test Code",
         discard_title: "Discard panel (tap to cross out numbers):",
         play_again: "Play Again",
+        back_menu: "Main Menu",
         rules_title: "How to Play",
         rules_close: "Got it, let's play!",
         win_title: "Code Cracked!",
         win_desc: "You successfully found the secret combination.",
         difficulty_label: "Select difficulty mode:",
+        challenged_title: "You've been challenged!",
+        challenged_desc: "Get ready for a logic duel and see if you can crack the secret code.",
+        accept_challenge: "Accept challenge & play",
+        waiting_title: "Room Created Successfully",
+        waiting_desc: "The link has been copied to your clipboard. Send it to your rival and wait for them to open the room.",
+        copy_link_again: "Copy link again",
+        cancel: "Cancel & Exit",
         rules_text: `
             <p>🎯 <b>Goal:</b> Guess the secret 4-unique-digit code.</p>
             <p>📝 <b>Discard Panel:</b> Tap numbers below to cross them out and aid logic.</p>
@@ -55,18 +71,26 @@ const translations = {
         mode_solo: "🤖 AI対戦",
         mode_same: "📱 同じスマホでプレイ",
         mode_two: "📱📱 2台のスマホでプレイ",
-        mode_share: "🌐 挑戦状を作成",
+        mode_share: "🌐 挑戦ルームを作成 (リンク)",
         confirm: "確認してスタート",
         back: "メニューに戻る",
         exit: "終了",
         guess_btn: "コードを試す",
         discard_title: "除外パネル（タップして消去）：",
         play_again: "もう一度プレイ",
+        back_menu: "メインメニュー",
         rules_title: "遊び方",
         rules_close: "了解、ゲーム開始！",
         win_title: "暗号解読成功！",
         win_desc: "見事に秘密のコードを見つけ出しました。",
         difficulty_label: "難易度を選択:",
+        challenged_title: "挑戦状が届きました！",
+        challenged_desc: "論理のデュuelの準備をして、暗号を解読しよう。",
+        accept_challenge: "挑戦を受けてプレイ",
+        waiting_title: "ルーム作成完了",
+        waiting_desc: "リンクがコピーされました。ライバルに送信して、ルームが開かれるのを待ちましょう。",
+        copy_link_again: "リンクをもう一度コピー",
+        cancel: "キャンセル",
         rules_text: `
             <p>🎯 <b>目的:</b> 4桁の重複しない暗号コードを解読せよ。</p>
             <p>📝 <b>除外パネル:</b> 数字をタップして推理の助けにしよう。</p>
@@ -80,18 +104,26 @@ const translations = {
         mode_solo: "🤖 人机对战",
         mode_same: "📱 同机轮流玩",
         mode_two: "📱📱 双机面对面",
-        mode_share: "🌐 生成分享链接",
+        mode_share: "🌐 创建挑战房间 (链接)",
         confirm: "确认并开始",
         back: "返回菜单",
         exit: "退出",
         guess_btn: "提交猜测",
         discard_title: "排除面板（点击划掉数字）：",
         play_again: "再玩一次",
+        back_menu: "主菜单",
         rules_title: "游戏规则",
         rules_close: "明白，开始游戏！",
         win_title: "密码破译成功！",
         win_desc: "你已成功找出了秘密组合。",
         difficulty_label: "选择难度模式:",
+        challenged_title: "你收到了挑战！",
+        challenged_desc: "准备好进行逻辑对决，看看你能否破解秘密密码。",
+        accept_challenge: "接受挑战并开始",
+        waiting_title: "房间创建成功",
+        waiting_desc: "链接已复制到剪贴板。发送给你的对手，等待对方打开房间。",
+        copy_link_again: "再次复制链接",
+        cancel: "取消并退出",
         rules_text: `
             <p>🎯 <b>目标:</b> 猜出由4个不重复数字组成的秘密密码。</p>
             <p>📝 <b>排除面板:</b> 点击下方数字来辅助排除逻辑。</p>
@@ -102,8 +134,11 @@ const translations = {
 };
 
 let currentLang = 'es';
-let currentDifficulty = 'easy'; // 'easy' o 'hard'
+let currentDifficulty = 'easy';
 let secretCode = '';
+let gameMode = 'solo';
+let hostCode = '';
+let lastGeneratedUrl = '';
 
 document.addEventListener('DOMContentLoaded', () => {
     setupNumericInputs();
@@ -158,10 +193,12 @@ function setDifficulty(diff) {
 }
 
 function setGameMode(mode) {
+    gameMode = mode;
     if (mode === 'solo') {
         secretCode = generateRandomCode();
         startGameSession();
     } else {
+        document.getElementById('setupTitle').innerText = "Configura tu código secreto";
         showScreen('setupScreen');
     }
 }
@@ -172,6 +209,13 @@ function generateRandomCode() {
     return digits.slice(0, 4).join('');
 }
 
+// INICIAR CREACIÓN DE SALA (HOST)
+function startHostLobby() {
+    gameMode = 'link_host';
+    document.getElementById('setupTitle').innerText = "Paso 1: Tu código secreto para la sala";
+    showScreen('setupScreen');
+}
+
 function confirmSecretCode() {
     const inputs = document.querySelectorAll('#setupInputs input');
     let code = Array.from(inputs).map(i => i.value).join('');
@@ -179,9 +223,58 @@ function confirmSecretCode() {
         alert("Introduce 4 dígitos únicos.");
         return;
     }
-    secretCode = code;
-    inputs.forEach(i => i.value = '');
-    startGameSession();
+
+    if (gameMode === 'link_host') {
+        hostCode = code;
+        inputs.forEach(i => i.value = '');
+        
+        let payload = btoa(JSON.stringify({ c: hostCode, d: currentDifficulty }));
+        lastGeneratedUrl = `${window.location.origin}${window.location.pathname}#room=${payload}`;
+
+        navigator.clipboard.writeText(lastGeneratedUrl).then(() => {
+            showScreen('waitingScreen');
+        }).catch(() => {
+            prompt("Copia tu enlace de sala:", lastGeneratedUrl);
+            showScreen('waitingScreen');
+        });
+    } else if (gameMode === 'link_guest') {
+        inputs.forEach(i => i.value = '');
+        startGameSession();
+    } else {
+        secretCode = code;
+        inputs.forEach(i => i.value = '');
+        startGameSession();
+    }
+}
+
+function copyShareLinkAgain() {
+    navigator.clipboard.writeText(lastGeneratedUrl).then(() => {
+        alert("¡Enlace copiado de nuevo al portapapeles!");
+    });
+}
+
+// LEER SALA SI ENTRA UN INVITADO
+function checkUrlForSharedGame() {
+    const hash = window.location.hash;
+    if (hash.includes('#room=')) {
+        try {
+            let encoded = hash.split('#room=')[1];
+            let roomData = JSON.parse(atob(encoded));
+            secretCode = roomData.c; 
+            currentDifficulty = roomData.d || 'easy'; 
+            setDifficulty(currentDifficulty);
+
+            gameMode = 'link_guest';
+            showScreen('guestWelcomeScreen');
+        } catch (e) {
+            console.error("Sala inválida");
+        }
+    }
+}
+
+function acceptChallenge() {
+    document.getElementById('setupTitle').innerText = "Configura tu código para el retador";
+    showScreen('setupScreen');
 }
 
 function startGameSession() {
@@ -189,7 +282,6 @@ function startGameSession() {
     showScreen('gameScreen');
 }
 
-// PROCESAR INTENTO SEGÚN DIFICULTAD
 function submitGuess() {
     const inputs = document.querySelectorAll('#currentAttemptInputs input');
     let guess = Array.from(inputs).map(i => i.value).join('');
@@ -214,7 +306,6 @@ function submitGuess() {
     }
 }
 
-// MODO FÁCIL (ESTILO WORDLE)
 function appendHistoryEasyRow(guess) {
     const container = document.getElementById('historyContainer');
     const row = document.createElement('div');
@@ -235,7 +326,6 @@ function appendHistoryEasyRow(guess) {
     container.prepend(row);
 }
 
-// MODO DIFÍCIT (PISTAS CLÁSICAS)
 function appendHistoryHardRow(guess) {
     let green = 0;
     let orange = 0;
@@ -261,7 +351,6 @@ function appendHistoryHardRow(guess) {
     container.prepend(row);
 }
 
-// PANEL DE DESCARTE (TOCA -> VERDE BRILLANTE -> TACHADO)
 function buildDiscardBoard() {
     const board = document.getElementById('numberPills');
     board.innerHTML = '';
@@ -277,35 +366,12 @@ function buildDiscardBoard() {
     }
 }
 
-// PRIMER AVANCE: GENERAR ENLACE ENCRIPTADO PARA COMPARTIR
-function generateShareLink() {
-    let code = generateRandomCode();
-    // Encriptamos en Base64 simple para el enlace
-    let encodedCode = btoa(code);
-    let shareUrl = `${window.location.origin}${window.location.pathname}#code=${encodedCode}`;
-
-    navigator.clipboard.writeText(shareUrl).then(() => {
-        alert(`¡Enlace de desafío generado y copiado al portapapeles!\n\nEnvíaselo a tu novia o compártelo en TikTok. Código secreto integrado de forma oculta.`);
-    }).catch(() => {
-        prompt("Copia este enlace para retar a alguien:", shareUrl);
-    });
-}
-
-// LEER ENLACE SI ALGUIEN ENTRA CON UN RETO
-function checkUrlForSharedGame() {
-    const hash = window.location.hash;
-    if (hash.includes('#code=')) {
-        try {
-            let encoded = hash.split('#code=')[1];
-            secretCode = atob(encoded);
-            if (secretCode.length === 4) {
-                alert("¡Te han enviado un desafío secreto! Adivina el código.");
-                startGameSession();
-            }
-        } catch (e) {
-            console.error("Enlace inválido");
-        }
+function restartGame() {
+    document.getElementById('winModal').classList.remove('active');
+    if (gameMode === 'solo') {
+        secretCode = generateRandomCode();
     }
+    startGameSession();
 }
 
 function openRulesModal() {
@@ -326,6 +392,6 @@ function showScreen(id) {
 function goHome() {
     document.getElementById('winModal').classList.remove('active');
     document.getElementById('floatingHelpBtn').classList.remove('visible');
-    window.location.hash = ''; // Limpiar enlace
+    window.location.hash = '';
     showScreen('mainMenu');
 }
