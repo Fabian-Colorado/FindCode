@@ -10,17 +10,18 @@ const translations = {
         back: "Volver al menú",
         exit: "Salir",
         guess_btn: "Probar Código",
-        discard_title: "Panel de descarte (toca para tachar):",
+        discard_title: "Panel de descarte (toca para descartar números):",
         play_again: "Jugar de nuevo",
         rules_title: "¿Cómo jugar?",
         rules_close: "¡Entendido, a jugar!",
         win_title: "¡Código Descifrado!",
         win_desc: "Has encontrado la combinación secreta con éxito.",
+        difficulty_label: "Selecciona el modo de dificultad:",
         rules_text: `
             <p>🎯 <b>Objetivo:</b> Adivina el código secreto de 4 dígitos únicos.</p>
-            <p>🟩 <b>Verde:</b> Dígito correcto en la posición exacta.</p>
-            <p>🟧 <b>Naranja:</b> Dígito correcto pero en posición incorrecta.</p>
-            <p>⬜ <b>Gris:</b> El dígito no forma parte del código.</p>
+            <p>📝 <b>Panel de descarte:</b> Toca los números abajo para tachar y ayudarte con la deducción.</p>
+            <p>🟢 <b>Modo Fácil:</b> Casillas coloreadas por dígito estilo Wordle.</p>
+            <p>🟠 <b>Modo Difícil:</b> Pistas numéricas clásicas (cuántos acertaste en total sin decirte cuál).</p>
         `
     },
     en: {
@@ -34,17 +35,18 @@ const translations = {
         back: "Back to Menu",
         exit: "Exit",
         guess_btn: "Test Code",
-        discard_title: "Discard panel (tap to cross out):",
+        discard_title: "Discard panel (tap to cross out numbers):",
         play_again: "Play Again",
         rules_title: "How to Play",
         rules_close: "Got it, let's play!",
         win_title: "Code Cracked!",
         win_desc: "You successfully found the secret combination.",
+        difficulty_label: "Select difficulty mode:",
         rules_text: `
             <p>🎯 <b>Goal:</b> Guess the secret 4-unique-digit code.</p>
-            <p>🟩 <b>Green:</b> Correct digit in the correct position.</p>
-            <p>🟧 <b>Orange:</b> Correct digit, wrong position.</p>
-            <p>⬜ <b>Gray:</b> Digit is not in the code.</p>
+            <p>📝 <b>Discard Panel:</b> Tap numbers below to cross them out and aid logic.</p>
+            <p>🟢 <b>Easy Mode:</b> Wordle-style colored tiles per digit.</p>
+            <p>🟠 <b>Hard Mode:</b> Classic numeric clues (totals only).</p>
         `
     },
     ja: {
@@ -64,11 +66,12 @@ const translations = {
         rules_close: "了解、ゲーム開始！",
         win_title: "暗号解読成功！",
         win_desc: "見事に秘密のコードを見つけ出しました。",
+        difficulty_label: "難易度を選択:",
         rules_text: `
             <p>🎯 <b>目的:</b> 4桁の重複しない暗号コードを解読せよ。</p>
-            <p>🟩 <b>緑色:</b> 数字も位置も合っている。</p>
-            <p>🟧 <b>オレンジ:</b> 数字は合っているが位置が違う。</p>
-            <p>⬜ <b>灰色:</b> コードに含まれていない。</p>
+            <p>📝 <b>除外パネル:</b> 数字をタップして推理の助けにしよう。</p>
+            <p>🟢 <b>簡単モード:</b> ワードル風の色付きタイル表示。</p>
+            <p>🟠 <b>難しいモード:</b> 位置を教えないクラシックなヒント。</p>
         `
     },
     zh: {
@@ -88,22 +91,25 @@ const translations = {
         rules_close: "明白，开始游戏！",
         win_title: "密码破译成功！",
         win_desc: "你已成功找出了秘密组合。",
+        difficulty_label: "选择难度模式:",
         rules_text: `
             <p>🎯 <b>目标:</b> 猜出由4个不重复数字组成的秘密密码。</p>
-            <p>🟩 <b>绿色:</b> 数字和位置完全正确。</p>
-            <p>🟧 <b>橙色:</b> 数字正确但位置错误。</p>
-            <p>⬜ <b>灰色:</b> 密码中不包含该数字。</p>
+            <p>📝 <b>排除面板:</b> 点击下方数字来辅助排除逻辑。</p>
+            <p>🟢 <b>简单模式:</b> 类似Wordle的逐字颜色提示。</p>
+            <p>🟠 <b>困难模式:</b> 经典总数提示（不指定位置）。</p>
         `
     }
 };
 
 let currentLang = 'es';
+let currentDifficulty = 'easy'; // 'easy' o 'hard'
 let secretCode = '';
 
 document.addEventListener('DOMContentLoaded', () => {
     setupNumericInputs();
     buildDiscardBoard();
-    changeLanguage('es'); // Inicia con textos en español y abre el modal de reglas por defecto
+    changeLanguage('es');
+    checkUrlForSharedGame();
 });
 
 function setupNumericInputs() {
@@ -145,6 +151,12 @@ function changeLanguage(lang) {
     document.getElementById('rulesBody').innerHTML = translations[lang].rules_text;
 }
 
+function setDifficulty(diff) {
+    currentDifficulty = diff;
+    document.getElementById('diffEasy').classList.toggle('active', diff === 'easy');
+    document.getElementById('diffHard').classList.toggle('active', diff === 'hard');
+}
+
 function setGameMode(mode) {
     if (mode === 'solo') {
         secretCode = generateRandomCode();
@@ -177,6 +189,7 @@ function startGameSession() {
     showScreen('gameScreen');
 }
 
+// PROCESAR INTENTO SEGÚN DIFICULTAD
 function submitGuess() {
     const inputs = document.querySelectorAll('#currentAttemptInputs input');
     let guess = Array.from(inputs).map(i => i.value).join('');
@@ -186,7 +199,12 @@ function submitGuess() {
         return;
     }
 
-    appendHistoryWordleRow(guess);
+    if (currentDifficulty === 'easy') {
+        appendHistoryEasyRow(guess);
+    } else {
+        appendHistoryHardRow(guess);
+    }
+
     inputs.forEach(i => i.value = '');
     inputs[0].focus();
 
@@ -196,10 +214,11 @@ function submitGuess() {
     }
 }
 
-function appendHistoryWordleRow(guess) {
+// MODO FÁCIL (ESTILO WORDLE)
+function appendHistoryEasyRow(guess) {
     const container = document.getElementById('historyContainer');
     const row = document.createElement('div');
-    row.className = 'history-row';
+    row.className = 'history-row wordle-row';
 
     for (let i = 0; i < 4; i++) {
         const tile = document.createElement('div');
@@ -216,6 +235,33 @@ function appendHistoryWordleRow(guess) {
     container.prepend(row);
 }
 
+// MODO DIFÍCIT (PISTAS CLÁSICAS)
+function appendHistoryHardRow(guess) {
+    let green = 0;
+    let orange = 0;
+
+    for (let i = 0; i < 4; i++) {
+        if (guess[i] === secretCode[i]) {
+            green++;
+        } else if (secretCode.includes(guess[i])) {
+            orange++;
+        }
+    }
+
+    const container = document.getElementById('historyContainer');
+    const row = document.createElement('div');
+    row.className = 'history-row';
+    row.innerHTML = `
+        <span class="history-code">${guess}</span>
+        <div class="feedback-badges">
+            <span class="badge green">🟩 ${green}</span>
+            <span class="badge orange">🟧 ${orange}</span>
+        </div>
+    `;
+    container.prepend(row);
+}
+
+// PANEL DE DESCARTE (TOCA -> VERDE BRILLANTE -> TACHADO)
 function buildDiscardBoard() {
     const board = document.getElementById('numberPills');
     board.innerHTML = '';
@@ -228,6 +274,37 @@ function buildDiscardBoard() {
             pill.classList.toggle('discarded');
         };
         board.appendChild(pill);
+    }
+}
+
+// PRIMER AVANCE: GENERAR ENLACE ENCRIPTADO PARA COMPARTIR
+function generateShareLink() {
+    let code = generateRandomCode();
+    // Encriptamos en Base64 simple para el enlace
+    let encodedCode = btoa(code);
+    let shareUrl = `${window.location.origin}${window.location.pathname}#code=${encodedCode}`;
+
+    navigator.clipboard.writeText(shareUrl).then(() => {
+        alert(`¡Enlace de desafío generado y copiado al portapapeles!\n\nEnvíaselo a tu novia o compártelo en TikTok. Código secreto integrado de forma oculta.`);
+    }).catch(() => {
+        prompt("Copia este enlace para retar a alguien:", shareUrl);
+    });
+}
+
+// LEER ENLACE SI ALGUIEN ENTRA CON UN RETO
+function checkUrlForSharedGame() {
+    const hash = window.location.hash;
+    if (hash.includes('#code=')) {
+        try {
+            let encoded = hash.split('#code=')[1];
+            secretCode = atob(encoded);
+            if (secretCode.length === 4) {
+                alert("¡Te han enviado un desafío secreto! Adivina el código.");
+                startGameSession();
+            }
+        } catch (e) {
+            console.error("Enlace inválido");
+        }
     }
 }
 
@@ -249,9 +326,6 @@ function showScreen(id) {
 function goHome() {
     document.getElementById('winModal').classList.remove('active');
     document.getElementById('floatingHelpBtn').classList.remove('visible');
+    window.location.hash = ''; // Limpiar enlace
     showScreen('mainMenu');
-}
-
-function openShareModal() {
-    alert("Próximamente: Enlace de desafío generado y copiado al portapapeles para enviar por WhatsApp o TikTok.");
 }
