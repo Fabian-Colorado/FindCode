@@ -40,8 +40,8 @@
                 <p id="mainSubtitle" data-i18n="subtitle">Un juego de lógica, deducción y estrategia para descifrar el código.</p>
                 
                 <div class="menu-buttons">
-                    <button class="btn primary glow" onclick="setGameMode('solo')" data-i18n="mode_solo">🤖 Jugar contra la IA</button>
-                    <button class="btn secondary" onclick="setGameMode('same_phone')" data-i18n="mode_same">📱 Mismo Teléfono (Turnos)</button>
+                    <button class="btn primary glow" onclick="setGameMode('solo')" data-i18n="mode_solo">🤖 Jugar en solitario</button>
+                    <button class="btn secondary" onclick="setGameMode('same_phone')" data-i18n="mode_same">📱 Mismo Teléfono (2 Jugadores)</button>
                     <button class="btn secondary" onclick="setGameMode('two_phones')" data-i18n="mode_two">📱📱 Dos Teléfonos (Presencial)</button>
                     <button class="btn accent" onclick="startHostLobby()" data-i18n="mode_share">🌐 Crear Reto por Enlace</button>
                 </div>
@@ -57,12 +57,22 @@
             </div>
         </section>
 
-        <!-- PANTALLA DE INVITADO: OPCIONES CLARAS (SIN BUCLE OBLIGATORIO) -->
+        <!-- PANTALLA DE TRANSICIÓN: PASAR EL TELÉFONO -->
+        <section id="passPhoneScreen" class="screen">
+            <div class="game-card text-center">
+                <span class="win-icon">🔄</span>
+                <h2 id="passPhoneTitle">Pasa el teléfono</h2>
+                <p id="passPhoneDesc">Entrega el dispositivo al siguiente jugador de forma secreta.</p>
+                <button class="btn primary glow full-width" onclick="confirmPassPhone()" data-i18n="ready_btn">Listo, soy el jugador</button>
+            </div>
+        </section>
+
+        <!-- PANTALLA DE INVITADO: OPCIONES DE ENLACE -->
         <section id="guestWelcomeScreen" class="screen">
             <div class="game-card text-center">
                 <span class="win-icon">⚔️</span>
                 <h2 id="challengerTitle">¡Te han retado!</h2>
-                <p id="challengedDesc" data-i18n="challenged_desc">¿Qué deseas hacer?</p>
+                <p id="challengedDesc" data-i18n="challenged_desc">¿Qué deseas hacer con este reto?</p>
                 
                 <div class="menu-buttons full-width">
                     <button class="btn primary glow full-width" onclick="startGuestPlayOnly()" data-i18n="play_only">Solo adivinar este reto</button>
@@ -98,6 +108,12 @@
                 <button class="btn small text-btn" onclick="goHome()" data-i18n="exit">Salir</button>
             </div>
 
+            <!-- PANEL DE DESCARTE ARRIBA (VISIBLE SOBRE EL TECLADO) -->
+            <div class="discard-board-top">
+                <p data-i18n="discard_title">Descarte:</p>
+                <div class="number-pills" id="numberPills"></div>
+            </div>
+
             <!-- HISTORIAL DE INTENTOS -->
             <div class="history-container" id="historyContainer"></div>
 
@@ -110,12 +126,6 @@
                     <input type="text" maxlength="1" class="digit-box guess-box numeric-only" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
                 </div>
                 <button class="btn primary full-width" onclick="submitGuess()" data-i18n="guess_btn">Probar Código</button>
-            </div>
-
-            <!-- PANEL DE DESCARTE -->
-            <div class="discard-board">
-                <p data-i18n="discard_title">Panel de descarte (toca para descartar números):</p>
-                <div class="number-pills" id="numberPills"></div>
             </div>
         </section>
     </div>
@@ -135,7 +145,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE VICTORIA REDISEÑADO -->
+    <!-- MODAL DE VICTORIA -->
     <div id="winModal" class="modal">
         <div class="modal-content text-center win-card">
             <div class="victory-header">
