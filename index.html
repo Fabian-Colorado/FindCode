@@ -84,17 +84,17 @@
             </div>
         </section>
 
-        <!-- PANTALLA CONFIGURAR CODIGO -->
+        <!-- PANTALLA CONFIGURAR CODIGO (SIN AUTOCOMPLETADO DE CONTRASEÑAS) -->
         <section id="setupScreen" class="screen">
             <div class="game-card">
                 <h2 id="setupTitle">Configura tu código secreto</h2>
                 <p id="setupDesc">Introduce un código de 4 dígitos únicos (0-9).</p>
                 
                 <div class="code-inputs" id="setupInputs">
-                    <input type="password" maxlength="1" class="digit-box numeric-only" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
-                    <input type="password" maxlength="1" class="digit-box numeric-only" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
-                    <input type="password" maxlength="1" class="digit-box numeric-only" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
-                    <input type="password" maxlength="1" class="digit-box numeric-only" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box numeric-only" autocomplete="off" />
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box numeric-only" autocomplete="off" />
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box numeric-only" autocomplete="off" />
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box numeric-only" autocomplete="off" />
                 </div>
                 
                 <button class="btn primary" onclick="confirmSecretCode()" data-i18n="confirm">Confirmar y Jugar</button>
@@ -109,36 +109,30 @@
                 <button class="btn small text-btn" onclick="goHome()" data-i18n="exit">Salir</button>
             </div>
 
+            <!-- PANEL FLOTANTE TOUCH DE DESCARTE (SIEMPRE VISIBLE) -->
+            <div class="touch-discard-panel">
+                <span class="discard-title-mini">Descarte:</span>
+                <div class="number-pills" id="numberPills"></div>
+            </div>
+
             <!-- HISTORIAL DE INTENTOS -->
             <div class="history-container" id="historyContainer"></div>
 
-            <!-- ENTRADA DE INTENTO ACTUAL -->
+            <!-- ENTRADA DE INTENTO ACTUAL (SIN AUTOCOMPLETADO) -->
             <div class="game-card-action">
                 <div class="current-attempt" id="currentAttemptInputs">
-                    <input type="text" maxlength="1" class="digit-box guess-box numeric-only" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
-                    <input type="text" maxlength="1" class="digit-box guess-box numeric-only" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
-                    <input type="text" maxlength="1" class="digit-box guess-box numeric-only" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
-                    <input type="text" maxlength="1" class="digit-box guess-box numeric-only" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" />
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" />
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" />
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" />
                 </div>
                 <button class="btn primary full-width" onclick="submitGuess()" data-i18n="guess_btn">Probar Código</button>
             </div>
         </section>
     </div>
 
-    <!-- BOTONES FLOTANTES (AYUDA Y PANEL DE DESCARTE RÁPIDO) -->
+    <!-- BOTON FLOTANTE DE REGLAS -->
     <button id="floatingHelpBtn" class="floating-btn visible" onclick="openRulesModal()" title="Ayuda">❓</button>
-    <button id="floatingDiscardBtn" class="floating-discard-btn" onclick="toggleDiscardModal()" title="Panel de Descarte">📝</button>
-
-    <!-- MODAL FLOTANTE DE DESCARTE (SIEMPRE ACCESIBLE SOBRE EL TECLADO) -->
-    <div id="discardModal" class="modal-discard">
-        <div class="modal-discard-content">
-            <div class="discard-header">
-                <span data-i18n="discard_title">Panel de descarte:</span>
-                <button class="btn small text-btn" onclick="toggleDiscardModal()">✕</button>
-            </div>
-            <div class="number-pills" id="numberPills"></div>
-        </div>
-    </div>
 
     <!-- MODAL DE INSTRUCCIONES -->
     <div id="rulesModal" class="modal">
@@ -152,22 +146,22 @@
         </div>
     </div>
 
-    <!-- MODAL DE VICTORIA -->
+    <!-- MODAL DE VICTORIA REDISEÑADO PARA COMPARTIR Y CAPTURAS -->
     <div id="winModal" class="modal">
         <div class="modal-content text-center win-card">
             <div class="victory-header">
-                <span class="victory-badge">VICTORIA</span>
-                <h2 data-i18n="win_title">¡CÓDIGO DESCIFRADO!</h2>
+                <span class="victory-badge" id="victoryBadgeLabel">VICTORIA</span>
+                <h2 id="winTitleText" data-i18n="win_title">¡CÓDIGO DESCIFRADO!</h2>
             </div>
             
-            <div class="victory-code-display">
-                <span class="code-label">EL CÓDIGO ERA:</span>
+            <div class="victory-code-display" id="victoryCodesContainer">
+                <span class="code-label" id="codeLabelText">EL CÓDIGO ERA:</span>
                 <div class="big-code-digits" id="victoryCodeDisplay">0 0 0 0</div>
             </div>
 
             <div class="victory-stats">
                 <span class="stat-number" id="victoryAttempts">0</span>
-                <span class="stat-label">INTENTOS REALIZADOS</span>
+                <span class="stat-label" id="victoryAttemptsLabel">INTENTOS REALIZADOS</span>
             </div>
 
             <div class="modal-actions">
