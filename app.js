@@ -1,7 +1,7 @@
 const translations = {
     es: {
         appName: "Find Code",
-        subtitle: "Un juego de lógica, deducción y estrategia.",
+        subtitle: "Un juego de lógica, deducción y estrategia para descifrar el código.",
         mode_solo: "🤖 Jugar contra la IA",
         mode_same: "📱 Mismo Teléfono (Turnos)",
         mode_two: "📱📱 Dos Teléfonos (Presencial)",
@@ -12,18 +12,20 @@ const translations = {
         guess_btn: "Probar Código",
         discard_title: "Panel de descarte (toca para tachar):",
         play_again: "Jugar de nuevo",
-        rules_title: "¿Cómo jugar a Find Code?",
-        rules_close: "¡Entendido!",
+        rules_title: "¿Cómo jugar?",
+        rules_close: "¡Entendido, a jugar!",
+        win_title: "¡Código Descifrado!",
+        win_desc: "Has encontrado la combinación secreta con éxito.",
         rules_text: `
-            <p>🎯 <b>Objetivo:</b> Adivinar el código secreto de 4 dígitos únicos.</p>
-            <p>🟩 <b>Verde:</b> El número existe y está en la posición correcta.</p>
-            <p>🟧 <b>Naranja:</b> El número existe pero está en la posición incorrecta.</p>
-            <p>⬜ <b>Gris:</b> El número no forma parte del código.</p>
+            <p>🎯 <b>Objetivo:</b> Adivina el código secreto de 4 dígitos únicos.</p>
+            <p>🟩 <b>Verde:</b> Dígito correcto en la posición exacta.</p>
+            <p>🟧 <b>Naranja:</b> Dígito correcto pero en posición incorrecta.</p>
+            <p>⬜ <b>Gris:</b> El dígito no forma parte del código.</p>
         `
     },
     en: {
         appName: "Find Code",
-        subtitle: "A game of logic, deduction, and strategy.",
+        subtitle: "A logic, deduction, and strategy game to crack the code.",
         mode_solo: "🤖 Play vs AI",
         mode_same: "📱 Same Phone (Turns)",
         mode_two: "📱📱 Two Phones (Local)",
@@ -34,18 +36,20 @@ const translations = {
         guess_btn: "Test Code",
         discard_title: "Discard panel (tap to cross out):",
         play_again: "Play Again",
-        rules_title: "How to play Find Code?",
-        rules_close: "Got it!",
+        rules_title: "How to Play",
+        rules_close: "Got it, let's play!",
+        win_title: "Code Cracked!",
+        win_desc: "You successfully found the secret combination.",
         rules_text: `
             <p>🎯 <b>Goal:</b> Guess the secret 4-unique-digit code.</p>
             <p>🟩 <b>Green:</b> Correct digit in the correct position.</p>
-            <p>🟧 <b>Orange:</b> Correct digit, but wrong position.</p>
+            <p>🟧 <b>Orange:</b> Correct digit, wrong position.</p>
             <p>⬜ <b>Gray:</b> Digit is not in the code.</p>
         `
     },
     ja: {
-        appName: "ファインドコード",
-        subtitle: "論理と推論のパズルゲーム。",
+        appName: "Find Code",
+        subtitle: "暗号を解読する論理と推論のパズルゲーム。",
         mode_solo: "🤖 AI対戦",
         mode_same: "📱 同じスマホでプレイ",
         mode_two: "📱📱 2台のスマホでプレイ",
@@ -56,8 +60,10 @@ const translations = {
         guess_btn: "コードを試す",
         discard_title: "除外パネル（タップして消去）：",
         play_again: "もう一度プレイ",
-        rules_title: "ルール説明",
-        rules_close: "了解！",
+        rules_title: "遊び方",
+        rules_close: "了解、ゲーム開始！",
+        win_title: "暗号解読成功！",
+        win_desc: "見事に秘密のコードを見つけ出しました。",
         rules_text: `
             <p>🎯 <b>目的:</b> 4桁の重複しない暗号コードを解読せよ。</p>
             <p>🟩 <b>緑色:</b> 数字も位置も合っている。</p>
@@ -66,8 +72,8 @@ const translations = {
         `
     },
     zh: {
-        appName: "密码解客 (Find Code)",
-        subtitle: "逻辑、推理与策略的益智游戏。",
+        appName: "Find Code",
+        subtitle: "充满逻辑、推理与策略的密码破译游戏。",
         mode_solo: "🤖 人机对战",
         mode_same: "📱 同机轮流玩",
         mode_two: "📱📱 双机面对面",
@@ -79,7 +85,9 @@ const translations = {
         discard_title: "排除面板（点击划掉数字）：",
         play_again: "再玩一次",
         rules_title: "游戏规则",
-        rules_close: "明白！",
+        rules_close: "明白，开始游戏！",
+        win_title: "密码破译成功！",
+        win_desc: "你已成功找出了秘密组合。",
         rules_text: `
             <p>🎯 <b>目标:</b> 猜出由4个不重复数字组成的秘密密码。</p>
             <p>🟩 <b>绿色:</b> 数字和位置完全正确。</p>
@@ -95,15 +103,13 @@ let secretCode = '';
 document.addEventListener('DOMContentLoaded', () => {
     setupNumericInputs();
     buildDiscardBoard();
+    changeLanguage('es'); // Inicia con textos en español y abre el modal de reglas por defecto
 });
 
-// RESTRICTION: SOLO DIGITOS (0-9)
 function setupNumericInputs() {
     document.querySelectorAll('.numeric-only').forEach(input => {
         input.addEventListener('beforeinput', (e) => {
-            if (e.data && !/^[0-9]$/.test(e.data)) {
-                e.preventDefault();
-            }
+            if (e.data && !/^[0-9]$/.test(e.data)) e.preventDefault();
         });
         input.addEventListener('input', (e) => {
             e.target.value = e.target.value.replace(/[^0-9]/g, '');
@@ -140,7 +146,6 @@ function changeLanguage(lang) {
 }
 
 function setGameMode(mode) {
-    openRulesModal();
     if (mode === 'solo') {
         secretCode = generateRandomCode();
         startGameSession();
@@ -172,7 +177,6 @@ function startGameSession() {
     showScreen('gameScreen');
 }
 
-// EVALUACIÓN ESTILO WORDLE (DIGITO POR DIGITO CON COLOR)
 function submitGuess() {
     const inputs = document.querySelectorAll('#currentAttemptInputs input');
     let guess = Array.from(inputs).map(i => i.value).join('');
@@ -228,15 +232,12 @@ function buildDiscardBoard() {
 }
 
 function openRulesModal() {
-    changeLanguage(currentLang);
-    const modal = document.getElementById('rulesModal');
-    modal.classList.add('active');
+    document.getElementById('rulesModal').classList.add('active');
     document.getElementById('floatingHelpBtn').classList.remove('visible');
 }
 
 function closeRulesModal() {
-    const modal = document.getElementById('rulesModal');
-    modal.classList.remove('active');
+    document.getElementById('rulesModal').classList.remove('active');
     document.getElementById('floatingHelpBtn').classList.add('visible');
 }
 
@@ -251,8 +252,6 @@ function goHome() {
     showScreen('mainMenu');
 }
 
-function toggleTheme() {
-    const isDark = document.body.getAttribute('data-theme') === 'dark';
-    document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
-    document.getElementById('themeToggle').innerText = isDark ? '🌙' : '☀️';
+function openShareModal() {
+    alert("Próximamente: Enlace de desafío generado y copiado al portapapeles para enviar por WhatsApp o TikTok.");
 }
