@@ -241,12 +241,10 @@ function setGameMode(mode) {
     }
 }
 
-// Control seguro del cierre de reglas según el modo activo
 function closeRulesModal() {
     document.getElementById('rulesModal').classList.remove('active');
     document.getElementById('floatingHelpBtn').classList.add('visible');
 
-    // Si viene de un enlace compartido, al cerrar el modal mostramos la pantalla de bienvenida del invitado
     if (window.location.hash.includes('#room=')) {
         showScreen('guestWelcomeScreen');
         return;
@@ -348,10 +346,7 @@ function checkUrlForSharedGame() {
             
             setDifficulty(currentDifficulty);
             document.getElementById('challengerTitle').innerText = `¡${challengerName} te ha retado!`;
-            
-            // Muestra primero las instrucciones del modo, y al cerrarlas pasa al guestWelcomeScreen
-            updateRulesContent('two_phones');
-            openRulesModal();
+            showScreen('guestWelcomeScreen');
         } catch (e) {
             console.error("Reto inválido");
         }
@@ -536,4 +531,12 @@ function openRulesModal() {
 
 function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementBy
+    document.getElementById(id).classList.add('active');
+}
+
+function goHome() {
+    document.getElementById('winModal').classList.remove('active');
+    document.getElementById('floatingHelpBtn').classList.remove('visible');
+    window.location.hash = '';
+    showScreen('mainMenu');
+}
