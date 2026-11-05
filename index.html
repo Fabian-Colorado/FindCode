@@ -8,7 +8,7 @@
 </head>
 <body data-theme="dark">
     <div id="app">
-        <!-- BARRA SUPERIOR ELEGANTE -->
+        <!-- BARRA SUPERIOR -->
         <header>
             <div class="brand-container">
                 <span class="brand-logo">🔒</span>
@@ -34,7 +34,7 @@
                     <button class="btn primary glow" onclick="setGameMode('solo')" data-i18n="mode_solo">🤖 Jugar contra la IA</button>
                     <button class="btn secondary" onclick="setGameMode('same_phone')" data-i18n="mode_same">📱 Mismo Teléfono (Turnos)</button>
                     <button class="btn secondary" onclick="setGameMode('two_phones')" data-i18n="mode_two">📱📱 Dos Teléfonos (Presencial)</button>
-                    <button class="btn accent" onclick="generateShareLink()" data-i18n="mode_share">🌐 Crear Desafío por Enlace</button>
+                    <button class="btn accent" onclick="startHostLobby()" data-i18n="mode_share">🌐 Crear Sala de Desafío (Enlace)</button>
                 </div>
 
                 <!-- SELECTOR DE DIFICULTAD -->
@@ -45,6 +45,28 @@
                         <button id="diffHard" class="diff-btn" onclick="setDifficulty('hard')">Difícil (Clásico)</button>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- PANTALLA DE INVITADO: ALGUIEN TE HA RETADO -->
+        <section id="guestWelcomeScreen" class="screen">
+            <div class="game-card text-center">
+                <span class="win-icon">⚔️</span>
+                <h2 data-i18n="challenged_title">¡Alguien te ha retado!</h2>
+                <p id="challengedDesc" data-i18n="challenged_desc">Prepárate para un duelo de lógica y descubre si puedes descifrar el código secreto.</p>
+                <button class="btn primary glow full-width" onclick="acceptChallenge()" data-i18n="accept_challenge">Aceptar el reto y jugar</button>
+                <button class="btn text" onclick="goHome()" data-i18n="back">Volver al menú</button>
+            </div>
+        </section>
+
+        <!-- PANTALLA DE ESPERA (HOST) -->
+        <section id="waitingScreen" class="screen">
+            <div class="game-card text-center">
+                <div class="spinner"></div>
+                <h2 data-i18n="waiting_title">Sala creada con éxito</h2>
+                <p data-i18n="waiting_desc">El enlace ha sido copiado al portapapeles. Envíaselo a tu rival y espera a que abra la sala para comenzar.</p>
+                <button class="btn secondary full-width" onclick="copyShareLinkAgain()" data-i18n="copy_link_again">Copiar enlace de nuevo</button>
+                <button class="btn text" onclick="goHome()" data-i18n="cancel">Cancelar y salir</button>
             </div>
         </section>
 
@@ -95,30 +117,31 @@
         </section>
     </div>
 
-    <!-- BOTON FLOTANTE DE REGLAS (SUBIDO PARA NO TAPA EL 0) -->
+    <!-- BOTON FLOTANTE DE REGLAS -->
     <button id="floatingHelpBtn" class="floating-btn visible" onclick="openRulesModal()" title="Ayuda">❓</button>
 
-    <!-- MODAL DE INSTRUCCIONES FLOTANTE -->
+    <!-- MODAL DE INSTRUCCIONES -->
     <div id="rulesModal" class="modal active">
         <div class="modal-content">
             <div class="modal-header">
                 <span class="modal-icon">💡</span>
                 <h2 data-i18n="rules_title">¿Cómo jugar?</h2>
             </div>
-            <div class="rules-body" id="rulesBody">
-                <!-- Inyectado por JS -->
-            </div>
+            <div class="rules-body" id="rulesBody"></div>
             <button class="btn primary" onclick="closeRulesModal()" data-i18n="rules_close">¡Entendido, a jugar!</button>
         </div>
     </div>
 
-    <!-- MODAL DE VICTORIA -->
+    <!-- MODAL DE VICTORIA CON REVANCHA -->
     <div id="winModal" class="modal">
         <div class="modal-content text-center">
             <span class="win-icon">🎉</span>
-            <h2 data-i18n="win_title">¡Código Descifrado!</h2>
+            <h2 id="winTitle" data-i18n="win_title">¡Código Descifrado!</h2>
             <p id="winMessage" data-i18n="win_desc">Has encontrado la combinación secreta con éxito.</p>
-            <button class="btn primary glow" onclick="goHome()" data-i18n="play_again">Jugar de nuevo</button>
+            <div class="modal-actions">
+                <button class="btn primary glow" onclick="restartGame()" data-i18n="play_again">Volver a jugar</button>
+                <button class="btn secondary" onclick="goHome()" data-i18n="back_menu">Menú Principal</button>
+            </div>
         </div>
     </div>
 
