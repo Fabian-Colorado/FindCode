@@ -2,15 +2,15 @@ const translations = {
     es: {
         appName: "Find Code",
         subtitle: "Un juego de lógica, deducción y estrategia para descifrar el código.",
-        mode_solo: "🤖 Jugar contra la IA",
-        mode_same: "📱 Mismo Teléfono (Turnos)",
+        mode_solo: "🤖 Jugar en solitario",
+        mode_same: "📱 Mismo Teléfono (2 Jugadores)",
         mode_two: "📱📱 Dos Teléfonos (Presencial)",
         mode_share: "🌐 Crear Reto por Enlace",
         confirm: "Confirmar y Jugar",
         back: "Volver al menú",
         exit: "Salir",
         guess_btn: "Probar Código",
-        discard_title: "Panel de descarte (toca para descartar números):",
+        discard_title: "Descarte:",
         play_again: "🔄 Volver a jugar",
         back_menu: "Menú Principal",
         share_result: "📤 Compartir resultado",
@@ -22,25 +22,27 @@ const translations = {
         challenged_desc: "¿Qué deseas hacer con este reto?",
         play_only: "Solo adivinar este reto",
         challenge_back_option: "Aceptar y Retar de vuelta",
+        ready_btn: "Listo, soy el jugador",
         rules_text: `
-            <p>🎯 <b>Objetivo:</b> Adivina el código secreto de 4 dígitos únicos.</p>
-            <p>📝 <b>Panel de descarte:</b> Toca los números abajo para tachar y ayudarte con la deducción.</p>
-            <p>🟢 <b>Fácil (con pistas):</b> Te muestra fichas coloreadas indicando si el dígito y su posición son correctos.</p>
-            <p>🟠 <b>Difícil (sin pistas):</b> Te indica mediante números de colores cuántos aciertos totales tienes, sin decirte en qué posición exacta van.</p>
+            <p>🎯 <b>Objetivo:</b> Adivina el código secreto de 4 dígitos únicos (0 al 9).</p>
+            <p>📝 <b>Panel de descarte:</b> Toca los números arriba del teclado para cruzarlos en diagonal y ayudarte a deducir.</p>
+            <p>🟢 <b>Fácil (con pistas):</b> Muestra fichas de colores por cada casilla indicando si el dígito y su posición son exactos.</p>
+            <p>🟠 <b>Difícil (sin pistas):</b> Muestra únicamente la cantidad total de aciertos mediante números con fondo de color.</p>
+            <p>📱 <b>Mismo Teléfono:</b> Dos jugadores configuran sus códigos y se pasan el dispositivo por turnos estrictos.</p>
         `
     },
     en: {
         appName: "Find Code",
         subtitle: "A logic, deduction, and strategy game to crack the code.",
-        mode_solo: "🤖 Play vs AI",
-        mode_same: "📱 Same Phone (Turns)",
+        mode_solo: "🤖 Play Solo",
+        mode_same: "📱 Same Phone (2 Players)",
         mode_two: "📱📱 Two Phones (Local)",
         mode_share: "🌐 Create Link Challenge",
         confirm: "Confirm & Play",
         back: "Back to Menu",
         exit: "Exit",
         guess_btn: "Test Code",
-        discard_title: "Discard panel (tap to cross out numbers):",
+        discard_title: "Discard:",
         play_again: "🔄 Play Again",
         back_menu: "Main Menu",
         share_result: "📤 Share result",
@@ -52,25 +54,26 @@ const translations = {
         challenged_desc: "What would you like to do with this challenge?",
         play_only: "Just guess this challenge",
         challenge_back_option: "Accept & Challenge Back",
+        ready_btn: "Ready, I'm the player",
         rules_text: `
             <p>🎯 <b>Goal:</b> Guess the secret 4-unique-digit code.</p>
-            <p>📝 <b>Discard Panel:</b> Tap numbers below to cross them out and aid logic.</p>
+            <p>📝 <b>Discard Panel:</b> Tap numbers above the keyboard to cross them out.</p>
             <p>🟢 <b>Easy (with clues):</b> Colored tiles indicate correct digits and positions.</p>
-            <p>🟠 <b>Hard (no clues):</b> Numeric color totals without exact positions.</p>
+            <p>🟠 <b>Hard (no clues):</b> Numeric color totals only.</p>
         `
     },
     ja: {
         appName: "Find Code",
         subtitle: "暗号を解読する論理と推論のパズルゲーム。",
-        mode_solo: "🤖 AI対戦",
-        mode_same: "📱 同じスマホでプレイ",
-        mode_two: "📱📱 2台のスマホでプレイ",
+        mode_solo: "🤖 ソロプレイ",
+        mode_same: "📱 同じスマホ (2人プレイ)",
+        mode_two: "📱📱 2台のスマホ (ローカル)",
         mode_share: "🌐 挑戦状を作成",
         confirm: "確認してスタート",
         back: "メニューに戻る",
         exit: "終了",
         guess_btn: "コードを試す",
-        discard_title: "除外パネル（タップして消去）：",
+        discard_title: "除外:",
         play_again: "🔄 もう一度プレイ",
         back_menu: "メインメニュー",
         share_result: "📤 結果をシェア",
@@ -82,25 +85,24 @@ const translations = {
         challenged_desc: "どう挑戦しますか？",
         play_only: "推測のみ行う",
         challenge_back_option: "挑戦を受けて逆挑戦",
+        ready_btn: "準備完了",
         rules_text: `
             <p>🎯 <b>目的:</b> 4桁の重複しない暗号コードを解読せよ。</p>
-            <p>📝 <b>除外パネル:</b> 数字をタップして推理の助けにしよう。</p>
-            <p>🟢 <b>簡単 (ヒント付き):</b> 数字と位置が合っているか色で表示。</p>
-            <p>🟠 <b>難しい (ヒントなし):</b> 位置を教えず総数のみ表示。</p>
+            <p>📝 <b>除外パネル:</b> 数字をタップして斜線で消去しよう。</p>
         `
     },
     zh: {
         appName: "Find Code",
         subtitle: "充满逻辑、推理与策略的密码破译游戏。",
-        mode_solo: "🤖 人机对战",
-        mode_same: "📱 同机轮流玩",
+        mode_solo: "🤖 单人模式",
+        mode_same: "📱 同机双人轮流",
         mode_two: "📱📱 双机面对面",
         mode_share: "🌐 创建挑战链接",
         confirm: "确认并开始",
         back: "返回菜单",
         exit: "退出",
         guess_btn: "提交猜测",
-        discard_title: "排除面板（点击划掉数字）：",
+        discard_title: "排除:",
         play_again: "🔄 再玩一次",
         back_menu: "主菜单",
         share_result: "📤 分享结果",
@@ -112,36 +114,44 @@ const translations = {
         challenged_desc: "你想怎么处理这个挑战？",
         play_only: "仅猜测此挑战",
         challenge_back_option: "接受并反向挑战",
+        ready_btn: "准备好了",
         rules_text: `
             <p>🎯 <b>目标:</b> 猜出由4个不重复数字组成的秘密密码。</p>
-            <p>📝 <b>排除面板:</b> 点击下方数字辅助排除逻辑。</p>
-            <p>🟢 <b>简单 (有提示):</b> 颜色方块提示数字与位置。</p>
-            <p>🟠 <b>困难 (无提示):</b> 仅提供总数提示，不指明位置。</p>
+            <p>📝 <b>排除面板:</b> 点击数字斜线划掉。</p>
         `
     }
 };
 
 let currentLang = 'es';
 let currentDifficulty = 'easy';
-let secretCode = '';
 let gameMode = 'solo';
+
+// Variables de estado para Partida Solitario / Enlace
+let secretCode = '';
 let attemptCount = 0;
 let challengerName = '';
+
+// Variables de estado para Modo "Mismo Teléfono" (2 Jugadores cruzados)
+let p1Code = '';
+let p2Code = '';
+let p1Attempts = 0;
+let p2Attempts = 0;
+let currentTurnPlayer = 1; // 1 o 2
+let pendingActionAfterPass = ''; // 'p1_setup', 'p2_setup', 'p1_guess', 'p2_guess'
 
 document.addEventListener('DOMContentLoaded', () => {
     setupNumericInputs();
     buildDiscardBoard();
     changeLanguage('es');
     checkUrlForSharedGame();
+    loadStats();
 });
 
 function showToast(message) {
     const toast = document.getElementById('toastNotification');
     toast.innerText = message;
     toast.classList.add('show');
-    setTimeout(() => {
-        toast.classList.remove('show');
-    }, 3500);
+    setTimeout(() => { toast.classList.remove('show'); }, 3500);
 }
 
 function setupNumericInputs() {
@@ -174,12 +184,10 @@ function initInputNavigation(selector) {
 function changeLanguage(lang) {
     currentLang = lang;
     document.getElementById('brandTitle').innerText = translations[lang].appName;
-    
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (translations[lang][key]) el.innerText = translations[lang][key];
     });
-
     document.getElementById('rulesBody').innerHTML = translations[lang].rules_text;
 }
 
@@ -194,7 +202,13 @@ function setGameMode(mode) {
     if (mode === 'solo') {
         secretCode = generateRandomCode();
         startGameSession();
+    } else if (mode === 'same_phone') {
+        // Inicia el flujo estricto de Mismo Teléfono
+        p1Code = ''; p2Code = ''; p1Attempts = 0; p2Attempts = 0;
+        pendingActionAfterPass = 'p1_setup';
+        showPassPhoneScreen("Jugador 1", "Configura tu código secreto ocultando el teléfono del Jugador 2.");
     } else {
+        // Dos teléfonos / Presencial
         document.getElementById('setupTitle').innerText = "Configura tu código secreto";
         showScreen('setupScreen');
     }
@@ -222,7 +236,19 @@ function confirmSecretCode() {
 
     let nickname = document.getElementById('playerNickname').value.trim() || "Alguien";
 
-    if (gameMode === 'link_host' || gameMode === 'link_revenge' || gameMode === 'link_guest_reply') {
+    if (gameMode === 'same_phone') {
+        inputs.forEach(i => i.value = '');
+        if (pendingActionAfterPass === 'p1_setup') {
+            p1Code = code;
+            pendingActionAfterPass = 'p2_setup';
+            showPassPhoneScreen("Jugador 2", "Es el turno del Jugador 2 de configurar su código secreto.");
+        } else if (pendingActionAfterPass === 'p2_setup') {
+            p2Code = code;
+            pendingActionAfterPass = 'p1_guess';
+            currentTurnPlayer = 1;
+            showPassPhoneScreen("Jugador 1", "Comienza el duelo. Jugador 1 intenta adivinar el código del Jugador 2.");
+        }
+    } else if (gameMode === 'link_host' || gameMode === 'link_revenge' || gameMode === 'link_guest_reply') {
         let payload = btoa(JSON.stringify({ c: code, d: currentDifficulty, n: nickname }));
         let shareUrl = `${window.location.origin}${window.location.pathname}#room=${payload}`;
 
@@ -246,6 +272,25 @@ function confirmSecretCode() {
     } else {
         secretCode = code;
         inputs.forEach(i => i.value = '');
+        startGameSession();
+    }
+}
+
+function showPassPhoneScreen(playerLabel, descriptionText) {
+    document.getElementById('passPhoneTitle').innerText = `Pasa el teléfono a: ${playerLabel}`;
+    document.getElementById('passPhoneDesc').innerText = descriptionText;
+    showScreen('passPhoneScreen');
+}
+
+function confirmPassPhone() {
+    if (pendingActionAfterPass === 'p2_setup') {
+        document.getElementById('setupTitle').innerText = "Jugador 2: Configura tu código secreto";
+        showScreen('setupScreen');
+    } else if (pendingActionAfterPass === 'p1_guess') {
+        currentTurnPlayer = 1;
+        startGameSession();
+    } else if (pendingActionAfterPass === 'p2_guess') {
+        currentTurnPlayer = 2;
         startGameSession();
     }
 }
@@ -283,6 +328,13 @@ function acceptAndChallengeBack() {
 function startGameSession() {
     attemptCount = 0;
     document.getElementById('historyContainer').innerHTML = '';
+    
+    if (gameMode === 'same_phone') {
+        document.getElementById('turnIndicator').innerText = `Turno de: Jugador ${currentTurnPlayer}`;
+    } else {
+        document.getElementById('turnIndicator').innerText = challengerName ? `Reto de ${challengerName}` : "Partida en curso";
+    }
+
     showScreen('gameScreen');
 }
 
@@ -295,26 +347,44 @@ function submitGuess() {
         return;
     }
 
-    attemptCount++;
+    let activeTargetCode = secretCode;
+    if (gameMode === 'same_phone') {
+        activeTargetCode = (currentTurnPlayer === 1) ? p2Code : p1Code;
+        if (currentTurnPlayer === 1) p1Attempts++;
+        else p2Attempts++;
+    } else {
+        attemptCount++;
+    }
 
     if (currentDifficulty === 'easy') {
-        appendHistoryEasyRow(guess);
+        appendHistoryEasyRow(guess, activeTargetCode);
     } else {
-        appendHistoryHardRow(guess);
+        appendHistoryHardRow(guess, activeTargetCode);
     }
 
     inputs.forEach(i => i.value = '');
     inputs[0].focus();
 
-    if (guess === secretCode) {
+    if (guess === activeTargetCode) {
         playSound('success');
-        document.getElementById('victoryCodeDisplay').innerText = secretCode.split('').join(' ');
-        document.getElementById('victoryAttempts').innerText = attemptCount;
+        let winningAttempts = (gameMode === 'same_phone') ? (currentTurnPlayer === 1 ? p1Attempts : p2Attempts) : attemptCount;
+        let winnerLabel = (gameMode === 'same_phone') ? `¡Jugador ${currentTurnPlayer} Gana!` : "¡Código Descifrado!";
+        
+        document.getElementById('victoryCodeDisplay').innerText = activeTargetCode.split('').join(' ');
+        document.getElementById('victoryAttempts').innerText = `${winningAttempts} intentos`;
         document.getElementById('winModal').classList.add('active');
+        saveStat(winningAttempts);
+    } else {
+        if (gameMode === 'same_phone') {
+            // Alternar turno y pedir pasar el teléfono
+            currentTurnPlayer = (currentTurnPlayer === 1) ? 2 : 1;
+            pendingActionAfterPass = (currentTurnPlayer === 1) ? 'p1_guess' : 'p2_guess';
+            showPassPhoneScreen(`Jugador ${currentTurnPlayer}`, `Intento fallido. Pasa el teléfono al Jugador ${currentTurnPlayer} para su turno.`);
+        }
     }
 }
 
-function appendHistoryEasyRow(guess) {
+function appendHistoryEasyRow(guess, targetCode) {
     const container = document.getElementById('historyContainer');
     const row = document.createElement('div');
     row.className = 'history-row wordle-row';
@@ -324,9 +394,9 @@ function appendHistoryEasyRow(guess) {
         tile.className = 'history-tile';
         tile.innerText = guess[i];
 
-        if (guess[i] === secretCode[i]) {
+        if (guess[i] === targetCode[i]) {
             tile.classList.add('green');
-        } else if (secretCode.includes(guess[i])) {
+        } else if (targetCode.includes(guess[i])) {
             tile.classList.add('orange');
         }
         row.appendChild(tile);
@@ -334,15 +404,14 @@ function appendHistoryEasyRow(guess) {
     container.prepend(row);
 }
 
-// MODO DIFÍCIL: ÚNICAMENTE EL NÚMERO DENTRO DE LA PASTILLA DE COLOR CORRESPONDIENTE
-function appendHistoryHardRow(guess) {
+function appendHistoryHardRow(guess, targetCode) {
     let green = 0;
     let orange = 0;
 
     for (let i = 0; i < 4; i++) {
-        if (guess[i] === secretCode[i]) {
+        if (guess[i] === targetCode[i]) {
             green++;
-        } else if (secretCode.includes(guess[i])) {
+        } else if (targetCode.includes(guess[i])) {
             orange++;
         }
     }
@@ -379,12 +448,16 @@ function restartGame() {
     document.getElementById('winModal').classList.remove('active');
     if (gameMode === 'solo') {
         secretCode = generateRandomCode();
+        startGameSession();
+    } else if (gameMode === 'same_phone') {
+        setGameMode('same_phone');
+    } else {
+        startGameSession();
     }
-    startGameSession();
 }
 
 function shareResult() {
-    let text = `🧠 ¡Descifré el código en Find Code en ${attemptCount} intentos! ¿Puedes superarme?`;
+    let text = `🧠 ¡Descifré el código en Find Code! ¿Puedes superarme?`;
     if (navigator.share) {
         navigator.share({ title: 'Find Code', text: text, url: window.location.href }).catch(() => {});
     } else {
@@ -397,6 +470,21 @@ function openRevengeSetup() {
     gameMode = 'link_revenge';
     document.getElementById('setupTitle').innerText = "¡Revancha! Configura tu nuevo código";
     showScreen('setupScreen');
+}
+
+function saveStat(attempts) {
+    try {
+        let stats = JSON.parse(localStorage.getItem('findcode_stats') || '[]');
+        stats.push({ date: new Date().toISOString(), attempts: attempts });
+        localStorage.setItem('findcode_stats', JSON.stringify(stats));
+    } catch(e) {}
+}
+
+function loadStats() {
+    try {
+        let stats = JSON.parse(localStorage.getItem('findcode_stats') || '[]');
+        console.log("Partidas guardadas:", stats.length);
+    } catch(e) {}
 }
 
 function openRulesModal() {
