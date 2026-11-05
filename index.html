@@ -8,12 +8,10 @@
 </head>
 <body data-theme="dark">
     <div id="app">
-        <!-- NOTIFICACIÓN FLOTANTE (TOAST) -->
         <div id="toastNotification" class="toast">
-            📋 ¡Enlace de reto copiado al portapapeles!
+            📋 ¡Enlace copiado al portapapeles!
         </div>
 
-        <!-- BARRA SUPERIOR -->
         <header>
             <div class="brand-container">
                 <span class="brand-logo">🔒</span>
@@ -33,10 +31,6 @@
         <!-- MENU PRINCIPAL -->
         <section id="mainMenu" class="screen active">
             <div class="hero-card">
-                <div class="nickname-box">
-                    <input type="text" id="playerNickname" placeholder="Tu apodo (opcional)" maxlength="15" autocomplete="off" />
-                </div>
-
                 <p id="mainSubtitle" data-i18n="subtitle">Un juego de lógica, deducción y estrategia para descifrar el código.</p>
                 
                 <div class="menu-buttons">
@@ -46,7 +40,6 @@
                     <button class="btn accent" onclick="startHostLobby()" data-i18n="mode_share">🌐 Crear Reto por Enlace</button>
                 </div>
 
-                <!-- SELECTOR DE DIFICULTAD -->
                 <div class="difficulty-selector">
                     <label data-i18n="difficulty_label">Dificultad:</label>
                     <div class="diff-buttons">
@@ -57,10 +50,10 @@
             </div>
         </section>
 
-        <!-- PANTALLA DE TRANSICIÓN: PASAR EL TELÉFONO -->
+        <!-- PANTALLA DE TRANSICIÓN: PASAR EL TELÉFONO (MÁS TENSA Y DRAMÁTICA) -->
         <section id="passPhoneScreen" class="screen">
-            <div class="game-card text-center">
-                <span class="win-icon">🔄</span>
+            <div class="game-card text-center alert-card" id="passCardContainer">
+                <span class="win-icon" id="passIconEmoji">🔄</span>
                 <h2 id="passPhoneTitle">Pasa el teléfono</h2>
                 <p id="passPhoneDesc">Entrega el dispositivo al siguiente jugador de forma secreta.</p>
                 <button class="btn primary glow full-width" onclick="confirmPassPhone()" data-i18n="ready_btn">Listo, soy el jugador</button>
@@ -68,7 +61,7 @@
             </div>
         </section>
 
-        <!-- PANTALLA DE INVITADO: OPCIONES DE ENLACE -->
+        <!-- PANTALLA DE INVITADO -->
         <section id="guestWelcomeScreen" class="screen">
             <div class="game-card text-center">
                 <span class="win-icon">⚔️</span>
@@ -84,17 +77,17 @@
             </div>
         </section>
 
-        <!-- PANTALLA CONFIGURAR CODIGO (SIN AUTOCOMPLETADO DE CONTRASEÑAS) -->
+        <!-- PANTALLA CONFIGURAR CODIGO (INPUTS TEXTO PURO SIN CONTRASEÑAS) -->
         <section id="setupScreen" class="screen">
             <div class="game-card">
                 <h2 id="setupTitle">Configura tu código secreto</h2>
                 <p id="setupDesc">Introduce un código de 4 dígitos únicos (0-9).</p>
                 
                 <div class="code-inputs" id="setupInputs">
-                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box numeric-only" autocomplete="off" />
-                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box numeric-only" autocomplete="off" />
-                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box numeric-only" autocomplete="off" />
-                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box numeric-only" autocomplete="off" />
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box numeric-only" autocomplete="off" data-lpignore="true" />
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box numeric-only" autocomplete="off" data-lpignore="true" />
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box numeric-only" autocomplete="off" data-lpignore="true" />
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box numeric-only" autocomplete="off" data-lpignore="true" />
                 </div>
                 
                 <button class="btn primary" onclick="confirmSecretCode()" data-i18n="confirm">Confirmar y Jugar</button>
@@ -109,32 +102,28 @@
                 <button class="btn small text-btn" onclick="goHome()" data-i18n="exit">Salir</button>
             </div>
 
-            <!-- PANEL FLOTANTE TOUCH DE DESCARTE (SIEMPRE VISIBLE) -->
+            <!-- PANEL DE DESCARTE COMPACTO Y OPTIMIZADO -->
             <div class="touch-discard-panel">
                 <span class="discard-title-mini">Descarte:</span>
                 <div class="number-pills" id="numberPills"></div>
             </div>
 
-            <!-- HISTORIAL DE INTENTOS -->
             <div class="history-container" id="historyContainer"></div>
 
-            <!-- ENTRADA DE INTENTO ACTUAL (SIN AUTOCOMPLETADO) -->
             <div class="game-card-action">
                 <div class="current-attempt" id="currentAttemptInputs">
-                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" />
-                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" />
-                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" />
-                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" />
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" data-lpignore="true" />
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" data-lpignore="true" />
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" data-lpignore="true" />
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" data-lpignore="true" />
                 </div>
                 <button class="btn primary full-width" onclick="submitGuess()" data-i18n="guess_btn">Probar Código</button>
             </div>
         </section>
     </div>
 
-    <!-- BOTON FLOTANTE DE REGLAS -->
     <button id="floatingHelpBtn" class="floating-btn visible" onclick="openRulesModal()" title="Ayuda">❓</button>
 
-    <!-- MODAL DE INSTRUCCIONES -->
     <div id="rulesModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -146,7 +135,6 @@
         </div>
     </div>
 
-    <!-- MODAL DE VICTORIA REDISEÑADO PARA COMPARTIR Y CAPTURAS -->
     <div id="winModal" class="modal">
         <div class="modal-content text-center win-card">
             <div class="victory-header">
