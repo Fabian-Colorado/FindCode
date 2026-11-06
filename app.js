@@ -3,9 +3,6 @@ let currentDifficulty = 'easy';
 
 let secretCode = '';
 let attemptCount = 0;
-let setupBuffer = [];
-let gameBuffer = [];
-
 let p1Code = '', p2Code = '';
 let p1Attempts = 0, p2Attempts = 0;
 let p1HistoryHTML = '', p2HistoryHTML = '';
@@ -15,30 +12,7 @@ let pendingActionAfterPass = '';
 document.addEventListener('DOMContentLoaded', () => {
     buildDiscardBoard();
     switchRulesTab('easy');
-    
-    // Mostrar instrucciones automáticamente al entrar a la web por primera vez
     openRulesModal();
-
-    // Soporte para teclado físico de PC o dispositivos conectados
-    window.addEventListener('keydown', (e) => {
-        const activeScreen = document.querySelector('.screen.active');
-        if (!activeScreen) return;
-
-        let context = null;
-        if (activeScreen.id === 'setupScreen') context = 'setup';
-        else if (activeScreen.id === 'gameScreen') context = 'game';
-
-        if (!context) return;
-
-        if (e.key >= '0' && e.key <= '9') {
-            typeDigit(e.key, context);
-        } else if (e.key === 'Backspace') {
-            deleteDigit(context);
-        } else if (e.key === 'Enter') {
-            if (context === 'setup') confirmSecretCode();
-            else if (context === 'game') submitGuess();
-        }
-    });
 
     window.history.pushState({ page: 'menu' }, '', '');
     window.addEventListener('popstate', () => {
@@ -54,38 +28,39 @@ function showToast(msg) {
     setTimeout(() => t.classList.remove('show'), 3500);
 }
 
-function typeDigit(digit, context) {
-    let buffer = (context === 'setup') ? setupBuffer : gameBuffer;
-    if (buffer.length < 4 && !buffer.includes(digit)) {
-        buffer.push(digit);
-        playSound('click');
-        updateCodeDisplay(context);
-    }
-}
-
-function deleteDigit(context) {
-    let buffer = (context === 'setup') ? setupBuffer : gameBuffer;
-    if (buffer.length > 0) {
-        buffer.pop();
-        playSound('click');
-        updateCodeDisplay(context);
-    }
-}
-
-function updateCodeDisplay(context) {
-    const container = document.getElementById(context === 'setup' ? 'setupCodeDisplay' : 'gameCodeDisplay');
-    const slots = container.querySelectorAll('.digit-slot');
-    let buffer = (context === 'setup') ? setupBuffer : gameBuffer;
-
-    slots.forEach((slot, idx) => {
-        slot.innerText = buffer[idx] || '';
-        slot.classList.toggle('active', idx === buffer.length);
-    });
-}
-
 function setDifficulty(diff) {
     currentDifficulty = diff;
     document.getElementById('topDifficultySelect').value = diff;
+}
+
+function focusNativeInput(inputId) {
+    const inp = document.getElementById(inputId);
+    inp.focus();
+}
+
+function formatNativeInput(input, context) {
+    let val = input.value.replace(/\D/g, '');
+    if (val.length > 4) val = val.slice(0, 4);
+
+    // Evitar dígitos duplicados
+    let uniqueVal = '';
+    for (let char of val) {
+        if (!uniqueVal.includes(char)) uniqueVal += char;
+    }
+    input.value = uniqueVal;
+    playSound('click');
+
+    for (let i = 0; i < 4; i++) {
+        const slot = document.getElementById(`${context}-${i}`);
+        slot.innerText = uniqueVal[i] || '';
+        slot.classList.toggle('active', i === uniqueVal.length);
+    }
+}
+
+function clearInput(context) {
+    const inp = document.getElementById(context === 'setup' ? 'setupCodeInput' : 'gameCodeInput');
+    inp.value = '';
+    formatNativeInput(inp, context);
 }
 
 function setGameMode(mode) {
@@ -113,16 +88,17 @@ function selectLinkDifficulty(diff) {
     currentGameMode = 'link_host';
     document.getElementById('setupTitle').innerText = "Configura el código para tu rival";
     showScreen('setupScreen');
+    clearInput('setup');
 }
 
 function confirmSecretCode() {
-    if (setupBuffer.length !== 4) {
+    const inp = document.getElementById('setupCodeInput');
+    let code = inp.value;
+    if (code.length !== 4) {
         alert("Debes ingresar 4 dígitos únicos.");
         return;
     }
-    let code = setupBuffer.join('');
-    setupBuffer = [];
-    updateCodeDisplay('setup');
+    clearInput('setup');
 
     if (currentGameMode === 'same_phone') {
         if (pendingActionAfterPass === 'p1_setup') {
@@ -161,6 +137,7 @@ function showPassPhoneScreen(playerLabel, desc) {
 function confirmPassPhone() {
     if (pendingActionAfterPass === 'p1_setup' || pendingActionAfterPass === 'p2_setup') {
         showScreen('setupScreen');
+        clearInput('setup');
     } else {
         startGameSession();
     }
@@ -168,8 +145,7 @@ function confirmPassPhone() {
 
 function startGameSession() {
     attemptCount = 0;
-    gameBuffer = [];
-    updateCodeDisplay('game');
+    clearInput('game');
     resetDiscardBoard();
 
     if (currentGameMode === 'same_phone') {
@@ -177,19 +153,19 @@ function startGameSession() {
         document.getElementById('turnIndicator').innerText = `Turno de: Jugador ${currentTurnPlayer}`;
     } else {
         document.getElementById('historyContainer').innerHTML = '';
-        document.getElementById('turnIndicator').innerText = currentDifficulty === 'easy' ? "Modo Fácil" : "Modo Difícil";
+        document.getElementById('turnIndicator').innerText = currentDifficulty === 'easy' ? "🟢 Modo Fácil" : "🔴 Modo Difícil";
     }
     showScreen('gameScreen');
 }
 
 function submitGuess() {
-    if (gameBuffer.length !== 4) {
+    const inp = document.getElementById('gameCodeInput');
+    let guess = inp.value;
+    if (guess.length !== 4) {
         alert("Introduce 4 dígitos.");
         return;
     }
-    let guess = gameBuffer.join('');
-    gameBuffer = [];
-    updateCodeDisplay('game');
+    clearInput('game');
 
     let activeTarget = secretCode;
     if (currentGameMode === 'same_phone') {
@@ -242,7 +218,7 @@ function handleVictory() {
         let loseCode = (winner === 1) ? p1Code : p2Code;
 
         details.innerHTML = `
-            <h3 style="color: #34d399; font-size: 1.4rem; margin-bottom: 0.4rem;">¡GANA JUGADOR ${winner}!</h3>
+            <h3 style="color: var(--accent-green); font-size: 1.4rem; margin-bottom: 0.4rem;">¡GANA JUGADOR ${winner}!</h3>
             <p>Código descubierto: <b>${winCode}</b></p>
             <div style="margin-top: 0.75rem; padding: 0.4rem; background: #450a0a; border-radius: 6px; color: #f87171; font-size: 0.9rem;">
                 Jugador ${loser} pierde (Su código era: ${loseCode})
@@ -264,7 +240,6 @@ function handleVictory() {
     document.getElementById('winModal').classList.add('active');
 }
 
-// PANEL DE DESCARTE COMPACTO (Fila única 0-9)
 function buildDiscardBoard() {
     const row = document.getElementById('numberPillsRow');
     row.innerHTML = '';
@@ -303,14 +278,19 @@ function appendHistoryEasy(guess, target) {
     const container = document.getElementById('historyContainer');
     const row = document.createElement('div');
     row.className = 'history-row';
+    
+    const group = document.createElement('div');
+    group.className = 'history-guess-group';
+
     for (let i = 0; i < 4; i++) {
         const t = document.createElement('div');
         t.className = 'history-tile';
         t.innerText = guess[i];
         if (guess[i] === target[i]) t.classList.add('green');
         else if (target.includes(guess[i])) t.classList.add('orange');
-        row.appendChild(t);
+        group.appendChild(t);
     }
+    row.appendChild(group);
     container.prepend(row);
 }
 
@@ -323,13 +303,25 @@ function appendHistoryHard(guess, target) {
     const container = document.getElementById('historyContainer');
     const row = document.createElement('div');
     row.className = 'history-row';
-    row.innerHTML = `
-        <span style="font-weight:700; font-size:1rem;">${guess}</span>
-        <div>
-            <span class="badge-only-number green">${green}</span>
-            <span class="badge-only-number orange">${orange}</span>
-        </div>
+
+    const group = document.createElement('div');
+    group.className = 'history-guess-group';
+    for (let i = 0; i < 4; i++) {
+        const t = document.createElement('div');
+        t.className = 'history-tile';
+        t.innerText = guess[i];
+        group.appendChild(t);
+    }
+
+    const stats = document.createElement('div');
+    stats.className = 'hard-stats-group';
+    stats.innerHTML = `
+        <span class="badge-only-number green">${green}</span>
+        <span class="badge-only-number orange">${orange}</span>
     `;
+
+    row.appendChild(group);
+    row.appendChild(stats);
     container.prepend(row);
 }
 
@@ -348,16 +340,16 @@ function switchRulesTab(tab) {
         body.innerHTML = `
             <p><b>🟢 Modo Fácil:</b> Cada casilla te dirá el estado exacto del dígito:</p>
             <ul style="margin: 0.4rem 0 0.4rem 1.1rem; color: var(--text-muted); font-size: 0.85rem;">
-                <li><b style="color:#059669">Verde:</b> Dígito correcto en posición correcta.</li>
-                <li><b style="color:#d97706">Naranja:</b> El dígito existe pero va en otra posición.</li>
+                <li><b style="color:var(--accent-green)">Verde:</b> Dígito correcto en posición correcta.</li>
+                <li><b style="color:var(--accent-orange)">Naranja:</b> El dígito existe pero va en otra posición.</li>
             </ul>
         `;
     } else {
         body.innerHTML = `
             <p><b>🔴 Modo Difícil:</b> Recibirás un conteo general por intento:</p>
             <ul style="margin: 0.4rem 0 0.4rem 1.1rem; color: var(--text-muted); font-size: 0.85rem;">
-                <li><b style="color:#059669">Verdes:</b> Cuántos números están en la posición exacta.</li>
-                <li><b style="color:#d97706">Naranjas:</b> Cuántos números existen pero están desubicados.</li>
+                <li><b style="color:var(--accent-green)">Verdes:</b> Cuántos números están en la posición exacta.</li>
+                <li><b style="color:var(--accent-orange)">Naranjas:</b> Cuántos números existen pero están desubicados.</li>
             </ul>
         `;
     }
