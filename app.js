@@ -333,7 +333,6 @@ function confirmSecretCode() {
         startGameSession();
     }
 }
-
 function showPassPhoneScreen(playerLabel, descriptionText) {
     let card = document.getElementById('passCardContainer');
     let emoji = document.getElementById('passIconEmoji');
@@ -398,7 +397,6 @@ function startGameSession() {
     attemptCount = 0;
     resetDiscardBoard();
     
-    // Asegurar visibilidad de inputs en todos los modos al arrancar
     document.getElementById('inputContainerWrapper').style.display = 'block';
     document.getElementById('turnCountdownBanner').style.display = 'none';
     document.getElementById('submitGuessBtn').style.display = 'block';
@@ -427,14 +425,23 @@ function startGameSession() {
 }
 
 function submitGuess() {
-    document.querySelectorAll('#currentAttemptInputs input').forEach(input => input.blur());
-
     const inputs = document.querySelectorAll('#currentAttemptInputs input');
+    inputs.forEach(input => input.blur());
+
     let guess = Array.from(inputs).map(i => i.value).join('');
 
     if (guess.length !== 4 || new Set(guess).size !== 4) {
         alert("Introduce 4 dígitos únicos.");
         return;
+    }
+
+    const inputWrapper = document.getElementById('inputContainerWrapper');
+    if (inputWrapper && gameMode !== 'same_phone') {
+        inputWrapper.style.display = 'none';
+        setTimeout(() => {
+            inputWrapper.style.display = 'block';
+            inputs[0].focus();
+        }, 150);
     }
 
     let activeTargetCode = secretCode;
@@ -467,17 +474,12 @@ function submitGuess() {
             if (samePhoneState === 'p1_guessed_waiting_p2') {
                 showSamePhoneWinner(1);
             } else {
-                // Solo en Mismo Teléfono activamos el cierre de teclado y el banner de 3 segundos
                 triggerInlineTurnCountdown();
             }
-        } else {
-            // En Solitario o Enlaces permitimos seguir tecleando de inmediato enfocando el primer input
-            inputs[0].focus();
         }
     }
 }
 
-// SECUENCIA DE 3 SEGUNDOS EXCLUSIVA PARA MODO 1 TELÉFONO
 function triggerInlineTurnCountdown() {
     const inputWrapper = document.getElementById('inputContainerWrapper');
     const submitBtn = document.getElementById('submitGuessBtn');
