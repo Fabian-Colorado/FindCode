@@ -398,7 +398,7 @@ function startGameSession() {
     attemptCount = 0;
     resetDiscardBoard();
     
-    // Asegurar que el cuadro de inputs y el botón estén visibles al iniciar turno
+    // Asegurar visibilidad de inputs en todos los modos al arrancar
     document.getElementById('inputContainerWrapper').style.display = 'block';
     document.getElementById('turnCountdownBanner').style.display = 'none';
     document.getElementById('submitGuessBtn').style.display = 'block';
@@ -427,7 +427,6 @@ function startGameSession() {
 }
 
 function submitGuess() {
-    // 1. FORZAR CIERRE DE TECLADO MÓVIL (OCULTANDO EL CONTENEDOR DE INPUTS MOMENTÁNEAMENTE)
     document.querySelectorAll('#currentAttemptInputs input').forEach(input => input.blur());
 
     const inputs = document.querySelectorAll('#currentAttemptInputs input');
@@ -468,21 +467,23 @@ function submitGuess() {
             if (samePhoneState === 'p1_guessed_waiting_p2') {
                 showSamePhoneWinner(1);
             } else {
-                // 2. PRAGMATISMO: OCULTAR INPUT Y MOSTRAR BANNER DE 3 SEGUNDOS ABAJO MIENTRAS VE SU PISTA
+                // Solo en Mismo Teléfono activamos el cierre de teclado y el banner de 3 segundos
                 triggerInlineTurnCountdown();
             }
+        } else {
+            // En Solitario o Enlaces permitimos seguir tecleando de inmediato enfocando el primer input
+            inputs[0].focus();
         }
     }
 }
 
-// SECUENCIA DE 3 SEGUNDOS CON EL RESULTADO YA VISIBLE EN PANTALLA
+// SECUENCIA DE 3 SEGUNDOS EXCLUSIVA PARA MODO 1 TELÉFONO
 function triggerInlineTurnCountdown() {
     const inputWrapper = document.getElementById('inputContainerWrapper');
     const submitBtn = document.getElementById('submitGuessBtn');
     const countdownBanner = document.getElementById('turnCountdownBanner');
     const countdownText = document.getElementById('turnCountdownText');
 
-    // Ocultar inputs y botón para cerrar el teclado y dejar ver el historial y descarte
     inputWrapper.style.display = 'none';
     submitBtn.style.display = 'none';
     countdownBanner.style.display = 'block';
