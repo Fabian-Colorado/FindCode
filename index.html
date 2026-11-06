@@ -33,7 +33,6 @@
             <div class="hero-card">
                 <p id="mainSubtitle" class="subtitle" data-i18n="subtitle">Un juego de lógica, deducción y estrategia para descifrar el código.</p>
                 
-                <!-- SELECTOR DE DIFICULTAD INTEGRADO EN EL MENÚ -->
                 <div class="menu-difficulty-selector">
                     <span data-i18n="difficulty_label" class="diff-label">Dificultad:</span>
                     <div class="diff-toggle-buttons">
@@ -48,6 +47,19 @@
                     <button class="btn secondary" onclick="setGameMode('two_phones')" data-i18n="mode_two">📱📱 Dos Teléfonos (Presencial)</button>
                     <button class="btn accent" onclick="startHostLobby()" data-i18n="mode_share">🌐 Crear Reto por Enlace</button>
                 </div>
+            </div>
+        </section>
+
+        <!-- PANTALLA DE ESPERA / RETARDO DE TURNO (CON TENSION) -->
+        <section id="turnWaitScreen" class="screen">
+            <div class="game-card text-center alert-card">
+                <span class="win-icon">⏳</span>
+                <h2 id="turnWaitTitle">Turno finalizado</h2>
+                <p id="turnWaitDesc" class="subtitle">Analizando resultado y pasando el turno...</p>
+                <div class="spinner-container">
+                    <div class="pulse-ring"></div>
+                </div>
+                <p id="countdownTimerText" style="font-size: 1.2rem; font-weight: 800; color: var(--accent-indigo);">3</p>
             </div>
         </section>
 
@@ -75,17 +87,17 @@
             </div>
         </section>
 
-        <!-- CONFIGURAR CÓDIGO SECRETO (CASILLAS NATIVAS) -->
+        <!-- CONFIGURAR CÓDIGO SECRETO -->
         <section id="setupScreen" class="screen">
             <div class="game-card text-center">
                 <h2 id="setupTitle">Configura tu código secreto</h2>
                 <p class="subtitle">Introduce 4 dígitos únicos (0-9).</p>
                 
                 <div class="code-inputs-group" id="setupInputs">
-                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input">
-                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input">
-                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input">
-                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input">
+                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input" autocomplete="off">
+                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input" autocomplete="off">
+                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input" autocomplete="off">
+                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input" autocomplete="off">
                 </div>
 
                 <button class="btn primary glow full-width" onclick="confirmSecretCode()" style="margin-top: 1.5rem;" data-i18n="confirm">Confirmar y Jugar</button>
@@ -101,22 +113,22 @@
                 <button class="btn small text-btn" onclick="goHome()" data-i18n="exit">Salir</button>
             </div>
 
-            <!-- PANEL DE DESCARTE CLÁSICO (FILA 0-9 CON 3 ESTADOS) -->
+            <!-- PANEL DE DESCARTE CLÁSICO -->
             <div class="touch-discard-panel">
                 <span class="discard-title-mini" data-i18n="discard_title">Descarte:</span>
                 <div class="number-pills-row" id="numberPillsRow"></div>
             </div>
 
-            <!-- HISTORIAL DE INTENTOS (CENTRADO Y COMPACTO) -->
+            <!-- HISTORIAL DE INTENTOS -->
             <div class="history-container" id="historyContainer"></div>
 
             <!-- ENTRADA DE INTENTO NATIVA -->
             <div class="game-action-panel">
                 <div class="code-inputs-group" id="currentAttemptInputs">
-                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input">
-                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input">
-                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input">
-                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input">
+                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input" autocomplete="off">
+                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input" autocomplete="off">
+                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input" autocomplete="off">
+                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input" autocomplete="off">
                 </div>
                 <button class="btn primary glow full-width" onclick="submitGuess()" style="margin-top: 0.75rem;" data-i18n="guess_btn">Probar Código</button>
             </div>
@@ -137,7 +149,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE VICTORIA / RESULTADOS -->
+    <!-- MODAL DE VICTORIA / RESULTADOS VISTOSO -->
     <div id="winModal" class="modal">
         <div class="modal-content text-center win-card">
             <div class="victory-header">
@@ -151,10 +163,10 @@
                 <p id="victoryAttempts" style="font-weight: 700; margin-top: 0.5rem;"></p>
             </div>
 
-            <div class="modal-actions" id="winModalActions">
+            <div class="modal-actions" id="winModalActions" style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem;">
                 <button class="btn primary full-width" onclick="restartGame()" data-i18n="play_again">🔄 Volver a jugar</button>
-                <button class="btn secondary full-width" onclick="shareResult()" style="margin-top: 0.5rem;" data-i18n="share_result">📤 Compartir resultado</button>
-                <button class="btn text full-width" onclick="goHome()" style="margin-top: 0.5rem;" data-i18n="back_menu">Menú Principal</button>
+                <button class="btn accent full-width" onclick="startHostLobby()">🌐 Retar a un amigo</button>
+                <button class="btn text full-width" onclick="goHome()" data-i18n="back_menu">Menú Principal</button>
             </div>
         </div>
     </div>
