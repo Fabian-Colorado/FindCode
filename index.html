@@ -33,6 +33,15 @@
             <div class="hero-card">
                 <p id="mainSubtitle" class="subtitle" data-i18n="subtitle">Un juego de lógica, deducción y estrategia para descifrar el código.</p>
                 
+                <!-- SELECTOR DE DIFICULTAD INTEGRADO EN EL MENÚ -->
+                <div class="menu-difficulty-selector">
+                    <span data-i18n="difficulty_label" class="diff-label">Dificultad:</span>
+                    <div class="diff-toggle-buttons">
+                        <button id="menuDiffEasy" class="btn-menu-diff active" onclick="setMenuDifficulty('easy')">🟢 Fácil (con pistas)</button>
+                        <button id="menuDiffHard" class="btn-menu-diff" onclick="setMenuDifficulty('hard')">🔴 Difícil (sin pistas)</button>
+                    </div>
+                </div>
+
                 <div class="menu-buttons">
                     <button class="btn primary glow" onclick="setGameMode('solo')" data-i18n="mode_solo">🤖 Jugar en solitario</button>
                     <button class="btn secondary" onclick="setGameMode('same_phone')" data-i18n="mode_same">📱 Mismo Teléfono (2 Jugadores)</button>
@@ -87,21 +96,15 @@
         <!-- PANTALLA DE JUEGO PRINCIPAL -->
         <section id="gameScreen" class="screen">
             <div class="game-top-bar">
-                <span id="turnIndicator">Tu turno</span>
-                <!-- Selector de dificultad solo dentro de partida -->
-                <div class="difficulty-toggle-group">
-                    <span data-i18n="difficulty_label" style="font-size: 0.8rem; color: var(--text-muted);">Dificultad:</span>
-                    <button id="diffEasy" class="btn-diff active" onclick="setDifficulty('easy')">🟢 Fácil</button>
-                    <button id="diffHard" class="btn-diff" onclick="setDifficulty('hard')">🔴 Difícil</button>
-                </div>
+                <span id="turnIndicator" class="turn-badge">Tu turno</span>
+                <span id="gameDiffBadge" class="game-diff-badge">🟢 Fácil</span>
                 <button class="btn small text-btn" onclick="goHome()" data-i18n="exit">Salir</button>
             </div>
 
-            <!-- PANEL DE DESCARTE CLÁSICO (2 FILAS DISCRETAS) -->
+            <!-- PANEL DE DESCARTE CLÁSICO (FILA 0-9 CON 3 ESTADOS) -->
             <div class="touch-discard-panel">
                 <span class="discard-title-mini" data-i18n="discard_title">Descarte:</span>
-                <div class="number-pills-row" id="numberPillsRow1"></div>
-                <div class="number-pills-row" id="numberPillsRow2"></div>
+                <div class="number-pills-row" id="numberPillsRow"></div>
             </div>
 
             <!-- HISTORIAL DE INTENTOS (CENTRADO Y COMPACTO) -->
@@ -142,13 +145,13 @@
                 <h2 id="winTitleText" data-i18n="win_title">¡CÓDIGO DESCIFRADO!</h2>
             </div>
             
-            <div class="victory-details-box">
+            <div class="victory-details-box" id="victoryDetailsContent">
                 <p id="codeLabelText" style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">EL CÓDIGO ERA:</p>
                 <div id="victoryCodeDisplay" class="victory-code"></div>
                 <p id="victoryAttempts" style="font-weight: 700; margin-top: 0.5rem;"></p>
             </div>
 
-            <div class="modal-actions">
+            <div class="modal-actions" id="winModalActions">
                 <button class="btn primary full-width" onclick="restartGame()" data-i18n="play_again">🔄 Volver a jugar</button>
                 <button class="btn secondary full-width" onclick="shareResult()" style="margin-top: 0.5rem;" data-i18n="share_result">📤 Compartir resultado</button>
                 <button class="btn text full-width" onclick="goHome()" style="margin-top: 0.5rem;" data-i18n="back_menu">Menú Principal</button>
