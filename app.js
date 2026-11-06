@@ -1,38 +1,4 @@
-const translations = {
-    es: {
-        subtitle: "Un juego de lógica, deducción y estrategia para descifrar el código.",
-        mode_solo: "🤖 Jugar en solitario",
-        mode_same: "📱 Mismo Teléfono (2 Jugadores)",
-        mode_two: "📱📱 Dos Teléfonos (Presencial)",
-        mode_share: "🌐 Crear Reto por Enlace",
-        menu_home: "🏠 Regresar al menú principal",
-        ready_btn: "Listo, soy el jugador",
-        exit: "Salir",
-        rules_title: "Instrucciones de Juego",
-        rules_close: "¡Entendido, a jugar!",
-        challenged_desc: "¿Qué deseas hacer con este reto?",
-        play_only: "Solo adivinar este reto",
-        challenge_back_option: "Aceptar y Retar de vuelta"
-    },
-    en: {
-        subtitle: "A logic, deduction, and strategy game to crack the code.",
-        mode_solo: "🤖 Play Solo",
-        mode_same: "📱 Same Phone (2 Players)",
-        mode_two: "📱📱 Two Phones (Local)",
-        mode_share: "🌐 Create Link Challenge",
-        menu_home: "🏠 Main Menu",
-        ready_btn: "Ready, let's play",
-        exit: "Exit",
-        rules_title: "Game Rules",
-        rules_close: "Got it, let's play!",
-        challenged_desc: "What would you like to do with this challenge?",
-        play_only: "Just guess this challenge",
-        challenge_back_option: "Accept & Challenge Back"
-    }
-};
-
-let currentLang = 'es';
-let gameMode = 'solo';
+let currentGameMode = 'solo';
 let currentDifficulty = 'easy';
 
 let secretCode = '';
@@ -45,13 +11,35 @@ let p1Attempts = 0, p2Attempts = 0;
 let p1HistoryHTML = '', p2HistoryHTML = '';
 let currentTurnPlayer = 1;
 let pendingActionAfterPass = '';
-let samePhoneState = 'playing';
 
 document.addEventListener('DOMContentLoaded', () => {
     buildDiscardBoard();
     switchRulesTab('easy');
+    
+    // Mostrar instrucciones automáticamente al entrar a la web por primera vez
+    openRulesModal();
 
-    // Mantenimiento del botón flotante con el back físico
+    // Soporte para teclado físico de PC o dispositivos conectados
+    window.addEventListener('keydown', (e) => {
+        const activeScreen = document.querySelector('.screen.active');
+        if (!activeScreen) return;
+
+        let context = null;
+        if (activeScreen.id === 'setupScreen') context = 'setup';
+        else if (activeScreen.id === 'gameScreen') context = 'game';
+
+        if (!context) return;
+
+        if (e.key >= '0' && e.key <= '9') {
+            typeDigit(e.key, context);
+        } else if (e.key === 'Backspace') {
+            deleteDigit(context);
+        } else if (e.key === 'Enter') {
+            if (context === 'setup') confirmSecretCode();
+            else if (context === 'game') submitGuess();
+        }
+    });
+
     window.history.pushState({ page: 'menu' }, '', '');
     window.addEventListener('popstate', () => {
         goHome();
@@ -66,7 +54,6 @@ function showToast(msg) {
     setTimeout(() => t.classList.remove('show'), 3500);
 }
 
-// TECLADO TÁCTIL PROPIO
 function typeDigit(digit, context) {
     let buffer = (context === 'setup') ? setupBuffer : gameBuffer;
     if (buffer.length < 4 && !buffer.includes(digit)) {
@@ -96,8 +83,13 @@ function updateCodeDisplay(context) {
     });
 }
 
+function setDifficulty(diff) {
+    currentDifficulty = diff;
+    document.getElementById('topDifficultySelect').value = diff;
+}
+
 function setGameMode(mode) {
-    gameMode = mode;
+    currentGameMode = mode;
     resetDiscardBoard();
     if (mode === 'solo') {
         secretCode = generateRandomCode();
@@ -105,11 +97,9 @@ function setGameMode(mode) {
     } else if (mode === 'same_phone') {
         p1Code = ''; p2Code = ''; p1Attempts = 0; p2Attempts = 0;
         p1HistoryHTML = ''; p2HistoryHTML = '';
-        samePhoneState = 'playing';
         pendingActionAfterPass = 'p1_setup';
         showPassPhoneScreen("Jugador 1", "Configura tu código secreto en privado.");
     } else if (mode === 'two_phones') {
-        alert("Modo Dos Teléfonos: Dile a tu rival que genere su propio reto y te comparta su enlace.");
         startHostLobby();
     }
 }
@@ -119,8 +109,8 @@ function startHostLobby() {
 }
 
 function selectLinkDifficulty(diff) {
-    currentDifficulty = diff;
-    gameMode = 'link_host';
+    setDifficulty(diff);
+    currentGameMode = 'link_host';
     document.getElementById('setupTitle').innerText = "Configura el código para tu rival";
     showScreen('setupScreen');
 }
@@ -134,7 +124,7 @@ function confirmSecretCode() {
     setupBuffer = [];
     updateCodeDisplay('setup');
 
-    if (gameMode === 'same_phone') {
+    if (currentGameMode === 'same_phone') {
         if (pendingActionAfterPass === 'p1_setup') {
             p1Code = code;
             pendingActionAfterPass = 'p2_setup';
@@ -145,7 +135,7 @@ function confirmSecretCode() {
             currentTurnPlayer = 1;
             showPassPhoneScreen("Jugador 1", "Comienza la partida. Intenta adivinar el código del Jugador 2.");
         }
-    } else if (gameMode === 'link_host') {
+    } else if (currentGameMode === 'link_host') {
         let payload = btoa(JSON.stringify({ c: code, d: currentDifficulty }));
         let shareUrl = `${window.location.origin}${window.location.pathname}#room=${payload}`;
         
@@ -182,12 +172,12 @@ function startGameSession() {
     updateCodeDisplay('game');
     resetDiscardBoard();
 
-    if (gameMode === 'same_phone') {
+    if (currentGameMode === 'same_phone') {
         document.getElementById('historyContainer').innerHTML = (currentTurnPlayer === 1) ? p1HistoryHTML : p2HistoryHTML;
         document.getElementById('turnIndicator').innerText = `Turno de: Jugador ${currentTurnPlayer}`;
     } else {
         document.getElementById('historyContainer').innerHTML = '';
-        document.getElementById('turnIndicator').innerText = "Partida en curso";
+        document.getElementById('turnIndicator').innerText = currentDifficulty === 'easy' ? "Modo Fácil" : "Modo Difícil";
     }
     showScreen('gameScreen');
 }
@@ -202,7 +192,7 @@ function submitGuess() {
     updateCodeDisplay('game');
 
     let activeTarget = secretCode;
-    if (gameMode === 'same_phone') {
+    if (currentGameMode === 'same_phone') {
         activeTarget = (currentTurnPlayer === 1) ? p2Code : p1Code;
         if (currentTurnPlayer === 1) p1Attempts++; else p2Attempts++;
     } else {
@@ -219,7 +209,7 @@ function submitGuess() {
         playSound('success');
         handleVictory();
     } else {
-        if (gameMode === 'same_phone') {
+        if (currentGameMode === 'same_phone') {
             if (currentTurnPlayer === 1) p1HistoryHTML = document.getElementById('historyContainer').innerHTML;
             else p2HistoryHTML = document.getElementById('historyContainer').innerHTML;
 
@@ -245,30 +235,28 @@ function handleVictory() {
     const details = document.getElementById('victoryDetailsContent');
     const actions = document.getElementById('winModalActions');
 
-    if (gameMode === 'same_phone') {
+    if (currentGameMode === 'same_phone') {
         let winner = currentTurnPlayer;
         let loser = (winner === 1) ? 2 : 1;
         let winCode = (winner === 1) ? p2Code : p1Code;
         let loseCode = (winner === 1) ? p1Code : p2Code;
 
         details.innerHTML = `
-            <h3 style="color: #34d399; font-size: 1.5rem; margin-bottom: 0.5rem;">¡GANADOR JUGADOR ${winner}!</h3>
-            <p>Descifró el código: <b>${winCode}</b></p>
-            <div style="margin-top: 1rem; padding: 0.5rem; background: #450a0a; border-radius: 8px; color: #f87171;">
+            <h3 style="color: #34d399; font-size: 1.4rem; margin-bottom: 0.4rem;">¡GANA JUGADOR ${winner}!</h3>
+            <p>Código descubierto: <b>${winCode}</b></p>
+            <div style="margin-top: 0.75rem; padding: 0.4rem; background: #450a0a; border-radius: 6px; color: #f87171; font-size: 0.9rem;">
                 Jugador ${loser} pierde (Su código era: ${loseCode})
             </div>
         `;
-        actions.innerHTML = `
-            <button class="btn primary full-width" onclick="goHome()">🏠 Regresar al menú</button>
-        `;
+        actions.innerHTML = `<button class="btn primary full-width" onclick="goHome()">🏠 Regresar al menú</button>`;
     } else {
         details.innerHTML = `
-            <p style="font-size: 1.2rem;">Intentos realizados: <b>${attemptCount}</b></p>
-            <p style="color: var(--text-muted); margin-top: 0.5rem;">Código secreto: <b>${secretCode}</b></p>
+            <p style="font-size: 1.1rem;">Intentos realizados: <b>${attemptCount}</b></p>
+            <p style="color: var(--text-muted); margin-top: 0.4rem;">Código secreto: <b>${secretCode}</b></p>
         `;
         actions.innerHTML = `
             <button class="btn primary full-width" onclick="restartGame()">🔄 Volver a jugar</button>
-            <button class="btn accent full-width" onclick="startHostLobby()" style="margin-top: 0.5rem;">🌐 Retar a un amigo</button>
+            <button class="btn accent full-width" onclick="startHostLobby()" style="margin-top: 0.4rem;">🌐 Retar a un amigo</button>
             <button class="btn text full-width" onclick="goHome()">🏠 Menú principal</button>
         `;
     }
@@ -276,11 +264,10 @@ function handleVictory() {
     document.getElementById('winModal').classList.add('active');
 }
 
-// PANEL DE DESCARTE CON TACO / PALOMITA
+// PANEL DE DESCARTE COMPACTO (Fila única 0-9)
 function buildDiscardBoard() {
-    const r1 = document.getElementById('numberPillsRow1');
-    const r2 = document.getElementById('numberPillsRow2');
-    r1.innerHTML = ''; r2.innerHTML = '';
+    const row = document.getElementById('numberPillsRow');
+    row.innerHTML = '';
 
     for (let i = 0; i <= 9; i++) {
         const pill = document.createElement('div');
@@ -301,9 +288,7 @@ function buildDiscardBoard() {
                 pill.className = 'pill';
             }
         };
-
-        if (i <= 4) r1.appendChild(pill);
-        else r2.appendChild(pill);
+        row.appendChild(pill);
     }
 }
 
@@ -339,7 +324,7 @@ function appendHistoryHard(guess, target) {
     const row = document.createElement('div');
     row.className = 'history-row';
     row.innerHTML = `
-        <span style="font-weight:700; font-size:1.1rem;">${guess}</span>
+        <span style="font-weight:700; font-size:1rem;">${guess}</span>
         <div>
             <span class="badge-only-number green">${green}</span>
             <span class="badge-only-number orange">${orange}</span>
@@ -361,18 +346,18 @@ function switchRulesTab(tab) {
     const body = document.getElementById('rulesBody');
     if (tab === 'easy') {
         body.innerHTML = `
-            <p><b>🟢 Modo Fácil:</b> Cada casilla te dirá exactamente qué pasó con ese dígito:</p>
-            <ul style="margin: 0.5rem 0 0.5rem 1.2rem; color: var(--text-muted);">
-                <li><b style="color:#10b981">Verde:</b> Dígito correcto en posición correcta.</li>
-                <li><b style="color:#f59e0b">Naranja:</b> El dígito existe pero va en otra posición.</li>
+            <p><b>🟢 Modo Fácil:</b> Cada casilla te dirá el estado exacto del dígito:</p>
+            <ul style="margin: 0.4rem 0 0.4rem 1.1rem; color: var(--text-muted); font-size: 0.85rem;">
+                <li><b style="color:#059669">Verde:</b> Dígito correcto en posición correcta.</li>
+                <li><b style="color:#d97706">Naranja:</b> El dígito existe pero va en otra posición.</li>
             </ul>
         `;
     } else {
         body.innerHTML = `
-            <p><b>🔴 Modo Difícil:</b> Recibirás un conteo general al final de la fila:</p>
-            <ul style="margin: 0.5rem 0 0.5rem 1.2rem; color: var(--text-muted);">
-                <li><b style="color:#10b981">Verdes:</b> Cuántos están en la posición exacta.</li>
-                <li><b style="color:#f59e0b">Naranjas:</b> Cuántos existen pero están desubicados.</li>
+            <p><b>🔴 Modo Difícil:</b> Recibirás un conteo general por intento:</p>
+            <ul style="margin: 0.4rem 0 0.4rem 1.1rem; color: var(--text-muted); font-size: 0.85rem;">
+                <li><b style="color:#059669">Verdes:</b> Cuántos números están en la posición exacta.</li>
+                <li><b style="color:#d97706">Naranjas:</b> Cuántos números existen pero están desubicados.</li>
             </ul>
         `;
     }
@@ -380,18 +365,15 @@ function switchRulesTab(tab) {
 
 function openRulesModal() {
     document.getElementById('rulesModal').classList.add('active');
-    document.getElementById('floatingHelpBtn').classList.remove('visible');
 }
 
 function closeRulesModal() {
     document.getElementById('rulesModal').classList.remove('active');
-    document.getElementById('floatingHelpBtn').classList.add('visible');
 }
 
 function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    document.getElementById('floatingHelpBtn').classList.add('visible');
 }
 
 function goHome() {
@@ -401,5 +383,5 @@ function goHome() {
 
 function restartGame() {
     document.getElementById('winModal').classList.remove('active');
-    setGameMode(gameMode);
+    setGameMode(currentGameMode);
 }
