@@ -398,6 +398,11 @@ function startGameSession() {
     attemptCount = 0;
     resetDiscardBoard();
     
+    // Asegurar que el cuadro de inputs y el botón estén visibles al iniciar turno
+    document.getElementById('inputContainerWrapper').style.display = 'block';
+    document.getElementById('turnCountdownBanner').style.display = 'none';
+    document.getElementById('submitGuessBtn').style.display = 'block';
+
     const diffBadge = document.getElementById('gameDiffBadge');
     if (currentDifficulty === 'easy') {
         diffBadge.innerText = "🟢 Fácil";
@@ -422,6 +427,7 @@ function startGameSession() {
 }
 
 function submitGuess() {
+    // 1. FORZAR CIERRE DE TECLADO MÓVIL (OCULTANDO EL CONTENEDOR DE INPUTS MOMENTÁNEAMENTE)
     document.querySelectorAll('#currentAttemptInputs input').forEach(input => input.blur());
 
     const inputs = document.querySelectorAll('#currentAttemptInputs input');
@@ -453,7 +459,6 @@ function submitGuess() {
     }
 
     inputs.forEach(i => i.value = '');
-    inputs[0].focus();
 
     if (guess === activeTargetCode) {
         playSound('success');
@@ -463,27 +468,34 @@ function submitGuess() {
             if (samePhoneState === 'p1_guessed_waiting_p2') {
                 showSamePhoneWinner(1);
             } else {
-                triggerTurnWaitSequence();
+                // 2. PRAGMATISMO: OCULTAR INPUT Y MOSTRAR BANNER DE 3 SEGUNDOS ABAJO MIENTRAS VE SU PISTA
+                triggerInlineTurnCountdown();
             }
         }
     }
 }
 
-// RETARDO CON CONTADOR DE SEGUNDOS PARA MÁS TENSIÓN
-function triggerTurnWaitSequence() {
-    showScreen('turnWaitScreen');
-    let nextPlayer = (currentTurnPlayer === 1) ? 2 : 1;
-    document.getElementById('turnWaitTitle').innerText = `Turno de Jugador ${currentTurnPlayer} finalizado`;
-    document.getElementById('turnWaitDesc').innerText = `Procesando intento y pasando el teléfono...`;
-    
+// SECUENCIA DE 3 SEGUNDOS CON EL RESULTADO YA VISIBLE EN PANTALLA
+function triggerInlineTurnCountdown() {
+    const inputWrapper = document.getElementById('inputContainerWrapper');
+    const submitBtn = document.getElementById('submitGuessBtn');
+    const countdownBanner = document.getElementById('turnCountdownBanner');
+    const countdownText = document.getElementById('turnCountdownText');
+
+    // Ocultar inputs y botón para cerrar el teclado y dejar ver el historial y descarte
+    inputWrapper.style.display = 'none';
+    submitBtn.style.display = 'none';
+    countdownBanner.style.display = 'block';
+
     let secondsLeft = 3;
-    const timerEl = document.getElementById('countdownTimerText');
-    timerEl.innerText = secondsLeft;
+    let nextPlayer = (currentTurnPlayer === 1) ? 2 : 1;
+    countdownText.innerText = `Turno de Jugador ${currentTurnPlayer} finalizado. Pasando a Jugador ${nextPlayer} en ${secondsLeft}s...`;
 
     const interval = setInterval(() => {
         secondsLeft--;
-        timerEl.innerText = secondsLeft;
-        if (secondsLeft <= 0) {
+        if (secondsLeft > 0) {
+            countdownText.innerText = `Pasando a Jugador ${nextPlayer} en ${secondsLeft}s...`;
+        } else {
             clearInterval(interval);
             currentTurnPlayer = nextPlayer;
             pendingActionAfterPass = (currentTurnPlayer === 1) ? 'p1_guess' : 'p2_guess';
@@ -518,7 +530,6 @@ function handleVictory(activeTargetCode) {
     saveStat(attemptCount);
 }
 
-// PANTALLA DE VICTORIA VISTOSA (CON GANADOR EN VERDE Y PERDEDOR EN ROJO)
 function showSamePhoneWinner(winnerNum) {
     let loserNum = (winnerNum === 1) ? 2 : 1;
     let winningAttempts = (winnerNum === 1) ? p1Attempts : p2Attempts;
