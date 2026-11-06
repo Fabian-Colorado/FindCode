@@ -50,19 +50,6 @@
             </div>
         </section>
 
-        <!-- PANTALLA DE ESPERA / RETARDO DE TURNO (CON TENSION) -->
-        <section id="turnWaitScreen" class="screen">
-            <div class="game-card text-center alert-card">
-                <span class="win-icon">⏳</span>
-                <h2 id="turnWaitTitle">Turno finalizado</h2>
-                <p id="turnWaitDesc" class="subtitle">Analizando resultado y pasando el turno...</p>
-                <div class="spinner-container">
-                    <div class="pulse-ring"></div>
-                </div>
-                <p id="countdownTimerText" style="font-size: 1.2rem; font-weight: 800; color: var(--accent-indigo);">3</p>
-            </div>
-        </section>
-
         <!-- PANTALLA DE TRANSICIÓN: PASAR EL TELÉFONO -->
         <section id="passPhoneScreen" class="screen">
             <div class="game-card text-center" id="passCardContainer">
@@ -122,15 +109,23 @@
             <!-- HISTORIAL DE INTENTOS -->
             <div class="history-container" id="historyContainer"></div>
 
-            <!-- ENTRADA DE INTENTO NATIVA -->
+            <!-- ENTRADA DE INTENTO NATIVA (CONTROLADA PARA OCULTAR/MOSTRAR TECLADO) -->
             <div class="game-action-panel">
-                <div class="code-inputs-group" id="currentAttemptInputs">
-                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input" autocomplete="off">
-                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input" autocomplete="off">
-                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input" autocomplete="off">
-                    <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input" autocomplete="off">
+                <div id="inputContainerWrapper">
+                    <div class="code-inputs-group" id="currentAttemptInputs">
+                        <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input" autocomplete="off">
+                        <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input" autocomplete="off">
+                        <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input" autocomplete="off">
+                        <input type="tel" pattern="[0-9]*" maxlength="1" class="numeric-only digit-input" autocomplete="off">
+                    </div>
                 </div>
-                <button class="btn primary glow full-width" onclick="submitGuess()" style="margin-top: 0.75rem;" data-i18n="guess_btn">Probar Código</button>
+                
+                <!-- CONTADOR VISUAL INFERIOR PARA EL CAMBIO DE TURNO (MODO 1 TELÉFONO) -->
+                <div id="turnCountdownBanner" class="turn-countdown-banner" style="display: none;">
+                    <span id="turnCountdownText">Pasando turno en 3...</span>
+                </div>
+
+                <button id="submitGuessBtn" class="btn primary glow full-width" onclick="submitGuess()" style="margin-top: 0.75rem;" data-i18n="guess_btn">Probar Código</button>
             </div>
         </section>
     </div>
