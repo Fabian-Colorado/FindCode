@@ -1,41 +1,69 @@
-// Estado global del audio
-let soundEnabled = true;
+// CONTROLADOR DE AUDIO - CANALES SEPARADOS PARA OST Y SFX
+let isMusicOn = true;
+let isSFXOn = true;
+
+// Canales de música para la carpeta /ost en GitHub/Cloudflare
+const audioTracks = {
+    base: new Audio('ost/1.mp3'),
+    tension: new Audio('ost/2.mp3'),
+    climax: new Audio('ost/3.mp3')
+};
+
+// Configuración de loops
+Object.values(audioTracks).forEach(track => {
+    track.loop = true;
+    track.volume = 0;
+});
 
 function toggleAudio() {
-    soundEnabled = !soundEnabled;
-    const btn = document.getElementById('soundToggle');
-    if (btn) {
-        btn.innerText = soundEnabled ? '🔊' : '🔇';
+    isMusicOn = !isMusicOn;
+    document.getElementById('soundToggle').innerText = isMusicOn ? '🎵' : '🔇';
+    if (!isMusicOn) {
+        stopAllMusic();
+    } else {
+        playMusicLayer('base');
     }
 }
 
-// Reproductor de efectos sintéticos seguros (sin archivos externos por ahora)
-function playSound(type) {
-    if (!soundEnabled) return;
-    
+function toggleSFX() {
+    isSFXOn = !isSFXOn;
+    document.getElementById('sfxToggle').innerText = isSFXOn ? '🔊' : '🔕';
+}
+
+function playMusicLayer(layerName) {
+    if (!isMusicOn) return;
     try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        
-        if (type === 'click') {
-            osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.08);
-        } else if (type === 'success') {
-            osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
-            osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); // A5
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.3);
+        if (audioTracks[layerName]) {
+            audioTracks[layerName].volume = 0.5;
+            audioTracks[layerName].play().catch(() => {});
         }
-    } catch (e) {
-        // Los navegadores bloquean audio si no ha habido interacción previa, lo ignoramos de forma segura
+    } catch(e) {}
+}
+
+function stopAllMusic() {
+    Object.values(audioTracks).forEach(track => {
+        track.pause();
+        track.currentTime = 0;
+    });
+}
+
+function playSound(type) {
+    if (!isSFXOn) return;
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    if (type === 'click') {
+        osc.frequency.setValueAtTime(400, ctx.currentTime);
+        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.05);
+    } else if (type === 'success') {
+        osc.frequency.setValueAtTime(600, ctx.currentTime);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.2);
     }
 }
