@@ -41,7 +41,6 @@ function stopAllMusic() {
     });
 }
 
-// Reproductor de efectos robusto basado en Web Audio API (nunca falla)
 function playSound(type) {
     if (!isSFXOn) return;
     try {
@@ -59,7 +58,7 @@ function playSound(type) {
             osc.start();
             osc.stop(ctx.currentTime + 0.04);
         } else if (type === 'success') {
-            osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+            osc.frequency.setValueAtTime(587.33, ctx.currentTime);
             gain.gain.setValueAtTime(0.15, ctx.currentTime);
             osc.start();
             osc.stop(ctx.currentTime + 0.15);
