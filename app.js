@@ -26,7 +26,7 @@ const translations = {
         ready_btn: "¡Estoy listo, empezar!",
         rules_general: `
             <p>🎯 <b>Objetivo:</b> Adivina el código secreto de 4 dígitos únicos (0 al 9).</p>
-            <p>📝 <b>Panel superior:</b> Toca cualquier número para tacharlo en diagonal.</p>
+            <p>📝 <b>Panel superior:</b> Toca cualquier número para descartarlo o marcarlo.</p>
         `,
         rules_solo: `<p>🤖 <b>Modo Solitario:</b> Adivina el código generado aleatoriamente.</p>`,
         rules_same: `
@@ -130,7 +130,7 @@ const translations = {
 };
 
 let currentLang = 'es';
-let currentDifficulty = 'easy';
+let currentDifficulty = 'easy'; // Por defecto en Fácil
 let gameMode = 'solo';
 
 let secretCode = '';
@@ -168,15 +168,24 @@ function showToast(message) {
     setTimeout(() => { toast.classList.remove('show'); }, 3500);
 }
 
-// CONFIGURACIÓN DE INPUTS NATIVOS CON SUSTITUCIÓN Y TECLA ENTER
+// CONTROL DE DIFICULTAD EN EL MENÚ PRINCIPAL
+function setMenuDifficulty(diff) {
+    currentDifficulty = diff;
+    document.getElementById('menuDiffEasy').classList.toggle('active', diff === 'easy');
+    document.getElementById('menuDiffHard').classList.toggle('active', diff === 'hard');
+}
+
+// FILTRADO ESTRICTO DE DIGITOS (SOLO 0-9, SIN ESPACIOS NI GUIONES)
 function setupNumericInputs() {
     document.querySelectorAll('.numeric-only').forEach(input => {
         input.addEventListener('focus', () => input.select());
         
         input.addEventListener('input', (e) => {
-            let val = e.target.value;
+            let val = e.target.value.replace(/[^0-9]/g, ''); // ÚNICAMENTE NÚMEROS 0-9
             if (val.length > 1) {
                 e.target.value = val.slice(-1);
+            } else {
+                e.target.value = val;
             }
             if (e.target.value) playSound('click');
         });
@@ -228,12 +237,6 @@ function updateRulesContent(mode = 'general') {
     if (mode === 'same_phone') modeText += t.rules_same;
     if (mode === 'two_phones' || mode === 'link') modeText += t.rules_two;
     document.getElementById('rulesBody').innerHTML = modeText;
-}
-
-function setDifficulty(diff) {
-    currentDifficulty = diff;
-    document.getElementById('diffEasy').classList.toggle('active', diff === 'easy');
-    document.getElementById('diffHard').classList.toggle('active', diff === 'hard');
 }
 
 function setGameMode(mode) {
@@ -373,7 +376,7 @@ function checkUrlForSharedGame() {
             currentDifficulty = roomData.d || 'easy'; 
             challengerName = "Tu amigo";
             
-            setDifficulty(currentDifficulty);
+            setMenuDifficulty(currentDifficulty);
             document.getElementById('challengerTitle').innerText = `¡Te han retado!`;
             showScreen('guestWelcomeScreen');
         } catch (e) {
@@ -397,6 +400,16 @@ function startGameSession() {
     attemptCount = 0;
     resetDiscardBoard();
     
+    // Configurar la etiqueta fija de dificultad en la partida
+    const diffBadge = document.getElementById('gameDiffBadge');
+    if (currentDifficulty === 'easy') {
+        diffBadge.innerText = "🟢 Fácil";
+        diffBadge.style.color = "var(--accent-green)";
+    } else {
+        diffBadge.innerText = "🔴 Difícil";
+        diffBadge.style.color = "var(--accent-red)";
+    }
+
     if (gameMode === 'same_phone') {
         document.getElementById('historyContainer').innerHTML = (currentTurnPlayer === 1) ? p1HistoryHTML : p2HistoryHTML;
         let turnText = (samePhoneState === 'p1_guessed_waiting_p2') ? 
@@ -552,38 +565,38 @@ function appendHistoryHardRow(guess, targetCode) {
     container.prepend(row);
 }
 
+// PANEL DE DESCARTE CON 3 ESTADOS (NORMAL -> TACHE -> VERDE -> NORMAL)
 function buildDiscardBoard() {
-    const row1 = document.getElementById('numberPillsRow1');
-    const row2 = document.getElementById('numberPillsRow2');
-    row1.innerHTML = '';
-    row2.innerHTML = '';
-    
-    for (let i = 0; i <= 4; i++) {
+    const row = document.getElementById('numberPillsRow');
+    row.innerHTML = '';
+
+    for (let i = 0; i <= 9; i++) {
         const pill = document.createElement('div');
         pill.className = 'pill';
         pill.innerText = i;
+        pill.dataset.state = 'normal';
+
         pill.onclick = () => {
             playSound('click');
-            pill.classList.toggle('discarded');
+            if (pill.dataset.state === 'normal') {
+                pill.dataset.state = 'discarded';
+                pill.className = 'pill discarded';
+            } else if (pill.dataset.state === 'discarded') {
+                pill.dataset.state = 'confirmed';
+                pill.className = 'pill confirmed';
+            } else {
+                pill.dataset.state = 'normal';
+                pill.className = 'pill';
+            }
         };
-        row1.appendChild(pill);
-    }
-    
-    for (let i = 5; i <= 9; i++) {
-        const pill = document.createElement('div');
-        pill.className = 'pill';
-        pill.innerText = i;
-        pill.onclick = () => {
-            playSound('click');
-            pill.classList.toggle('discarded');
-        };
-        row2.appendChild(pill);
+        row.appendChild(pill);
     }
 }
 
 function resetDiscardBoard() {
-    document.querySelectorAll('.pill').forEach(pill => {
-        pill.classList.remove('discarded');
+    document.querySelectorAll('.pill').forEach(p => {
+        p.className = 'pill';
+        p.dataset.state = 'normal';
     });
 }
 
