@@ -2,15 +2,13 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find Code - Secret Number Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Find Code</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body data-theme="dark">
     <div id="app">
-        <div id="toastNotification" class="toast">
-            📋 ¡Enlace copiado al portapapeles!
-        </div>
+        <div id="toastNotification" class="toast"></div>
 
         <header>
             <div class="brand-container">
@@ -18,7 +16,8 @@
                 <h1 class="logo" id="brandTitle">Find Code</h1>
             </div>
             <div class="header-actions">
-                <button id="soundToggle" class="icon-btn" onclick="toggleAudio()" title="Audio">🔊</button>
+                <button id="soundToggle" class="icon-btn" onclick="toggleAudio()" title="Música">🎵</button>
+                <button id="sfxToggle" class="icon-btn" onclick="toggleSFX()" title="Efectos">🔊</button>
                 <select id="langSelect" class="lang-select" onchange="changeLanguage(this.value)">
                     <option value="es">Español</option>
                     <option value="en">English</option>
@@ -28,10 +27,10 @@
             </div>
         </header>
 
-        <!-- MENU PRINCIPAL -->
+        <!-- MENÚ PRINCIPAL -->
         <section id="mainMenu" class="screen active">
             <div class="hero-card">
-                <p id="mainSubtitle" data-i18n="subtitle">Un juego de lógica, deducción y estrategia para descifrar el código.</p>
+                <p id="mainSubtitle" class="subtitle" data-i18n="subtitle">Un juego de lógica, deducción y estrategia para descifrar el código.</p>
                 
                 <div class="menu-buttons">
                     <button class="btn primary glow" onclick="setGameMode('solo')" data-i18n="mode_solo">🤖 Jugar en solitario</button>
@@ -39,25 +38,42 @@
                     <button class="btn secondary" onclick="setGameMode('two_phones')" data-i18n="mode_two">📱📱 Dos Teléfonos (Presencial)</button>
                     <button class="btn accent" onclick="startHostLobby()" data-i18n="mode_share">🌐 Crear Reto por Enlace</button>
                 </div>
+            </div>
+        </section>
 
-                <div class="difficulty-selector">
-                    <label data-i18n="difficulty_label">Dificultad:</label>
-                    <div class="diff-buttons">
-                        <button id="diffEasy" class="diff-btn active" onclick="setDifficulty('easy')">Fácil (con pistas)</button>
-                        <button id="diffHard" class="diff-btn" onclick="setDifficulty('hard')">Difícil (sin pistas)</button>
-                    </div>
+        <!-- SELECCIÓN DE DIFICULTAD PARA RETO POR ENLACE -->
+        <section id="linkDifficultyScreen" class="screen">
+            <div class="game-card text-center">
+                <h2>Configurar Reto por Enlace</h2>
+                <p>Elige la dificultad que tendrá tu reto antes de crear tu código:</p>
+                <div class="menu-buttons full-width" style="margin-top: 1.5rem;">
+                    <button class="btn primary glow" onclick="selectLinkDifficulty('easy')">🟢 Fácil (Con pistas individuales)</button>
+                    <button class="btn secondary" onclick="selectLinkDifficulty('hard')">🔴 Difícil (Solo conteo total)</button>
                 </div>
+                <button class="btn text" onclick="goHome()" data-i18n="menu_home" style="margin-top: 1rem;">🏠 Regresar al menú principal</button>
+            </div>
+        </section>
+
+        <!-- PANTALLA DE ESPERA / RETARDO DE TURNO -->
+        <section id="turnWaitScreen" class="screen">
+            <div class="game-card text-center alert-card">
+                <span class="win-icon">⏳</span>
+                <h2 id="turnWaitTitle">Cambiando de turno...</h2>
+                <p id="turnWaitDesc">Pasa el teléfono al Jugador 2.</p>
+                <div class="spinner-container">
+                    <div class="pulse-ring"></div>
+                </div>
+                <p class="sub-text">Iniciando en 3 segundos para que analices tu jugada...</p>
             </div>
         </section>
 
         <!-- PANTALLA DE TRANSICIÓN: PASAR EL TELÉFONO -->
         <section id="passPhoneScreen" class="screen">
-            <div class="game-card text-center alert-card" id="passCardContainer">
+            <div class="game-card text-center" id="passCardContainer">
                 <span class="win-icon" id="passIconEmoji">🔄</span>
                 <h2 id="passPhoneTitle">Pasa el teléfono</h2>
                 <p id="passPhoneDesc">Entrega el dispositivo al siguiente jugador de forma secreta.</p>
                 <button class="btn primary glow full-width" onclick="confirmPassPhone()" data-i18n="ready_btn">Listo, soy el jugador</button>
-                <button class="btn text" onclick="goHome()" data-i18n="menu_home">🏠 Regresar al menú principal</button>
             </div>
         </section>
 
@@ -72,92 +88,122 @@
                     <button class="btn primary glow full-width" onclick="startGuestPlayOnly()" data-i18n="play_only">Solo adivinar este reto</button>
                     <button class="btn accent full-width" onclick="acceptAndChallengeBack()" data-i18n="challenge_back_option">Aceptar y Retar de vuelta</button>
                 </div>
-                
-                <button class="btn text" onclick="goHome()" data-i18n="menu_home">🏠 Regresar al menú principal</button>
             </div>
         </section>
 
-        <!-- PANTALLA CONFIGURAR CODIGO (USANDO TYPE="NUMBER" PARA EVITAR BARRA DE TARJETAS) -->
+        <!-- CONFIGURAR CÓDIGO (USANDO TECLADO TÁCTIL) -->
         <section id="setupScreen" class="screen">
-            <div class="game-card">
+            <div class="game-card text-center">
                 <h2 id="setupTitle">Configura tu código secreto</h2>
                 <p id="setupDesc">Introduce un código de 4 dígitos únicos (0-9).</p>
                 
-                <div class="code-inputs" id="setupInputs">
-                    <input type="number" inputmode="numeric" min="0" max="9" maxlength="1" class="digit-box numeric-only" autocomplete="off" />
-                    <input type="number" inputmode="numeric" min="0" max="9" maxlength="1" class="digit-box numeric-only" autocomplete="off" />
-                    <input type="number" inputmode="numeric" min="0" max="9" maxlength="1" class="digit-box numeric-only" autocomplete="off" />
-                    <input type="number" inputmode="numeric" min="0" max="9" maxlength="1" class="digit-box numeric-only" autocomplete="off" />
+                <div class="code-display-box" id="setupCodeDisplay">
+                    <div class="digit-slot active"></div>
+                    <div class="digit-slot"></div>
+                    <div class="digit-slot"></div>
+                    <div class="digit-slot"></div>
                 </div>
-                
-                <button class="btn primary" onclick="confirmSecretCode()" data-i18n="confirm">Confirmar y Jugar</button>
-                <button class="btn text" onclick="goHome()" data-i18n="menu_home">🏠 Regresar al menú principal</button>
+
+                <!-- TECLADO TÁCTIL INTEGRADO -->
+                <div class="custom-numpad" id="setupNumpad">
+                    <button class="pad-btn" onclick="typeDigit('1', 'setup')">1</button>
+                    <button class="pad-btn" onclick="typeDigit('2', 'setup')">2</button>
+                    <button class="pad-btn" onclick="typeDigit('3', 'setup')">3</button>
+                    <button class="pad-btn" onclick="typeDigit('4', 'setup')">4</button>
+                    <button class="pad-btn" onclick="typeDigit('5', 'setup')">5</button>
+                    <button class="pad-btn" onclick="typeDigit('6', 'setup')">6</button>
+                    <button class="pad-btn" onclick="typeDigit('7', 'setup')">7</button>
+                    <button class="pad-btn" onclick="typeDigit('8', 'setup')">8</button>
+                    <button class="pad-btn" onclick="typeDigit('9', 'setup')">9</button>
+                    <button class="pad-btn danger" onclick="deleteDigit('setup')">✕</button>
+                    <button class="pad-btn zero-btn" onclick="typeDigit('0', 'setup')">0</button>
+                    <button class="pad-btn success" onclick="confirmSecretCode()">✓</button>
+                </div>
+
+                <button class="btn text" onclick="goHome()" data-i18n="menu_home" style="margin-top: 1rem;">🏠 Regresar al menú principal</button>
             </div>
         </section>
 
-        <!-- PANTALLA DE JUEGO -->
+        <!-- PANTALLA DE JUEGO PRINCIPAL -->
         <section id="gameScreen" class="screen">
             <div class="game-top-bar">
                 <span id="turnIndicator">Tu turno</span>
                 <button class="btn small text-btn" onclick="goHome()" data-i18n="exit">Salir</button>
             </div>
 
-            <!-- PANEL DE DESCARTE COMPACTO -->
+            <!-- PANEL DE DESCARTE CLÁSICO (TACHE / PALOMITA) -->
             <div class="touch-discard-panel">
-                <span class="discard-title-mini">Descarte:</span>
-                <div class="number-pills-grid" id="numberPillsRow1"></div>
-                <div class="number-pills-grid" id="numberPillsRow2" style="margin-top: 0.15rem;"></div>
+                <span class="discard-title-mini">Descarte (1x Tache / 2x Verde):</span>
+                <div class="number-pills-row" id="numberPillsRow1"></div>
+                <div class="number-pills-row" id="numberPillsRow2"></div>
             </div>
 
+            <!-- HISTORIAL DE INTENTOS -->
             <div class="history-container" id="historyContainer"></div>
 
-            <div class="game-card-action">
-                <div class="current-attempt" id="currentAttemptInputs">
-                    <input type="number" inputmode="numeric" min="0" max="9" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" />
-                    <input type="number" inputmode="numeric" min="0" max="9" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" />
-                    <input type="number" inputmode="numeric" min="0" max="9" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" />
-                    <input type="number" inputmode="numeric" min="0" max="9" maxlength="1" class="digit-box guess-box numeric-only" autocomplete="off" />
+            <!-- TECLADO Y CASILLAS DEL INTENTO ACTUAL -->
+            <div class="game-action-panel">
+                <div class="code-display-box" id="gameCodeDisplay">
+                    <div class="digit-slot active"></div>
+                    <div class="digit-slot"></div>
+                    <div class="digit-slot"></div>
+                    <div class="digit-slot"></div>
                 </div>
-                <button class="btn primary full-width" onclick="submitGuess()" data-i18n="guess_btn">Probar Código</button>
+
+                <div class="custom-numpad" id="gameNumpad">
+                    <button class="pad-btn" onclick="typeDigit('1', 'game')">1</button>
+                    <button class="pad-btn" onclick="typeDigit('2', 'game')">2</button>
+                    <button class="pad-btn" onclick="typeDigit('3', 'game')">3</button>
+                    <button class="pad-btn" onclick="typeDigit('4', 'game')">4</button>
+                    <button class="pad-btn" onclick="typeDigit('5', 'game')">5</button>
+                    <button class="pad-btn" onclick="typeDigit('6', 'game')">6</button>
+                    <button class="pad-btn" onclick="typeDigit('7', 'game')">7</button>
+                    <button class="pad-btn" onclick="typeDigit('8', 'game')">8</button>
+                    <button class="pad-btn" onclick="typeDigit('9', 'game')">9</button>
+                    <button class="pad-btn danger" onclick="deleteDigit('game')">✕</button>
+                    <button class="pad-btn zero-btn" onclick="typeDigit('0', 'game')">0</button>
+                    <button class="pad-btn success" onclick="submitGuess()">✓</button>
+                </div>
             </div>
         </section>
     </div>
 
+    <!-- BOTÓN DE AYUDA FLOTANTE -->
     <button id="floatingHelpBtn" class="floating-btn visible" onclick="openRulesModal()" title="Ayuda">❓</button>
 
+    <!-- MODAL DE REGLAS E INSTRUCCIONES MEJORADO -->
     <div id="rulesModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <span class="modal-icon">💡</span>
-                <h2 id="rulesModalTitle" data-i18n="rules_title">Instrucciones del Modo</h2>
+                <h2 id="rulesModalTitle" data-i18n="rules_title">Instrucciones de Juego</h2>
             </div>
+            
+            <div class="difficulty-preview-tabs">
+                <button id="tabEasy" class="tab-btn active" onclick="switchRulesTab('easy')">Modo Fácil</button>
+                <button id="tabHard" class="tab-btn" onclick="switchRulesTab('hard')">Modo Difícil</button>
+            </div>
+
             <div class="rules-body" id="rulesBody"></div>
-            <button class="btn primary" onclick="closeRulesModal()" data-i18n="rules_close">¡Entendido, a jugar!</button>
+            
+            <button class="btn primary full-width" onclick="closeRulesModal()" data-i18n="rules_close" style="margin-top: 1rem;">¡Entendido, a jugar!</button>
         </div>
     </div>
 
+    <!-- MODAL DE VICTORIA / RESULTADOS -->
     <div id="winModal" class="modal">
         <div class="modal-content text-center win-card">
             <div class="victory-header">
                 <span class="victory-badge" id="victoryBadgeLabel">VICTORIA</span>
-                <h2 id="winTitleText" data-i18n="win_title">¡CÓDIGO DESCIFRADO!</h2>
+                <h2 id="winTitleText">¡CÓDIGO DESCIFRADO!</h2>
             </div>
             
-            <div class="victory-code-display" id="victoryCodesContainer">
-                <span class="code-label" id="codeLabelText">EL CÓDIGO ERA:</span>
-                <div class="big-code-digits" id="victoryCodeDisplay">0 0 0 0</div>
+            <div class="victory-details-box" id="victoryDetailsContent">
+                <!-- Se rellena dinámicamente según el modo y ganador -->
             </div>
 
-            <div class="victory-stats">
-                <span class="stat-number" id="victoryAttempts">0</span>
-                <span class="stat-label" id="victoryAttemptsLabel">INTENTOS REALIZADOS</span>
-            </div>
-
-            <div class="modal-actions">
-                <button class="btn accent glow full-width" onclick="openRevengeSetup()" data-i18n="challenge_back">⚔️ ¡Retar de vuelta!</button>
-                <button class="btn secondary full-width" onclick="shareResult()" data-i18n="share_result">📤 Compartir resultado</button>
-                <button class="btn primary full-width" onclick="restartGame()" data-i18n="play_again">🔄 Volver a jugar</button>
-                <button class="btn text" onclick="goHome()" data-i18n="menu_home">🏠 Regresar al menú principal</button>
+            <div class="modal-actions" id="winModalActions">
+                <!-- Se rellena dinámicamente -->
             </div>
         </div>
     </div>
