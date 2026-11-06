@@ -130,7 +130,7 @@ const translations = {
 };
 
 let currentLang = 'es';
-let currentDifficulty = 'easy'; // Por defecto en Fácil
+let currentDifficulty = 'easy';
 let gameMode = 'solo';
 
 let secretCode = '';
@@ -168,20 +168,18 @@ function showToast(message) {
     setTimeout(() => { toast.classList.remove('show'); }, 3500);
 }
 
-// CONTROL DE DIFICULTAD EN EL MENÚ PRINCIPAL
 function setMenuDifficulty(diff) {
     currentDifficulty = diff;
     document.getElementById('menuDiffEasy').classList.toggle('active', diff === 'easy');
     document.getElementById('menuDiffHard').classList.toggle('active', diff === 'hard');
 }
 
-// FILTRADO ESTRICTO DE DIGITOS (SOLO 0-9, SIN ESPACIOS NI GUIONES)
 function setupNumericInputs() {
     document.querySelectorAll('.numeric-only').forEach(input => {
         input.addEventListener('focus', () => input.select());
         
         input.addEventListener('input', (e) => {
-            let val = e.target.value.replace(/[^0-9]/g, ''); // ÚNICAMENTE NÚMEROS 0-9
+            let val = e.target.value.replace(/[^0-9]/g, '');
             if (val.length > 1) {
                 e.target.value = val.slice(-1);
             } else {
@@ -400,7 +398,6 @@ function startGameSession() {
     attemptCount = 0;
     resetDiscardBoard();
     
-    // Configurar la etiqueta fija de dificultad en la partida
     const diffBadge = document.getElementById('gameDiffBadge');
     if (currentDifficulty === 'easy') {
         diffBadge.innerText = "🟢 Fácil";
@@ -466,12 +463,33 @@ function submitGuess() {
             if (samePhoneState === 'p1_guessed_waiting_p2') {
                 showSamePhoneWinner(1);
             } else {
-                currentTurnPlayer = (currentTurnPlayer === 1) ? 2 : 1;
-                pendingActionAfterPass = (currentTurnPlayer === 1) ? 'p1_guess' : 'p2_guess';
-                showPassPhoneScreen(`Jugador ${currentTurnPlayer}`, `Intento fallido. Pasa el teléfono al Jugador ${currentTurnPlayer} para su turno.`);
+                triggerTurnWaitSequence();
             }
         }
     }
+}
+
+// RETARDO CON CONTADOR DE SEGUNDOS PARA MÁS TENSIÓN
+function triggerTurnWaitSequence() {
+    showScreen('turnWaitScreen');
+    let nextPlayer = (currentTurnPlayer === 1) ? 2 : 1;
+    document.getElementById('turnWaitTitle').innerText = `Turno de Jugador ${currentTurnPlayer} finalizado`;
+    document.getElementById('turnWaitDesc').innerText = `Procesando intento y pasando el teléfono...`;
+    
+    let secondsLeft = 3;
+    const timerEl = document.getElementById('countdownTimerText');
+    timerEl.innerText = secondsLeft;
+
+    const interval = setInterval(() => {
+        secondsLeft--;
+        timerEl.innerText = secondsLeft;
+        if (secondsLeft <= 0) {
+            clearInterval(interval);
+            currentTurnPlayer = nextPlayer;
+            pendingActionAfterPass = (currentTurnPlayer === 1) ? 'p1_guess' : 'p2_guess';
+            showPassPhoneScreen(`Jugador ${currentTurnPlayer}`, `Te toca adivinar. Analiza las pistas y tu panel de descarte.`);
+        }
+    }, 1000);
 }
 
 function handleVictory(activeTargetCode) {
@@ -500,23 +518,39 @@ function handleVictory(activeTargetCode) {
     saveStat(attemptCount);
 }
 
+// PANTALLA DE VICTORIA VISTOSA (CON GANADOR EN VERDE Y PERDEDOR EN ROJO)
 function showSamePhoneWinner(winnerNum) {
+    let loserNum = (winnerNum === 1) ? 2 : 1;
     let winningAttempts = (winnerNum === 1) ? p1Attempts : p2Attempts;
-    document.getElementById('victoryBadgeLabel').innerText = `GANADOR`;
-    document.getElementById('winTitleText').innerText = `¡JUGADOR ${winnerNum} GANA!`;
-    document.getElementById('codeLabelText').innerText = "CÓDIGOS SECRETOS DE LA PARTIDA:";
-    document.getElementById('victoryCodeDisplay').innerHTML = `J1: ${p1Code}<br>J2: ${p2Code}`;
-    document.getElementById('victoryAttempts').innerText = `Jugador ${winnerNum} lo logró en ${winningAttempts} intentos`;
+    let losingAttempts = (winnerNum === 1) ? p2Attempts : p1Attempts;
+    let winCode = (winnerNum === 1) ? p2Code : p1Code;
+    let loseCode = (winnerNum === 1) ? p1Code : p2Code;
+
+    document.getElementById('victoryBadgeLabel').innerText = `FIN DE LA PARTIDA`;
+    document.getElementById('winTitleText').innerHTML = `<span style="color: var(--accent-green); font-weight: 800;">¡GANA JUGADOR ${winnerNum}!</span>`;
+    
+    document.getElementById('victoryDetailsContent').innerHTML = `
+        <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">El Jugador ${winnerNum} descubrió el código <b>${winCode}</b> en ${winningAttempts} intentos.</p>
+        <div style="margin-top: 0.75rem; padding: 0.6rem; background: #450a0a; border-radius: 8px; color: #f87171; font-size: 0.9rem;">
+            <b>Jugador ${loserNum} pierde.</b> Su código secreto era: <span style="letter-spacing: 2px; font-weight: 800;">${loseCode}</span> (${losingAttempts} intentos realizados)
+        </div>
+    `;
+
     document.getElementById('winModal').classList.add('active');
     saveStat(winningAttempts);
 }
 
 function showSamePhoneDraw() {
-    document.getElementById('victoryBadgeLabel').innerText = `EMPATE`;
-    document.getElementById('winTitleText').innerText = `¡EMPATE ÉPICO!`;
-    document.getElementById('codeLabelText').innerText = "CÓDIGOS SECRETOS DE LA PARTIDA:";
-    document.getElementById('victoryCodeDisplay').innerHTML = `J1: ${p1Code}<br>J2: ${p2Code}`;
-    document.getElementById('victoryAttempts').innerText = `Ambos adivinaron en igualdad de rondas`;
+    document.getElementById('victoryBadgeLabel').innerText = `EMPATE ÉPICO`;
+    document.getElementById('winTitleText').innerHTML = `<span style="color: var(--accent-orange); font-weight: 800;">¡EMPATE TOTAL!</span>`;
+    
+    document.getElementById('victoryDetailsContent').innerHTML = `
+        <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">¡Ambos jugadores descifraron sus respectivos códigos en igualdad de turnos!</p>
+        <div style="margin-top: 0.75rem; padding: 0.6rem; background: #1e293b; border-radius: 8px; color: var(--text-main); font-size: 0.9rem;">
+            Código J1: <b>${p1Code}</b> | Código J2: <b>${p2Code}</b>
+        </div>
+    `;
+
     document.getElementById('winModal').classList.add('active');
 }
 
@@ -565,7 +599,6 @@ function appendHistoryHardRow(guess, targetCode) {
     container.prepend(row);
 }
 
-// PANEL DE DESCARTE CON 3 ESTADOS (NORMAL -> TACHE -> VERDE -> NORMAL)
 function buildDiscardBoard() {
     const row = document.getElementById('numberPillsRow');
     row.innerHTML = '';
@@ -609,15 +642,6 @@ function restartGame() {
         setGameMode('same_phone');
     } else {
         startGameSession();
-    }
-}
-
-function shareResult() {
-    let text = `🧠 ¡Partida increíble en Find Code! ¿Puedes superarnos?`;
-    if (navigator.share) {
-        navigator.share({ title: 'Find Code', text: text, url: window.location.href }).catch(() => {});
-    } else {
-        navigator.clipboard.writeText(text).then(() => showToast("📋 ¡Resultado copiado al portapapeles!"));
     }
 }
 
